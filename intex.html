@@ -1,930 +1,351 @@
 ﻿<!DOCTYPE html>
 <html lang="el">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Λίστα Σούπερ Μάρκετ</title>
-  <meta name="theme-color" content="#FAF6F0">
-  
-  <!-- Favicon & Apple Touch Icon (Καλάθι SVG) -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23C85A32'/><text y='.9em' x='12' font-size='72'>🛒</text></svg>">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23C85A32'/><text y='.9em' x='12' font-size='72'>🛒</text></svg>">
-
-  <style>
-    :root {
-      --bg-color: #FAF6F0;
-      --surface-color: #FFFFFF;
-      --surface-alt: #F3ECE1;
-      --text-main: #2D2A26;
-      --text-muted: #6E685F;
-      --terracotta: #C85A32;
-      --terracotta-dark: #A84622;
-      --sage: #6B705C;
-      --sage-light: #E8EBE4;
-      --success: #3E8E41;
-      --danger: #D32F2F;
-      --border-color: #E2D9C8;
-      --shadow: 0 4px 12px rgba(45, 42, 38, 0.06);
-      --radius: 14px;
-    }
-
-    body.dark-mode {
-      --bg-color: #1C1A18;
-      --surface-color: #282522;
-      --surface-alt: #332F2B;
-      --text-main: #F4EFE6;
-      --text-muted: #A39B8F;
-      --terracotta: #D96B43;
-      --terracotta-dark: #B8522E;
-      --sage: #8A9178;
-      --sage-light: #2F3329;
-      --success: #4CAF50;
-      --danger: #EF5350;
-      --border-color: #3D3833;
-      --shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      transition: background-color 0.3s ease, color 0.3s ease;
-      padding-bottom: 155px;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* Φθινοπωρινά Φύλλα στο Φόντο */
-    #leaves-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-    }
-
-    .leaf {
-      position: absolute;
-      top: -40px;
-      font-size: 1.4rem;
-      opacity: 0.45;
-      user-select: none;
-      animation: fall linear infinite;
-    }
-
-    @keyframes fall {
-      0% {
-        transform: translateY(-40px) rotate(0deg) translateX(0px);
-        opacity: 0;
-      }
-      10% {
-        opacity: 0.5;
-      }
-      90% {
-        opacity: 0.5;
-      }
-      100% {
-        transform: translateY(105vh) rotate(360deg) translateX(35px);
-        opacity: 0;
-      }
-    }
-
-    /* Κύριο Container */
-    .app-container {
-      position: relative;
-      z-index: 1;
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 16px;
-    }
-
-    /* Header */
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo-cart {
-      font-size: 2rem;
-      display: inline-block;
-      animation: float 3s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-5px); }
-    }
-
-    h1 {
-      font-size: 1.35rem;
-      font-weight: 800;
-      color: var(--terracotta);
-      letter-spacing: -0.3px;
-    }
-
-    .theme-btn {
-      background: var(--surface-color);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      font-size: 1.2rem;
-      cursor: pointer;
-      box-shadow: var(--shadow);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.15s ease;
-    }
-
-    .theme-btn:active {
-      transform: scale(0.9);
-    }
-
-    /* Μπάρα Προόδου */
-    .progress-card {
-      background: var(--surface-color);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      padding: 12px 14px;
-      margin-bottom: 14px;
-      box-shadow: var(--shadow);
-    }
-
-    .progress-header {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .progress-track {
-      width: 100%;
-      height: 12px;
-      background: var(--surface-alt);
-      border-radius: 99px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--terracotta), #E07A5F);
-      border-radius: 99px;
-      transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1), background 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .progress-fill.completed {
-      background: linear-gradient(90deg, var(--success), #66BB6A);
-    }
-
-    /* Εφέ Shimmer */
-    .progress-fill::after {
-      content: "";
-      position: absolute;
-      top: 0; left: -100%;
-      width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-      animation: shimmer 2s infinite;
-    }
-
-    @keyframes shimmer {
-      100% { left: 100%; }
-    }
-
-    .reward-msg {
-      display: none;
-      margin-top: 8px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--success);
-      text-align: center;
-    }
-
-    /* Γρήγορη Προσθήκη (1 πάτημα) */
-    .quick-add-scroll {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 8px;
-      margin-bottom: 12px;
-      scrollbar-width: none;
-    }
-    .quick-add-scroll::-webkit-scrollbar { display: none; }
-
-    .quick-chip {
-      flex: 0 0 auto;
-      background: var(--surface-color);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      padding: 8px 13px;
-      border-radius: 99px;
-      font-size: 0.88rem;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: var(--shadow);
-      transition: transform 0.12s ease, background-color 0.2s;
-    }
-
-    .quick-chip:active {
-      transform: scale(0.92);
-      background-color: var(--sage-light);
-    }
-
-    /* Φόρμα Προσθήκης */
-    .add-form {
-      background: var(--surface-color);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      padding: 12px;
-      margin-bottom: 14px;
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .form-row {
-      display: flex;
-      gap: 8px;
-    }
-
-    input, select {
-      background: var(--bg-color);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      padding: 10px 12px;
-      border-radius: 10px;
-      font-size: 0.95rem;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    input:focus, select:focus {
-      border-color: var(--terracotta);
-    }
-
-    #item-name { flex: 2; min-width: 0; }
-    #item-qty { width: 70px; text-align: center; }
-    #item-price { width: 85px; text-align: center; }
-    #item-category { flex: 1; }
-
-    .btn-primary {
-      background: var(--terracotta);
-      color: #FFF;
-      border: none;
-      padding: 11px 16px;
-      border-radius: 10px;
-      font-size: 0.95rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform 0.12s ease, background 0.2s;
-    }
-
-    .btn-primary:active {
-      transform: scale(0.96);
-      background: var(--terracotta-dark);
-    }
-
-    /* Φίλτρα & Αναζήτηση */
-    .controls-bar {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 14px;
-      align-items: center;
-    }
-
-    #search-input {
-      flex: 1;
-      background: var(--surface-color);
-    }
-
-    .toggle-hide-btn {
-      background: var(--surface-color);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      padding: 10px 12px;
-      border-radius: 10px;
-      font-size: 0.82rem;
-      font-weight: 600;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .toggle-hide-btn.active {
-      background: var(--sage);
-      color: #FFF;
-      border-color: var(--sage);
-    }
-
-    /* Λίστα & Κατηγορίες */
-    .category-group {
-      margin-bottom: 16px;
-    }
-
-    .category-title {
-      font-size: 0.85rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--sage);
-      margin-bottom: 8px;
-      padding-left: 4px;
-    }
-
-    .item-card {
-      background: var(--surface-color);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 10px 12px;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      box-shadow: var(--shadow);
-      animation: popIn 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      transition: opacity 0.25s ease, background-color 0.25s ease;
-    }
-
-    @keyframes popIn {
-      0% { opacity: 0; transform: scale(0.88) translateY(8px); }
-      100% { opacity: 1; transform: scale(1) translateY(0); }
-    }
-
-    .item-card.checked {
-      opacity: 0.58;
-      background: var(--surface-alt);
-    }
-
-    .item-card.checked .item-title {
-      text-decoration: line-through;
-      color: var(--text-muted);
-    }
-
-    .item-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex: 1;
-      min-width: 0;
-    }
-
-    .item-checkbox {
-      width: 22px;
-      height: 22px;
-      accent-color: var(--sage);
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-
-    .item-title {
-      font-size: 0.98rem;
-      font-weight: 600;
-      word-break: break-word;
-    }
-
-    .item-controls {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-
-    .qty-box {
-      display: flex;
-align-items: center;
-background: var(--bg-color);
-border: 1px solid var(--border-color);
-border-radius: 8px;
-overflow: hidden;
-}
-.qty-btn {
-background: transparent;
-border: none;
-color: var(--text-main);
-width: 26px;
-height: 28px;
-font-weight: 700;
-font-size: 1rem;
-cursor: pointer;
-}
-.qty-btn:active { background: var(--surface-alt); }
-.qty-val {
-padding: 0 6px;
-font-size: 0.88rem;
-font-weight: 700;
-}
-.inline-price-wrap {
-display: flex;
-align-items: center;
-background: var(--bg-color);
-border: 1px solid var(--border-color);
-border-radius: 8px;
-padding: 0 5px;
-height: 30px;
-}
-.inline-price {
-width: 48px;
-border: none;
-background: transparent;
-padding: 2px;
-font-size: 0.88rem;
-font-weight: 600;
-text-align: right;
-}
-.del-btn {
-background: transparent;
-border: none;
-color: var(--text-muted);
-font-size: 1.1rem;
-cursor: pointer;
-padding: 4px;
-}
-.del-btn:hover { color: var(--danger); }
-/* Δευτερεύουσες Ενέργειες & Coffee Link */
-.extra-actions {
-display: flex;
-flex-wrap: wrap;
-gap: 8px;
-justify-content: center;
-margin-top: 20px;
-}
-.btn-secondary {
-background: var(--surface-color);
-border: 1px solid var(--border-color);
-color: var(--text-main);
-padding: 9px 13px;
-border-radius: 10px;
-font-size: 0.84rem;
-font-weight: 600;
-cursor: pointer;
-transition: transform 0.12s;
-}
-.btn-secondary:active { transform: scale(0.95); }
-.btn-danger-outline { color: var(--danger); border-color: rgba(211, 47, 47, 0.3); }
-.coffee-footer {
-text-align: center;
-margin-top: 24px;
-font-size: 0.85rem;
-}
-.coffee-footer a {
-color: var(--text-muted);
-text-decoration: none;
-border-bottom: 1px dashed var(--text-muted);
-padding-bottom: 2px;
-transition: color 0.2s;
-}
-.coffee-footer a:hover {
-color: var(--terracotta);
-border-color: var(--terracotta);
-}
-/* Σταθερή Κάτω Μπάρα */
-.bottom-bar {
-position: fixed;
-bottom: 0;
-left: 0;
-width: 100%;
-background: var(--surface-color);
-border-top: 2px solid var(--border-color);
-padding: 12px 16px;
-z-index: 10;
-box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
-transition: background-color 0.3s, border-color 0.3s;
-}
-.bottom-bar.over-budget {
-background: #FDECEA;
-border-top-color: var(--danger);
-animation: shake 0.4s ease-in-out;
-}
-body.dark-mode .bottom-bar.over-budget {
-background: #3B1818;
-border-top-color: var(--danger);
-}
-@keyframes shake {
-0%, 100% { transform: translateX(0); }
-20%, 60% { transform: translateX(-6px); }
-40%, 80% { transform: translateX(6px); }
-}
-.bottom-inner {
-max-width: 600px;
-margin: 0 auto;
-display: flex;
-justify-content: space-between;
-align-items: center;
-gap: 10px;
-}
-.total-box {
-display: flex;
-flex-direction: column;
-}
-.total-label {
-font-size: 0.75rem;
-color: var(--text-muted);
-font-weight: 600;
-}
-.total-amount {
-font-size: 1.35rem;
-font-weight: 800;
-color: var(--terracotta);
-}
-.bottom-bar.over-budget .total-amount {
-color: var(--danger);
-}
-.budget-box {
-display: flex;
-align-items: center;
-gap: 8px;
-}
-.budget-input-group {
-display: flex;
-flex-direction: column;
-align-items: flex-end;
-}
-.budget-input-group label {
-font-size: 0.72rem;
-color: var(--text-muted);
-font-weight: 600;
-}
-#budget-limit {
-width: 85px;
-padding: 6px 8px;
-font-size: 0.9rem;
-font-weight: 700;
-text-align: right;
-}
-.remaining-badge {
-font-size: 0.78rem;
-font-weight: 700;
-margin-top: 2px;
-color: var(--sage);
-}
-.bottom-bar.over-budget .remaining-badge {
-color: var(--danger);
-}
-.empty-state {
-text-align: center;
-padding: 32px 16px;
-color: var(--text-muted);
-font-size: 0.95rem;
-}
-
-
-🛒
-Λίστα Σούπερ Μάρκετ
-
-🌙
-Αγοράστηκαν 0 / 0
-0%
-
-
-
-
-🎉 Μπράβο! Ολοκλήρωσες όλες τις αγορές σου!
-🥛 Γάλα
-🍞 Ψωμί
-🥚 Αυγά
-☕ Καφές
-🧀 Τυρί
-🍅 Ντομάτες
-🥬 Φρούτα & Λαχανικά
-🥛 Γαλακτοκομικά
-🥩 Κρέας & Ψάρι
-🥖 Αρτοποιείο
-🥫 Τρόφιμα & Ροφήματα
-🧼 Καθαριστικά & Είδη Σπιτιού
-📦 Άλλα
-
-+ Προσθήκη
-
-Απόκρυψη αγορασμένων
-🧹 Σβήσιμο Αγορασμένων
-📲 Κοινοποίηση Λίστας
-🗑️ Καθαρισμός Όλης της Λίστας
-☕ Σου έλυσε τα χέρια; Κέρασέ με έναν καφέ
-
-ΣΥΝΟΛΙΚΟ ΚΟΣΤΟΣ
-0.00 €
-
-
-Όριο (€)
-Χωρίς όριο
-
-
-
-document.addEventListener('DOMContentLoaded', () => {
-// Κατάσταση Εφαρμογής
-let items = JSON.parse(localStorage.getItem('supermarket_items')) || [];
-let budgetLimit = parseFloat(localStorage.getItem('supermarket_budget')) || '';
-let hideChecked = JSON.parse(localStorage.getItem('supermarket_hide_checked')) || false;
-let darkMode = JSON.parse(localStorage.getItem('supermarket_dark')) || false;
-let wasOverBudget = false;
-// Αναφορές DOM
-const themeToggle = document.getElementById('theme-toggle');
-const addForm = document.getElementById('add-form');
-const itemNameInput = document.getElementById('item-name');
-const itemQtyInput = document.getElementById('item-qty');
-const itemPriceInput = document.getElementById('item-price');
-const itemCatInput = document.getElementById('item-category');
-const searchInput = document.getElementById('search-input');
-const toggleHideBtn = document.getElementById('toggle-hide-btn');
-const listContainer = document.getElementById('list-container');
-const progressText = document.getElementById('progress-text');
-const progressPercent = document.getElementById('progress-percent');
-const progressFill = document.getElementById('progress-fill');
-const rewardMsg = document.getElementById('reward-msg');
-const totalCostEl = document.getElementById('total-cost');
-const budgetInput = document.getElementById('budget-limit');
-const remainingText = document.getElementById('remaining-text');
-const bottomBar = document.getElementById('bottom-bar');
-// Δόνηση κινητού
-function vibrate(ms = 25) {
-if (navigator.vibrate) {
-navigator.vibrate(ms);
-}
-}
-// Δημιουργία Φθινοπωρινών Φύλλων
-function initLeaves() {
-const container = document.getElementById('leaves-container');
-const emojis = ['🍂', '🍁'];
-for (let i = 0; i < 14; i++) {
-const leaf = document.createElement('div');
-leaf.className = 'leaf';
-leaf.textContent = emojis[i % emojis.length];
-leaf.style.left = Math.random() * 100 + 'vw';
-leaf.style.animationDuration = (9 + Math.random() * 10) + 's';
-leaf.style.animationDelay = (Math.random() * 8) + 's';
-leaf.style.fontSize = (1.1 + Math.random() * 0.7) + 'rem';
-container.appendChild(leaf);
-}
-}
-// Dark Mode
-function applyTheme() {
-if (darkMode) {
-document.body.classList.add('dark-mode');
-themeToggle.textContent = '☀️';
-} else {
-document.body.classList.remove('dark-mode');
-themeToggle.textContent = '🌙';
-}
-}
-themeToggle.addEventListener('click', () => {
-darkMode = !darkMode;
-localStorage.setItem('supermarket_dark', JSON.stringify(darkMode));
-applyTheme();
-vibrate(20);
-});
-// Αποθήκευση
-function saveState() {
-localStorage.setItem('supermarket_items', JSON.stringify(items));
-localStorage.setItem('supermarket_budget', budgetLimit);
-localStorage.setItem('supermarket_hide_checked', JSON.stringify(hideChecked));
-}
-// Προσθήκη Προϊόντος
-function addItem(name, qty, price, category) {
-const cleanName = name.trim();
-if (!cleanName) return;
-// Αν υπάρχει ήδη ίδιο όνομα & κατηγορία, αύξηση ποσότητας
-const existing = items.find(i => i.name.toLowerCase() === cleanName.toLowerCase() && i.category === category);
-if (existing) {
-existing.qty += qty;
-if (price > 0) existing.price = price;
-existing.checked = false;
-} else {
-items.push({
-id: Date.now().toString() + Math.random().toString(36).slice(2, 6),
-name: cleanName,
-qty: qty,
-price: price,
-category: category,
-checked: false
-});
-}
-vibrate(30);
-saveState();
-render();
-}
-addForm.addEventListener('submit', (e) => {
-e.preventDefault();
-const name = itemNameInput.value;
-const qty = Math.max(1, parseInt(itemQtyInput.value) || 1);
-const price = Math.max(0, parseFloat(itemPriceInput.value) || 0);
-const category = itemCatInput.value;
-addItem(name, qty, price, category);
-itemNameInput.value = '';
-itemQtyInput.value = '1';
-itemPriceInput.value = '';
-itemNameInput.focus();
-});
-// Γρήγορα Κουμπιά 1 Πατήματος
-document.querySelectorAll('.quick-chip').forEach(btn => {
-btn.addEventListener('click', () => {
-const name = btn.dataset.name;
-const cat = btn.dataset.cat;
-const price = parseFloat(btn.dataset.price) || 0;
-addItem(name, 1, price, cat);
-});
-});
-// Αναζήτηση & Απόκρυψη Αγορασμένων
-searchInput.addEventListener('input', render);
-toggleHideBtn.addEventListener('click', () => {
-hideChecked = !hideChecked;
-toggleHideBtn.classList.toggle('active', hideChecked);
-saveState();
-render();
-vibrate(20);
-});
-// Όριο Αγορών
-budgetInput.value = budgetLimit;
-budgetInput.addEventListener('input', () => {
-const val = parseFloat(budgetInput.value);
-budgetLimit = isNaN(val) || val <= 0 ? '' : val;
-saveState();
-updateTotals();
-});
-// Ενημέρωση Προόδου & Κόστους
-function updateTotals() {
-const totalItems = items.length;
-const checkedItems = items.filter(i => i.checked).length;
-const percent = totalItems === 0 ? 0 : Math.round((checkedItems / totalItems) * 100);
-progressText.textContent = Αγοράστηκαν ${checkedItems} / ${totalItems};
-progressPercent.textContent = ${percent}%;
-progressFill.style.width = ${percent}%;
-if (totalItems > 0 && checkedItems === totalItems) {
-progressFill.classList.add('completed');
-rewardMsg.style.display = 'block';
-} else {
-progressFill.classList.remove('completed');
-rewardMsg.style.display = 'none';
-}
-const totalCost = items.reduce((sum, item) => sum + (item.qty * item.price), 0);
-totalCostEl.textContent = ${totalCost.toFixed(2)} €;
-if (budgetLimit !== '' && budgetLimit > 0) {
-const diff = budgetLimit - totalCost;
-if (diff < 0) {
-remainingText.textContent = Υπέρβαση: ${Math.abs(diff).toFixed(2)} €;
-bottomBar.classList.add('over-budget');
-if (!wasOverBudget) {
-vibrate([60, 40, 60]);
-wasOverBudget = true;
-}
-} else {
-remainingText.textContent = Υπόλοιπο: ${diff.toFixed(2)} €;
-bottomBar.classList.remove('over-budget');
-wasOverBudget = false;
-}
-} else {
-remainingText.textContent = 'Χωρίς όριο';
-bottomBar.classList.remove('over-budget');
-wasOverBudget = false;
-}
-}
-// Εμφάνιση Λίστας
-function render() {
-toggleHideBtn.classList.toggle('active', hideChecked);
-const query = searchInput.value.trim().toLowerCase();
-const filtered = items.filter(item => {
-if (hideChecked && item.checked) return false;
-if (query && !item.name.toLowerCase().includes(query)) return false;
-return true;
-});
-listContainer.innerHTML = '';
-if (filtered.length === 0) {
-listContainer.innerHTML = <div class="empty-state">${items.length === 0 ? 'Το καλάθι σου είναι άδειο. Πρόσθεσε προϊόντα παραπάνω!' : 'Δεν βρέθηκαν προϊόντα με αυτά τα κριτήρια.'}</div>;
-updateTotals();
-return;
-}
-// Ομαδοποίηση ανά κατηγορία
-const groups = {};
-filtered.forEach(item => {
-if (!groups[item.category]) groups[item.category] = [];
-groups[item.category].push(item);
-});
-Object.keys(groups).forEach(category => {
-const groupDiv = document.createElement('div');
-groupDiv.className = 'category-group';
-const titleDiv = document.createElement('div');
-titleDiv.className = 'category-title';
-titleDiv.textContent = category;
-groupDiv.appendChild(titleDiv);
-groups[category].forEach(item => {
-const card = document.createElement('div');
-card.className = item-card ${item.checked ? 'checked' : ''};
-card.innerHTML = <div class="item-left"> <input type="checkbox" class="item-checkbox" ${item.checked ? 'checked' : ''}> <span class="item-title">${escapeHTML(item.name)}</span> </div> <div class="item-controls"> <div class="qty-box"> <button type="button" class="qty-btn minus">−</button> <span class="qty-val">${item.qty}</span> <button type="button" class="qty-btn plus">+</button> </div> <div class="inline-price-wrap" title="Τιμή μονάδας €"> <input type="number" class="inline-price" value="${item.price > 0 ? item.price : ''}" placeholder="0.00" min="0" step="0.01"> <span style="font-size:0.8rem;color:var(--text-muted)">€</span> </div> <button type="button" class="del-btn" title="Διαγραφή">✕</button> </div>;
-// Events στοιχείου
-const checkbox = card.querySelector('.item-checkbox');
-checkbox.addEventListener('change', () => {
-item.checked = checkbox.checked;
-vibrate(25);
-saveState();
-render();
-});
-card.querySelector('.minus').addEventListener('click', () => {
-if (item.qty > 1) {
-item.qty--;
-vibrate(15);
-saveState();
-render();
-}
-});
-card.querySelector('.plus').addEventListener('click', () => {
-item.qty++;
-vibrate(15);
-saveState();
-render();
-});
-const priceInput = card.querySelector('.inline-price');
-priceInput.addEventListener('change', () => {
-item.price = Math.max(0, parseFloat(priceInput.value) || 0);
-saveState();
-updateTotals();
-});
-card.querySelector('.del-btn').addEventListener('click', () => {
-items = items.filter(i => i.id !== item.id);
-vibrate(30);
-saveState();
-render();
-});
-groupDiv.appendChild(card);
-});
-listContainer.appendChild(groupDiv);
-});
-updateTotals();
-}
-// Ασφάλεια HTML χαρακτήρων
-function escapeHTML(str) {
-return str.replace(/[&<>'"]/g, tag => ({
-'&': '&', '<': '<', '>': '>', "'": ''', '"': '"'
-}[tag]));
-}
-// Σβήσιμο Αγορασμένων
-document.getElementById('clear-checked-btn').addEventListener('click', () => {
-if (!items.some(i => i.checked)) return;
-items = items.filter(i => !i.checked);
-vibrate(35);
-saveState();
-render();
-});
-// Καθαρισμός Όλης της Λίστας
-document.getElementById('clear-all-btn').addEventListener('click', () => {
-if (items.length === 0) return;
-if (confirm('Θέλεις σίγουρα να διαγράψεις όλα τα προϊόντα της λίστας;')) {
-items = [];
-vibrate(50);
-saveState();
-render();
-}
-});
-// Κοινοποίηση Λίστας (Viber / WhatsApp / Clipboard)
-document.getElementById('share-btn').addEventListener('click', async () => {
-if (items.length === 0) {
-alert('Η λίστα είναι άδεια!');
-return;
-}
-let text = '🛒 Λίστα Σούπερ Μάρκετ\n\n';
-items.forEach(item => {
-const mark = item.checked ? '✅' : '⬜';
-const priceStr = item.price > 0 ?  (${(item.qty * item.price).toFixed(2)}€) : '';
-text += ${mark} ${item.name} x${item.qty}${priceStr}\n;
-});
-const total = items.reduce((s, i) => s + i.qty * i.price, 0);
-text += \n💰 *Σύνολο:* ${total.toFixed(2)} €;
-if (navigator.share) {
-try {
-await navigator.share({ title: 'Λίστα Σούπερ Μάρκετ', text });
-} catch (err) {}
-} else {
-navigator.clipboard.writeText(text);
-alert('Η λίστα αντιγράφηκε στο πρόχειρο! Μπορείς να την κάνεις επικόλληση στο Viber ή WhatsApp.');
-}
-vibrate(25);
-});
-// Εκκίνηση
-applyTheme();
-initLeaves();
-render();
-});
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#C85A32">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Λίστα Σούπερ Μάρκετ 🛒</title>
+
+    <!-- Favicon & Apple Touch Icon (SVG Data URI Καλάθι) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23C85A32'/><text x='50' y='68' font-size='55' text-anchor='middle'>🛒</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23C85A32'/><text x='50' y='68' font-size='55' text-anchor='middle'>🛒</text></svg>">
+
+    <style>
+        :root {
+            --bg-color: #FAF6F0;
+            --card-bg: #FFFFFF;
+            --text-main: #2C2A29;
+            --text-muted: #6B705C;
+            --terracotta: #C85A32;
+            --terracotta-dark: #A84622;
+            --sage: #6B705C;
+            --sage-light: #E8EBE4;
+            --border-color: #E6DFD5;
+            --success: #3A7D44;
+            --danger: #D62828;
+            --shadow: 0 4px 14px rgba(44, 42, 41, 0.06);
+        }
+
+        body.dark-mode {
+            --bg-color: #1C1A18;
+            --card-bg: #282522;
+            --text-main: #F4EFEA;
+            --text-muted: #A5A89B;
+            --terracotta: #E06D44;
+            --terracotta-dark: #C85A32;
+            --sage: #8C927B;
+            --sage-light: #353831;
+            --border-color: #3D3834;
+            --success: #4CAF50;
+            --danger: #FF5252;
+            --shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            padding-bottom: 155px; /* Χώρος για τη σταθερή κάτω μπάρα */
+            overflow-x: hidden;
+        }
+
+        /* Φθινοπωρινά Φύλλα στο Φόντο */
+        #leaves-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .leaf {
+            position: absolute;
+            top: -40px;
+            font-size: 20px;
+            opacity: 0.45;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-40px) rotate(0deg) translateX(0px);
+            }
+            50% {
+                transform: translateY(50vh) rotate(180deg) translateX(25px);
+            }
+            100% {
+                transform: translateY(105vh) rotate(360deg) translateX(-20px);
+            }
+        }
+
+        /* Κύριο Container */
+        .app-container {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cart-logo {
+            font-size: 32px;
+            display: inline-block;
+            animation: floatCart 3s ease-in-out infinite;
+        }
+
+        @keyframes floatCart {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-5px) rotate(-4deg); }
+        }
+
+        h1 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--terracotta);
+        }
+
+        .theme-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.15s ease;
+        }
+
+        /* Εφέ πατήματος σε όλα τα κουμπιά */
+        button:active {
+            transform: scale(0.93) !important;
+        }
+
+        /* Μπάρα Προόδου */
+        .progress-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 12px;
+            background: var(--sage-light);
+            border-radius: 999px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--terracotta);
+            border-radius: 999px;
+            transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill.completed {
+            background: var(--success);
+        }
+
+        /* Εφέ γυαλάδας (Shine) στη μπάρα προόδου */
+        .progress-fill::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+            animation: shine 2.2s infinite;
+        }
+
+        @keyframes shine {
+            100% { left: 160%; }
+        }
+
+        .celebration-msg {
+            display: none;
+            margin-top: 8px;
+            text-align: center;
+            color: var(--success);
+            font-weight: 700;
+            font-size: 0.9rem;
+            animation: popIn 0.35s ease;
+        }
+
+        /* Γρήγορη Προσθήκη (Οριζόντια μπάρα) */
+        .quick-add-section {
+            margin-bottom: 16px;
+        }
+
+        .section-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .quick-chips {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+            scrollbar-width: none;
+        }
+
+        .quick-chips::-webkit-scrollbar {
+            display: none;
+        }
+
+        .chip-btn {
+            flex: 0 0 auto;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .chip-btn:hover {
+            border-color: var(--terracotta);
+        }
+
+        /* Φόρμα Προσθήκης Προϊόντος */
+        .add-form {
+            background: var(--card-bg);
+            padding: 14px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        input, select {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 11px 12px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--terracotta);
+        }
+
+        #item-name {
+            flex: 1;
+        }
+
+        #item-qty {
+            width: 72px;
+            text-align: center;
+        }
+
+        #item-price {
+            width: 92px;
+            text-align: center;
+        }
+
+        #item-category {
+            flex: 1;
+        }
+
+        .add-btn {
+            background: var(--terracotta);
+            color: #FFFFFF;
+            border: none;
+            padding: 11px 18px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .add-btn:hover {
+            background: var(--terracotta-dark);
+        }
+
+        /* Αναζήτηση & Φίλτρο Απόκρυψης */
+        .controls-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        #search-input {
+            flex: 1;
+            background: var(--card-bg);
+        }
+
+        .toggle-hide-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0 12px;
+            border-radius: 10px;
