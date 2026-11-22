@@ -1,351 +1,894 @@
 ﻿<!DOCTYPE html>
 <html lang="el">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#C85A32">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Λίστα Σούπερ Μάρκετ 🛒</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Λίστα Σούπερ Μάρκετ</title>
+  <link rel="preconnect" href="https://googleapis.com">
+  <link rel="preconnect" href="https://gstatic.com" crossorigin>
+  <link href="https://googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #FAF6F0;
+      --surface-color: #FFFFFF;
+      --surface-alt: #F2EBE1;
+      --primary: #C85A32;
+      --primary-hover: #B04A25;
+      --secondary: #738A6E;
+      --secondary-light: #E8EFE6;
+      --text-main: #2D2620;
+      --text-muted: #786D63;
+      --border-color: #E6DDD0;
+      --danger: #D9383A;
+      --danger-bg: #FDECEC;
+      --shadow: 0 4px 14px rgba(45, 38, 32, 0.06);
+      --bottom-bar-bg: rgba(255, 255, 255, 0.94);
+    }
 
-    <!-- Favicon & Apple Touch Icon (SVG Data URI Καλάθι) -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23C85A32'/><text x='50' y='68' font-size='55' text-anchor='middle'>🛒</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://w3.org' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23C85A32'/><text x='50' y='68' font-size='55' text-anchor='middle'>🛒</text></svg>">
+    [data-theme="dark"] {
+      --bg-color: #1C1917;
+      --surface-color: #292524;
+      --surface-alt: #342F2D;
+      --primary: #E06D44;
+      --primary-hover: #C85A32;
+      --secondary: #8BA385;
+      --secondary-light: #2C352A;
+      --text-main: #F5F2EB;
+      --text-muted: #A89F96;
+      --border-color: #3F3936;
+      --danger: #EF5350;
+      --danger-bg: #3D1F1F;
+      --shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      --bottom-bar-bg: rgba(41, 37, 36, 0.94);
+    }
 
-    <style>
-        :root {
-            --bg-color: #FAF6F0;
-            --card-bg: #FFFFFF;
-            --text-main: #2C2A29;
-            --text-muted: #6B705C;
-            --terracotta: #C85A32;
-            --terracotta-dark: #A84622;
-            --sage: #6B705C;
-            --sage-light: #E8EBE4;
-            --border-color: #E6DFD5;
-            --success: #3A7D44;
-            --danger: #D62828;
-            --shadow: 0 4px 14px rgba(44, 42, 41, 0.06);
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-        body.dark-mode {
-            --bg-color: #1C1A18;
-            --card-bg: #282522;
-            --text-main: #F4EFEA;
-            --text-muted: #A5A89B;
-            --terracotta: #E06D44;
-            --terracotta-dark: #C85A32;
-            --sage: #8C927B;
-            --sage-light: #353831;
-            --border-color: #3D3834;
-            --success: #4CAF50;
-            --danger: #FF5252;
-            --shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
-        }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      padding-bottom: 110px;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+    /* Κινούμενα Φθινοπωρινά Φύλλα */
+    .leaves-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            transition: background-color 0.3s ease, color 0.3s ease;
-            padding-bottom: 155px; /* Χώρος για τη σταθερή κάτω μπάρα */
-            overflow-x: hidden;
-        }
+    .leaf {
+      position: absolute;
+      top: -40px;
+      opacity: 0.22;
+      animation: fall linear infinite;
+      user-select: none;
+    }
 
-        /* Φθινοπωρινά Φύλλα στο Φόντο */
-        #leaves-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
+    [data-theme="dark"] .leaf {
+      opacity: 0.14;
+    }
 
-        .leaf {
-            position: absolute;
-            top: -40px;
-            font-size: 20px;
-            opacity: 0.45;
-            animation: fall linear infinite;
-        }
+    @keyframes fall {
+      0% {
+        transform: translateY(-40px) rotate(0deg) translateX(0px);
+      }
+      50% {
+        transform: translateY(50vh) rotate(180deg) translateX(25px);
+      }
+      100% {
+        transform: translateY(105vh) rotate(360deg) translateX(-15px);
+      }
+    }
 
-        @keyframes fall {
-            0% {
-                transform: translateY(-40px) rotate(0deg) translateX(0px);
-            }
-            50% {
-                transform: translateY(50vh) rotate(180deg) translateX(25px);
-            }
-            100% {
-                transform: translateY(105vh) rotate(360deg) translateX(-20px);
-            }
-        }
+    /* Κύριο Container (Mobile-First) */
+    .app-container {
+      max-width: 540px;
+      margin: 0 auto;
+      padding: 16px;
+      position: relative;
+      z-index: 1;
+    }
 
-        /* Κύριο Container */
-        .app-container {
-            position: relative;
-            z-index: 1;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 16px;
-        }
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
 
-        /* Header */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
+    .title-area h1 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-main);
+    }
 
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+    .header-actions {
+      display: flex;
+      gap: 8px;
+    }
 
-        .cart-logo {
-            font-size: 32px;
-            display: inline-block;
-            animation: floatCart 3s ease-in-out infinite;
-        }
+    .icon-btn {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: transform 0.15s ease, background-color 0.2s;
+    }
 
-        @keyframes floatCart {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-5px) rotate(-4deg); }
-        }
+    .icon-btn:active {
+      transform: scale(0.93);
+    }
 
-        h1 {
-            font-size: 1.35rem;
-            font-weight: 800;
-            color: var(--terracotta);
-        }
+    /* Μπάρα Προόδου */
+    .progress-card {
+      background: var(--surface-color);
+      border-radius: 16px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-color);
+    }
 
-        .theme-btn {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            font-size: 1.2rem;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.15s ease;
-        }
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text-muted);
+    }
 
-        /* Εφέ πατήματος σε όλα τα κουμπιά */
-        button:active {
-            transform: scale(0.93) !important;
-        }
+    .progress-header span:last-child {
+      color: var(--secondary);
+      font-weight: 700;
+    }
 
-        /* Μπάρα Προόδου */
-        .progress-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 14px;
-            margin-bottom: 16px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-        }
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      background: var(--surface-alt);
+      border-radius: 99px;
+      overflow: hidden;
+    }
 
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
+    .progress-fill {
+      height: 100%;
+      background: var(--secondary);
+      width: 0%;
+      border-radius: 99px;
+      transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-        .progress-track {
-            width: 100%;
-            height: 12px;
-            background: var(--sage-light);
-            border-radius: 999px;
-            overflow: hidden;
-            position: relative;
-        }
+    /* Γρήγορη Προσθήκη */
+    .section-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
 
-        .progress-fill {
-            height: 100%;
-            width: 0%;
-            background: var(--terracotta);
-            border-radius: 999px;
-            transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.4s ease;
-            position: relative;
-            overflow: hidden;
-        }
+    .quick-add-scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 14px;
+      scrollbar-width: none;
+    }
 
-        .progress-fill.completed {
-            background: var(--success);
-        }
+    .quick-add-scroll::-webkit-scrollbar {
+      display: none;
+    }
 
-        /* Εφέ γυαλάδας (Shine) στη μπάρα προόδου */
-        .progress-fill::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 60%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
-            animation: shine 2.2s infinite;
-        }
+    .quick-chip {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 8px 12px;
+      border-radius: 99px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      transition: all 0.15s ease;
+    }
 
-        @keyframes shine {
-            100% { left: 160%; }
-        }
+    .quick-chip:active {
+      transform: scale(0.94);
+      background: var(--secondary-light);
+      border-color: var(--secondary);
+    }
 
-        .celebration-msg {
-            display: none;
-            margin-top: 8px;
-            text-align: center;
-            color: var(--success);
-            font-weight: 700;
-            font-size: 0.9rem;
-            animation: popIn 0.35s ease;
-        }
+    /* Φόρμα Προσθήκης Είδους */
+    .add-form {
+      background: var(--surface-color);
+      padding: 12px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-color);
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
-        /* Γρήγορη Προσθήκη (Οριζόντια μπάρα) */
-        .quick-add-section {
-            margin-bottom: 16px;
-        }
+    .form-row {
+      display: flex;
+      gap: 8px;
+    }
 
-        .section-label {
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-            display: block;
-        }
+    input, select {
+      font-family: inherit;
+      background: var(--surface-alt);
+      border: 1px solid transparent;
+      color: var(--text-main);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
 
-        .quick-chips {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding-bottom: 6px;
-            scrollbar-width: none;
-        }
+    input:focus, select:focus {
+      border-color: var(--primary);
+    }
 
-        .quick-chips::-webkit-scrollbar {
-            display: none;
-        }
+    .input-name {
+      flex: 1;
+      min-width: 0;
+    }
 
-        .chip-btn {
-            flex: 0 0 auto;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 8px 14px;
-            border-radius: 999px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            transition: background 0.2s, transform 0.1s;
-        }
+    .input-price {
+      width: 85px;
+      text-align: right;
+    }
 
-        .chip-btn:hover {
-            border-color: var(--terracotta);
-        }
+    .select-category {
+      flex: 1;
+    }
 
-        /* Φόρμα Προσθήκης Προϊόντος */
-        .add-form {
-            background: var(--card-bg);
-            padding: 14px;
-            border-radius: 16px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-            margin-bottom: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+    .btn-add {
+      background: var(--primary);
+      color: #FFFFFF;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      white-space: nowrap;
+    }
 
-        .form-row {
-            display: flex;
-            gap: 8px;
-        }
+    .btn-add:hover {
+      background: var(--primary-hover);
+    }
 
-        input, select {
-            background: var(--bg-color);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 11px 12px;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            outline: none;
-            transition: border-color 0.2s;
-        }
+    .btn-add:active {
+      transform: scale(0.96);
+    }
 
-        input:focus, select:focus {
-            border-color: var(--terracotta);
-        }
+    /* Αναζήτηση & Φίλτρα */
+    .controls-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      align-items: center;
+    }
 
-        #item-name {
-            flex: 1;
-        }
+    .search-box {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
 
-        #item-qty {
-            width: 72px;
-            text-align: center;
-        }
+    .search-box span {
+      position: absolute;
+      left: 12px;
+      font-size: 0.95rem;
+      opacity: 0.6;
+    }
 
-        #item-price {
-            width: 92px;
-            text-align: center;
-        }
+    .search-box input {
+      width: 100%;
+      padding-left: 34px;
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+    }
 
-        #item-category {
-            flex: 1;
-        }
+    .toggle-hide-btn {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
 
-        .add-btn {
-            background: var(--terracotta);
-            color: #FFFFFF;
-            border: none;
-            padding: 11px 18px;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
-        }
+    .toggle-hide-btn.active {
+      background: var(--secondary-light);
+      color: var(--secondary);
+      border-color: var(--secondary);
+    }
 
-        .add-btn:hover {
-            background: var(--terracotta-dark);
-        }
+    /* Λίστα & Κατηγορίες */
+    .category-group {
+      margin-bottom: 18px;
+    }
 
-        /* Αναζήτηση & Φίλτρο Απόκρυψης */
-        .controls-bar {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
+    .category-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--secondary);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding-left: 4px;
+    }
 
-        #search-input {
-            flex: 1;
-            background: var(--card-bg);
-        }
+    .item-card {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+      transition: opacity 0.25s, transform 0.2s, background-color 0.2s;
+    }
 
-        .toggle-hide-btn {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            padding: 0 12px;
-            border-radius: 10px;
+    .item-card.checked {
+      opacity: 0.58;
+      background: var(--surface-alt);
+    }
+
+    .item-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+      cursor: pointer;
+    }
+
+    .custom-checkbox {
+      width: 24px;
+      height: 24px;
+      border-radius: 8px;
+      border: 2px solid var(--secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s;
+      color: white;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    .item-card.checked .custom-checkbox {
+      background: var(--secondary);
+    }
+
+    .item-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      word-break: break-word;
+    }
+
+    .item-card.checked .item-name {
+      text-decoration: line-through;
+      color: var(--text-muted);
+    }
+
+    .item-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    /* Ποσότητα */
+    .qty-box {
+      display: flex;
+      align-items: center;
+      background: var(--surface-alt);
+      border-radius: 10px;
+      padding: 2px;
+    }
+
+    .qty-btn {
+      width: 26px;
+      height: 26px;
+      border: none;
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Λίστα Σούπερ Μάρκετ</title>
+  <link rel="preconnect" href="https://googleapis.com">
+  <link rel="preconnect" href="https://gstatic.com" crossorigin>
+  <link href="https://googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #FAF6F0;
+      --surface-color: #FFFFFF;
+      --surface-alt: #F2EBE1;
+      --primary: #C85A32;
+      --primary-hover: #B04A25;
+      --secondary: #738A6E;
+      --secondary-light: #E8EFE6;
+      --text-main: #2D2620;
+      --text-muted: #786D63;
+      --border-color: #E6DDD0;
+      --danger: #D9383A;
+      --danger-bg: #FDECEC;
+      --shadow: 0 4px 14px rgba(45, 38, 32, 0.06);
+      --bottom-bar-bg: rgba(255, 255, 255, 0.94);
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #1C1917;
+      --surface-color: #292524;
+      --surface-alt: #342F2D;
+      --primary: #E06D44;
+      --primary-hover: #C85A32;
+      --secondary: #8BA385;
+      --secondary-light: #2C352A;
+      --text-main: #F5F2EB;
+      --text-muted: #A89F96;
+      --border-color: #3F3936;
+      --danger: #EF5350;
+      --danger-bg: #3D1F1F;
+      --shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      --bottom-bar-bg: rgba(41, 37, 36, 0.94);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      padding-bottom: 110px;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Κινούμενα Φθινοπωρινά Φύλλα */
+    .leaves-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .leaf {
+      position: absolute;
+      top: -40px;
+      opacity: 0.22;
+      animation: fall linear infinite;
+      user-select: none;
+    }
+
+    [data-theme="dark"] .leaf {
+      opacity: 0.14;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-40px) rotate(0deg) translateX(0px);
+      }
+      50% {
+        transform: translateY(50vh) rotate(180deg) translateX(25px);
+      }
+      100% {
+        transform: translateY(105vh) rotate(360deg) translateX(-15px);
+      }
+    }
+
+    /* Κύριο Container (Mobile-First) */
+    .app-container {
+      max-width: 540px;
+      margin: 0 auto;
+      padding: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .title-area h1 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-main);
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: transform 0.15s ease, background-color 0.2s;
+    }
+
+    .icon-btn:active {
+      transform: scale(0.93);
+    }
+
+    /* Μπάρα Προόδου */
+    .progress-card {
+      background: var(--surface-color);
+      border-radius: 16px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-color);
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text-muted);
+    }
+
+    .progress-header span:last-child {
+      color: var(--secondary);
+      font-weight: 700;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      background: var(--surface-alt);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--secondary);
+      width: 0%;
+      border-radius: 99px;
+      transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Γρήγορη Προσθήκη */
+    .section-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .quick-add-scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 14px;
+      scrollbar-width: none;
+    }
+
+    .quick-add-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .quick-chip {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 8px 12px;
+      border-radius: 99px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      transition: all 0.15s ease;
+    }
+
+    .quick-chip:active {
+      transform: scale(0.94);
+      background: var(--secondary-light);
+      border-color: var(--secondary);
+    }
+
+    /* Φόρμα Προσθήκης Είδους */
+    .add-form {
+      background: var(--surface-color);
+      padding: 12px;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-color);
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    input, select {
+      font-family: inherit;
+      background: var(--surface-alt);
+      border: 1px solid transparent;
+      color: var(--text-main);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--primary);
+    }
+
+    .input-name {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .input-price {
+      width: 85px;
+      text-align: right;
+    }
+
+    .select-category {
+      flex: 1;
+    }
+
+    .btn-add {
+      background: var(--primary);
+      color: #FFFFFF;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      white-space: nowrap;
+    }
+
+    .btn-add:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-add:active {
+      transform: scale(0.96);
+    }
+
+    /* Αναζήτηση & Φίλτρα */
+    .controls-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      align-items: center;
+    }
+
+    .search-box {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-box span {
+      position: absolute;
+      left: 12px;
+      font-size: 0.95rem;
+      opacity: 0.6;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding-left: 34px;
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+    }
+
+    .toggle-hide-btn {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .toggle-hide-btn.active {
+      background: var(--secondary-light);
+      color: var(--secondary);
+      border-color: var(--secondary);
+    }
+
+    /* Λίστα & Κατηγορίες */
+    .category-group {
+      margin-bottom: 18px;
+    }
+
+    .category-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--secondary);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding-left: 4px;
+    }
+
+    .item-card {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+      transition: opacity 0.25s, transform 0.2s, background-color 0.2s;
+    }
+
+    .item-card.checked {
+      opacity: 0.58;
+      background: var(--surface-alt);
+    }
+
+    .item-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+      cursor: pointer;
+    }
+
+    .custom-checkbox {
+      width: 24px;
+      height: 24px;
+      border-radius: 8px;
+      border: 2px solid var(--secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s;
+      color: white;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    .item-card.checked .custom-checkbox {
+      background: var(--secondary);
+    }
+
+    .item-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      word-break: break-word;
+    }
+
+    .item-card.checked .item-name {
+      text-decoration: line-through;
+      color: var(--text-muted);
+    }
+
+    .item-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    /* Ποσότητα */
+    .qty-box {
+      display: flex;
+      align-items: center;
+      background: var(--surface-alt);
+      border-radius: 10px;
+      padding: 2px;
+    }
+
+    .qty-btn {
+      width: 26px;
+      height: 26px;
+      border: none;
+
+         
