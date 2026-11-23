@@ -1,0 +1,162 @@
+﻿
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Κέρασέ με έναν καφέ ☕</title>
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 25px 15px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FAF6F0;
+  color: #51483F;
+  font-family: Arial, sans-serif;
+}
+
+.card {
+  width: 100%;
+  max-width: 430px;
+  background: white;
+  padding: 30px 20px;
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: 0 6px 25px #00000012;
+}
+
+h1 { color: #C85A32; }
+
+.coffee {
+  font-size: 65px;
+  margin: 15px;
+}
+
+p { line-height: 1.7; }
+
+.counter {
+  background: #FAF6F0;
+  padding: 18px;
+  border-radius: 16px;
+  margin: 22px 0;
+}
+
+.count {
+  font-size: 36px;
+  color: #C85A32;
+  font-weight: bold;
+}
+
+.cups {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 25px 0;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  border-radius: 14px;
+}
+
+.cup {
+  background: #F5E9DD;
+  padding: 12px;
+  font-size: 34px;
+  transition: transform .2s;
+}
+
+.cup:active { transform: scale(1.15); }
+
+.cup:disabled {
+  opacity: .45;
+  cursor: default;
+}
+
+.back {
+  display: inline-block;
+  background: #6B705C;
+  color: white;
+  padding: 13px 22px;
+  text-decoration: none;
+  border-radius: 12px;
+  margin-top: 15px;
+}
+
+#message {
+  color: #6B705C;
+  min-height: 25px;
+}
+</style>
+</head>
+
+<body>
+<div class="card">
+
+<div class="coffee">☕</div>
+
+<h1>Κέρασέ με έναν καφέ!</h1>
+
+<p>
+Σου αρέσει η εφαρμογή;
+Άφησε ένα μικρό δωρεάν Like
+με ένα φλιτζανάκι καφέ! ❤️
+</p>
+
+<div class="counter">
+  <div class="count" id="count">0</div>
+  <div>φλιτζάνια αγάπης ☕</div>
+</div>
+
+<div class="cups">
+  <button class="cup" id="vote" aria-label="Ψήφισε με ένα φλιτζάνι">☕</button>
+</div>
+
+<p id="message">Πάτησε το φλιτζανάκι για να ψηφίσεις!</p>
+
+<a class="back" href="index.html">← Επιστροφή στην εφαρμογή</a>
+
+</div>
+
+<script>
+const KEY = "coffee-vote-v1";
+const COUNT_KEY = "coffee-count-v1";
+
+let voted = localStorage.getItem(KEY) === "yes";
+let count = Number(localStorage.getItem(COUNT_KEY)) || 0;
+
+const countElement = document.getElementById("count");
+const voteButton = document.getElementById("vote");
+const message = document.getElementById("message");
+
+function update() {
+  countElement.textContent = count;
+  voteButton.disabled = voted;
+
+  message.textContent = voted
+    ? "Σε ευχαριστώ πολύ για το Like σου! ❤️"
+    : "Πάτησε το φλιτζανάκι για να ψηφίσεις!";
+}
+
+voteButton.addEventListener("click", () => {
+  if (voted) return;
+
+  voted = true;
+  count++;
+  localStorage.setItem(KEY, "yes");
+  localStorage.setItem(COUNT_KEY, String(count));
+
+  update();
+});
+
+update();
+</script>
+</body>
+</html>

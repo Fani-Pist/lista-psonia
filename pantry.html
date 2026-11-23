@@ -1,0 +1,751 @@
+﻿
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#FAF6F0">
+<title>Το Ντουλάπι μου 🥫</title>
+
+<style>
+:root {
+  --cream: #FAF6F0;
+  --card: #FFFFFF;
+  --terracotta: #C85A32;
+  --sage: #6B705C;
+  --dark: #403A32;
+  --muted: #8B8176;
+  --border: #E9DFD3;
+  --red: #C34B42;
+  --yellow: #D99B36;
+  --green: #64866B;
+  --shadow: 0 5px 18px rgba(80,60,40,.07);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 20px 14px 40px;
+  background: var(--cream);
+  color: var(--dark);
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  width: 100%;
+  max-width: 850px;
+  margin: auto;
+}
+
+header {
+  text-align: center;
+  padding: 18px 10px 22px;
+}
+
+.logo {
+  font-size: 42px;
+  margin-bottom: 5px;
+}
+
+h1 {
+  color: var(--terracotta);
+  font-size: 29px;
+  margin: 5px 0;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.back {
+  display: inline-block;
+  color: var(--sage);
+  text-decoration: none;
+  font-weight: bold;
+  margin-bottom: 14px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+}
+
+h2 {
+  font-size: 18px;
+  margin: 0 0 15px;
+  color: var(--sage);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field.full { grid-column: 1 / -1; }
+
+label {
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--dark);
+}
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: #FFFEFC;
+  color: var(--dark);
+  font-size: 15px;
+  min-width: 0;
+}
+
+input:focus, select:focus {
+  outline: 2px solid #D9B39F;
+  border-color: var(--terracotta);
+}
+
+button {
+  border: none;
+  border-radius: 11px;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:active { transform: scale(.98); }
+
+.primary {
+  background: var(--terracotta);
+  color: white;
+}
+
+.secondary {
+  background: #EEEAE2;
+  color: var(--dark);
+}
+
+.add-button {
+  width: 100%;
+  margin-top: 15px;
+  padding: 14px;
+  font-size: 16px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.stat {
+  text-align: center;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  padding: 14px 6px;
+  box-shadow: var(--shadow);
+}
+
+.stat-number {
+  display: block;
+  font-size: 25px;
+  font-weight: bold;
+  color: var(--terracotta);
+}
+
+.stat-label {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.search { grid-column: 1 / -1; }
+
+.list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.list-header h2 { margin: 0; }
+
+.food-item {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 10px;
+  background: #FFFEFC;
+}
+
+.food-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.food-name {
+  font-size: 16px;
+  font-weight: bold;
+  overflow-wrap: anywhere;
+}
+
+.food-category {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.food-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin-top: 11px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.status {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 5px 9px;
+  font-size: 11px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.status.ok {
+  background: #E7F0E5;
+  color: #47714D;
+}
+
+.status.soon {
+  background: #FFF1D8;
+  color: #9B6715;
+}
+
+.status.expired {
+  background: #FBE6E3;
+  color: #A33E36;
+}
+
+.status.none {
+  background: #EEEAE2;
+  color: #777064;
+}
+
+.food-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 13px;
+}
+
+.food-actions button {
+  padding: 8px 12px;
+  font-size: 12px;
+}
+
+.edit-btn {
+  background: #E9EDE4;
+  color: var(--sage);
+}
+
+.delete-btn {
+  background: #F9E8E5;
+  color: var(--red);
+}
+
+.empty {
+  text-align: center;
+  color: var(--muted);
+  padding: 30px 10px;
+  line-height: 1.7;
+}
+
+.note {
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.6;
+  margin-top: 18px;
+}
+
+.hidden { display: none !important; }
+
+@media (max-width: 480px) {
+  body { padding: 12px 10px 30px; }
+  h1 { font-size: 25px; }
+  .card { padding: 14px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .field.full { grid-column: auto; }
+  .stats { gap: 6px; }
+  .stat { padding: 12px 3px; }
+  .stat-number { font-size: 22px; }
+  .stat-label { font-size: 11px; }
+  .filters { grid-template-columns: 1fr; }
+  .search { grid-column: auto; }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+  <div class="logo">🥫</div>
+  <h1>Το Ντουλάπι μου</h1>
+  <div class="subtitle">Οργάνωσε τα τρόφιμα του σπιτιού σου εύκολα!</div>
+</header>
+
+<a class="back" href="index.html">← Επιστροφή στη λίστα σούπερ μάρκετ</a>
+
+<div class="stats">
+  <div class="stat">
+    <span class="stat-number" id="totalCount">0</span>
+    <span class="stat-label">Τρόφιμα</span>
+  </div>
+  <div class="stat">
+    <span class="stat-number" id="soonCount">0</span>
+    <span class="stat-label">Λήγουν σύντομα</span>
+  </div>
+  <div class="stat">
+    <span class="stat-number" id="lowCount">0</span>
+    <span class="stat-label">Λίγα αποθέματα</span>
+  </div>
+</div>
+
+<section class="card">
+  <h2 id="formTitle">➕ Προσθήκη τροφίμου</h2>
+
+  <form id="foodForm">
+    <input type="hidden" id="editId">
+
+    <div class="form-grid">
+
+      <div class="field full">
+        <label for="foodName">Όνομα τροφίμου *</label>
+        <input id="foodName" type="text" placeholder="π.χ. Μακαρόνια" required maxlength="80">
+      </div>
+
+      <div class="field">
+        <label for="category">Κατηγορία</label>
+        <select id="category">
+          <option>Ζυμαρικά</option>
+          <option>Όσπρια</option>
+          <option>Ρύζι & Δημητριακά</option>
+          <option>Κονσέρβες</option>
+          <option>Γαλακτοκομικά</option>
+          <option>Κρέας & Ψάρια</option>
+          <option>Φρούτα & Λαχανικά</option>
+          <option>Κατεψυγμένα</option>
+          <option>Σνακ & Γλυκά</option>
+          <option>Ποτά</option>
+          <option>Μπαχαρικά & Υλικά</option>
+          <option>Άλλο</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="quantity">Ποσότητα</label>
+        <input id="quantity" type="number" min="0" step="any" placeholder="π.χ. 2">
+      </div>
+
+      <div class="field">
+        <label for="unit">Μονάδα μέτρησης</label>
+        <select id="unit">
+          <option>τεμάχια</option>
+          <option>κιλά</option>
+          <option>γραμμάρια</option>
+          <option>λίτρα</option>
+          <option>ml</option>
+          <option>συσκευασίες</option>
+          <option>σακούλες</option>
+          <option>κουτιά</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="expiry">Ημερομηνία λήξης</label>
+        <input id="expiry" type="date">
+      </div>
+
+      <div class="field full">
+        <label for="notes">Σημειώσεις (προαιρετικά)</label>
+        <input id="notes" type="text" placeholder="π.χ. Στο πάνω ράφι">
+      </div>
+
+    </div>
+
+    <button class="primary add-button" type="submit" id="saveButton">
+      ＋ Αποθήκευση τροφίμου
+    </button>
+
+    <button class="secondary add-button hidden" type="button" id="cancelEdit">
+      Ακύρωση επεξεργασίας
+    </button>
+  </form>
+</section>
+
+<section class="card">
+  <div class="list-header">
+    <h2>🧺 Τα τρόφιμά μου</h2>
+  </div>
+
+  <div class="filters">
+    <input class="search" id="search" type="search" placeholder="🔍 Αναζήτηση τροφίμου...">
+
+    <select id="filterCategory">
+      <option value="">Όλες οι κατηγορίες</option>
+      <option>Ζυμαρικά</option>
+      <option>Όσπρια</option>
+      <option>Ρύζι & Δημητριακά</option>
+      <option>Κονσέρβες</option>
+      <option>Γαλακτοκομικά</option>
+      <option>Κρέας & Ψάρια</option>
+      <option>Φρούτα & Λαχανικά</option>
+      <option>Κατεψυγμένα</option>
+      <option>Σνακ & Γλυκά</option>
+      <option>Ποτά</option>
+      <option>Μπαχαρικά & Υλικά</option>
+      <option>Άλλο</option>
+    </select>
+
+    <select id="filterStatus">
+      <option value="">Όλες οι ημερομηνίες</option>
+      <option value="soon">Λήγουν σύντομα</option>
+      <option value="expired">Έχουν λήξει</option>
+      <option value="ok">Σε ισχύ</option>
+      <option value="none">Χωρίς ημερομηνία</option>
+      <option value="low">Λίγα αποθέματα</option>
+    </select>
+  </div>
+
+  <div id="foodList"></div>
+</section>
+
+<div class="note">
+  🍂 Τα τρόφιμά σου αποθηκεύονται αυτόματα σε αυτή τη συσκευή και στον συγκεκριμένο browser.
+  <br>Οι ειδοποιήσεις λήξης εμφανίζονται όταν ανοίγεις τη σελίδα.
+</div>
+
+</div>
+
+<script>
+const STORAGE_KEY = "pantry-foods-v1";
+
+let foods = [];
+
+try {
+  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  foods = Array.isArray(saved) ? saved : [];
+} catch (error) {
+  foods = [];
+}
+
+const form = document.getElementById("foodForm");
+const foodName = document.getElementById("foodName");
+const category = document.getElementById("category");
+const quantity = document.getElementById("quantity");
+const unit = document.getElementById("unit");
+const expiry = document.getElementById("expiry");
+const notes = document.getElementById("notes");
+const editId = document.getElementById("editId");
+const foodList = document.getElementById("foodList");
+
+function saveFoods() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(foods));
+}
+
+function makeId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2);
+}
+
+function todayDate() {
+  const d = new Date();
+  d.setHours(0,0,0,0);
+  return d;
+}
+
+function dateFromString(value) {
+  if (!value) return null;
+  const parts = value.split("-").map(Number);
+  if (parts.length !== 3 || parts.some(Number.isNaN)) return null;
+  const date = new Date(parts[0], parts[1] - 1, parts[2]);
+  date.setHours(0,0,0,0);
+  return date;
+}
+
+function daysUntil(value) {
+  const date = dateFromString(value);
+  if (!date) return null;
+  return Math.round((date - todayDate()) / 86400000);
+}
+
+function getStatus(food) {
+  if (!food.expiry) return "none";
+
+  const days = daysUntil(food.expiry);
+
+  if (days < 0) return "expired";
+  if (days <= 7) return "soon";
+  return "ok";
+}
+
+function statusInfo(food) {
+  const status = getStatus(food);
+
+  if (status === "expired") {
+    return { text: "Έχει λήξει", className: "expired" };
+  }
+
+  if (status === "soon") {
+    const days = daysUntil(food.expiry);
+    if (days === 0) return { text: "Λήγει σήμερα", className: "soon" };
+    if (days === 1) return { text: "Λήγει αύριο", className: "soon" };
+    return { text: "Λήγει σε " + days + " ημέρες", className: "soon" };
+  }
+
+  if (status === "ok") {
+    return { text: "Σε ισχύ", className: "ok" };
+  }
+
+  return { text: "Χωρίς ημερομηνία", className: "none" };
+}
+
+function formatDate(value) {
+  if (!value) return "Δεν ορίστηκε";
+  const date = dateFromString(value);
+  if (!date) return "Δεν ορίστηκε";
+  return date.toLocaleDateString("el-GR");
+}
+
+function isLow(food) {
+  return food.quantity !== "" &&
+    food.quantity !== null &&
+    food.quantity !== undefined &&
+    Number(food.quantity) <= 1;
+}
+
+function updateStats() {
+  document.getElementById("totalCount").textContent = foods.length;
+
+  document.getElementById("soonCount").textContent =
+    foods.filter(food => getStatus(food) === "soon").length;
+
+  document.getElementById("lowCount").textContent =
+    foods.filter(isLow).length;
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[char]);
+}
+
+function renderFoods() {
+  updateStats();
+
+  const searchValue = document.getElementById("search").value
+    .trim().toLocaleLowerCase("el");
+
+  const categoryValue = document.getElementById("filterCategory").value;
+  const statusValue = document.getElementById("filterStatus").value;
+
+  let filtered = foods.filter(food => {
+    const matchesSearch =
+      (food.name || "").toLocaleLowerCase("el").includes(searchValue) ||
+      (food.notes || "").toLocaleLowerCase("el").includes(searchValue);
+
+    const matchesCategory =
+      !categoryValue || food.category === categoryValue;
+
+    let matchesStatus = true;
+
+    if (statusValue === "low") {
+      matchesStatus = isLow(food);
+    } else if (statusValue) {
+      matchesStatus = getStatus(food) === statusValue;
+    }
+
+    return matchesSearch && matchesCategory && matchesStatus;
+  });
+
+  filtered.sort((a, b) => {
+    if (!a.expiry && !b.expiry) return (a.name || "").localeCompare(b.name || "", "el");
+    if (!a.expiry) return 1;
+    if (!b.expiry) return -1;
+    return a.expiry.localeCompare(b.expiry);
+  });
+
+  if (filtered.length === 0) {
+    foodList.innerHTML = `
+      <div class="empty">
+        🥫 Δεν βρέθηκαν τρόφιμα.<br>
+        Πρόσθεσε το πρώτο σου τρόφιμο από την παραπάνω φόρμα!
+      </div>`;
+    return;
+  }
+
+  foodList.innerHTML = filtered.map(food => {
+    const status = statusInfo(food);
+
+    const qtyText = food.quantity !== "" && food.quantity !== null &&
+      food.quantity !== undefined
+      ? escapeHTML(food.quantity) + " " + escapeHTML(food.unit || "")
+      : "Δεν ορίστηκε";
+
+    return `
+      <div class="food-item">
+        <div class="food-top">
+          <div>
+            <div class="food-name">🥫 ${escapeHTML(food.name)}</div>
+            <div class="food-category">${escapeHTML(food.category || "Άλλο")}</div>
+          </div>
+          <span class="status ${status.className}">${status.text}</span>
+        </div>
+
+        <div class="food-details">
+          <span>📦 Ποσότητα: ${qtyText}</span>
+          <span>📅 Λήξη: ${formatDate(food.expiry)}</span>
+        </div>
+
+        ${food.notes ? `<div class="food-details">📝 ${escapeHTML(food.notes)}</div>` : ""}
+
+        <div class="food-actions">
+          <button class="edit-btn" type="button" data-action="edit" data-id="${escapeHTML(food.id)}">✏️ Επεξεργασία</button>
+          <button class="delete-btn" type="button" data-action="delete" data-id="${escapeHTML(food.id)}">🗑️ Διαγραφή</button>
+        </div>
+      </div>`;
+  }).join("");
+}
+
+form.addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const name = foodName.value.trim();
+
+  if (!name) {
+    alert("Συμπλήρωσε το όνομα του τροφίμου.");
+    return;
+  }
+
+  const qty = quantity.value.trim();
+
+  if (qty !== "" && (!Number.isFinite(Number(qty)) || Number(qty) < 0)) {
+    alert("Βάλε μια έγκυρη ποσότητα.");
+    return;
+  }
+
+  const item = {
+    id: editId.value || makeId(),
+    name: name,
+    category: category.value,
+    quantity: qty,
+    unit: unit.value,
+    expiry: expiry.value,
+    notes: notes.value.trim()
+  };
+
+  if (editId.value) {
+    const index = foods.findIndex(food => food.id === editId.value);
+    if (index !== -1) foods[index] = item;
+  } else {
+    foods.push(item);
+  }
+
+  saveFoods();
+  resetForm();
+  renderFoods();
+});
+
+function resetForm() {
+  form.reset();
+  editId.value = "";
+  document.getElementById("formTitle").textContent = "➕ Προσθήκη τροφίμου";
+  document.getElementById("saveButton").textContent = "＋ Αποθήκευση τροφίμου";
+  document.getElementById("cancelEdit").classList.add("hidden");
+}
+
+function editFood(id) {
+  const food = foods.find(item => item.id === id);
+  if (!food) return;
+
+  editId.value = food.id;
+  foodName.value = food.name || "";
+  category.value = food.category || "Άλλο";
+  quantity.value = food.quantity ?? "";
+  unit.value = food.unit || "τεμάχια";
+  expiry.value = food.expiry || "";
+  notes.value = food.notes || "";
+
+  document.getElementById("formTitle").textContent = "✏️ Επεξεργασία τροφίμου";
+  document.getElementById("saveButton").textContent = "Αποθήκευση αλλαγών";
+  document.getElementById("cancelEdit").classList.remove("hidden");
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function deleteFood(id) {
+  const food = foods.find(item => item.id === id);
+  if (!food) return;
+
+  if (!confirm("Να διαγραφεί το τρόφιμο «" + food.name + "»;")) return;
+
+  foods = foods.filter(item => item.id !== id);
+  saveFoods();
+
+  if (editId.value === id) resetForm();
+
+  renderFoods();
+}
+
+foodList.addEventListener("click", function(event) {
+  const button = event.target.closest("button[data-action]");
+  if (!button) return;
+
+  const id = button.dataset.id;
+
+  if (button.dataset.action === "edit") editFood(id);
+  if (button.dataset.action === "delete") deleteFood(id);
+});
+
+document.getElementById("cancelEdit").addEventListener("click", resetForm);
+
+document.getElementById("search").addEventListener("input", renderFoods);
+document.getElementById("filterCategory").addEventListener("change", renderFoods);
+document.getElementById("filterStatus").addEventListener("change", renderFoods);
+
+renderFoods();
+</script>
+</body>
+</html>

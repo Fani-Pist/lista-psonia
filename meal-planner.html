@@ -1,0 +1,414 @@
+﻿
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#FAF6F0">
+<title>Εβδομαδιαίο Μενού | Λίστα Σούπερ Μάρκετ</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 20px 14px 40px;
+  background: #FAF6F0;
+  color: #51483F;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 850px;
+  margin: auto;
+}
+
+header {
+  text-align: center;
+  padding: 20px 10px;
+}
+
+.logo { font-size: 48px; }
+
+h1 {
+  color: #C85A32;
+  margin: 8px 0;
+}
+
+.subtitle {
+  color: #81776C;
+  line-height: 1.6;
+}
+
+.week-info {
+  background: white;
+  padding: 17px;
+  border-radius: 16px;
+  margin: 15px 0;
+  box-shadow: 0 4px 15px #0000000D;
+}
+
+.week-info label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #6B705C;
+}
+
+input[type="date"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #E7D8C8;
+  border-radius: 10px;
+  font-size: 15px;
+  background: #FAF6F0;
+  color: #51483F;
+}
+
+.day {
+  background: white;
+  padding: 17px;
+  margin: 15px 0;
+  border-radius: 18px;
+  box-shadow: 0 4px 15px #0000000D;
+}
+
+.day h2 {
+  color: #C85A32;
+  margin: 0 0 14px;
+  font-size: 19px;
+}
+
+.meal {
+  margin: 13px 0;
+}
+
+.meal label {
+  display: block;
+  color: #6B705C;
+  font-weight: bold;
+  margin-bottom: 7px;
+}
+
+.meal input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #E7D8C8;
+  border-radius: 11px;
+  background: #FAF6F0;
+  color: #51483F;
+  font-size: 15px;
+  outline-color: #C85A32;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 22px 0;
+}
+
+.actions button {
+  border: none;
+  border-radius: 12px;
+  padding: 14px 10px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.save {
+  background: #C85A32;
+  color: white;
+}
+
+.copy {
+  background: #6B705C;
+  color: white;
+}
+
+.print {
+  background: #E9E4D9;
+  color: #51483F;
+}
+
+.clear {
+  background: #F2DFD8;
+  color: #A0442A;
+}
+
+#message {
+  text-align: center;
+  color: #6B705C;
+  min-height: 24px;
+}
+
+.tips {
+  background: #E9E4D9;
+  padding: 17px;
+  border-radius: 15px;
+  line-height: 1.7;
+  margin-top: 22px;
+}
+
+.back {
+  display: block;
+  width: fit-content;
+  margin: 25px auto;
+  background: #6B705C;
+  color: white;
+  padding: 13px 22px;
+  border-radius: 12px;
+  text-decoration: none;
+}
+
+@media(min-width:650px) {
+  .day {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 15px;
+    align-items: start;
+  }
+
+  .day h2 { padding-top: 12px; }
+}
+
+@media print {
+  body {
+    background: white;
+    padding: 0;
+  }
+
+  .container { max-width: 100%; }
+
+  .actions, .back, .week-info,
+  .tips, #message {
+    display: none !important;
+  }
+
+  .day {
+    box-shadow: none;
+    border: 1px solid #ddd;
+    break-inside: avoid;
+  }
+
+  .meal input {
+    border: none;
+    background: white;
+    padding-left: 0;
+  }
+
+  h1 { color: #333; }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+  <div class="logo">🍽️</div>
+  <h1>Το Εβδομαδιαίο μου Μενού</h1>
+  <p class="subtitle">
+    Οργάνωσε τα γεύματά σου για όλη την εβδομάδα!
+  </p>
+</header>
+
+<div class="week-info">
+  <label for="weekDate">📅 Εβδομάδα που ξεκινά:</label>
+  <input type="date" id="weekDate">
+</div>
+
+<div id="days"></div>
+
+<div class="actions">
+  <button class="save" onclick="saveMenu()">💾 Αποθήκευση</button>
+  <button class="copy" onclick="copyMenu()">📋 Αντιγραφή μενού</button>
+  <button class="print" onclick="window.print()">🖨️ Εκτύπωση</button>
+  <button class="clear" onclick="clearMenu()">🗑️ Καθαρισμός</button>
+</div>
+
+<p id="message"></p>
+
+<div class="tips">
+  <strong>💡 Μικρή συμβουλή</strong><br>
+  Οργάνωσε από πριν τα γεύματά σου,
+  έλεγξε τι υλικά έχεις στο σπίτι και
+  ετοίμασε τη λίστα αγορών σου!
+</div>
+
+<a class="back" href="index.html">
+  ← Επιστροφή στη λίστα αγορών
+</a>
+
+</div>
+
+<script>
+const days = [
+  "Δευτέρα",
+  "Τρίτη",
+  "Τετάρτη",
+  "Πέμπτη",
+  "Παρασκευή",
+  "Σάββατο",
+  "Κυριακή"
+];
+
+const meals = [
+  { key: "breakfast", label: "🌞 Πρωινό" },
+  { key: "lunch", label: "🍲 Μεσημεριανό" },
+  { key: "dinner", label: "🌙 Βραδινό" }
+];
+
+const STORAGE_KEY = "weekly-meal-planner-v1";
+
+const daysContainer = document.getElementById("days");
+const weekDate = document.getElementById("weekDate");
+const message = document.getElementById("message");
+
+function createDays() {
+  daysContainer.innerHTML = days.map((day, index) => `
+    <section class="day">
+      <h2>📅 ${day}</h2>
+      <div>
+        ${meals.map(meal => `
+          <div class="meal">
+            <label for="${meal.key}-${index}">
+              ${meal.label}
+            </label>
+            <input
+              id="${meal.key}-${index}"
+              type="text"
+              placeholder="Γράψε το γεύμα σου..."
+            >
+          </div>
+        `).join("")}
+      </div>
+    </section>
+  `).join("");
+}
+
+function getMenu() {
+  const data = {
+    week: weekDate.value,
+    days: []
+  };
+
+  days.forEach((day, index) => {
+    const item = { name: day };
+
+    meals.forEach(meal => {
+      item[meal.key] =
+        document.getElementById(`${meal.key}-${index}`).value;
+    });
+
+    data.days.push(item);
+  });
+
+  return data;
+}
+
+function loadMenu() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+
+  if (!saved) return;
+
+  try {
+    const data = JSON.parse(saved);
+
+    weekDate.value = data.week || "";
+
+    data.days.forEach((day, index) => {
+      if (index >= days.length) return;
+
+      meals.forEach(meal => {
+        const input = document.getElementById(
+          `${meal.key}-${index}`
+        );
+
+        input.value = day[meal.key] || "";
+      });
+    });
+  } catch (error) {
+    message.textContent = "Δεν ήταν δυνατή η ανάγνωση της αποθήκευσης.";
+  }
+}
+
+function saveMenu() {
+  const data = getMenu();
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+
+  message.textContent = "❤️ Το εβδομαδιαίο σου μενού αποθηκεύτηκε!";
+}
+
+function copyMenu() {
+  const data = getMenu();
+
+  let text = "🍽️ ΤΟ ΕΒΔΟΜΑΔΙΑΙΟ ΜΟΥ ΜΕΝΟΥ\n\n";
+
+  if (data.week) {
+    text += "Εβδομάδα από: " + data.week + "\n\n";
+  }
+
+  data.days.forEach(day => {
+    text += day.name + "\n";
+
+    meals.forEach(meal => {
+      text += meal.label + ": " +
+        (day[meal.key] || "Δεν έχει συμπληρωθεί") + "\n";
+    });
+
+    text += "\n";
+  });
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text)
+      .then(() => {
+        message.textContent = "📋 Το μενού αντιγράφηκε!";
+      })
+      .catch(() => fallbackCopy(text));
+  } else {
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text) {
+  const area = document.createElement("textarea");
+  area.value = text;
+  document.body.appendChild(area);
+  area.select();
+
+  try {
+    document.execCommand("copy");
+    message.textContent = "📋 Το μενού αντιγράφηκε!";
+  } catch (error) {
+    message.textContent = "Δεν έγινε αντιγραφή. Δοκίμασε ξανά.";
+  }
+
+  area.remove();
+}
+
+function clearMenu() {
+  if (!confirm("Θέλεις να διαγράψεις όλο το εβδομαδιαίο μενού;")) {
+    return;
+  }
+
+  meals.forEach(meal => {
+    days.forEach((day, index) => {
+      document.getElementById(
+        `${meal.key}-${index}`
+      ).value = "";
+    });
+  });
+
+  localStorage.removeItem(STORAGE_KEY);
+  message.textContent = "Το μενού καθαρίστηκε.";
+}
+
+createDays();
+loadMenu();
+</script>
+
+</body>
+</html>

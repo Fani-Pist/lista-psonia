@@ -1,0 +1,584 @@
+﻿
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#FAF6F0">
+<title>Συνταγές | Λίστα Σούπερ Μάρκετ</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 20px 14px 40px;
+  background: #FAF6F0;
+  color: #51483F;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 850px;
+  margin: auto;
+}
+
+header {
+  text-align: center;
+  padding: 22px 10px;
+}
+
+.logo { font-size: 48px; }
+
+h1 {
+  color: #C85A32;
+  margin: 8px 0;
+}
+
+.subtitle { color: #81776C; }
+
+.search {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #E7D8C8;
+  border-radius: 14px;
+  background: white;
+  font-size: 16px;
+  margin: 15px 0;
+  outline-color: #C85A32;
+}
+
+.categories {
+  display: flex;
+  gap: 9px;
+  overflow-x: auto;
+  padding: 8px 0 16px;
+}
+
+.categories button {
+  white-space: nowrap;
+  border: none;
+  padding: 11px 15px;
+  border-radius: 20px;
+  background: #E9E4D9;
+  color: #51483F;
+  cursor: pointer;
+}
+
+.categories button.active {
+  background: #C85A32;
+  color: white;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 17px;
+}
+
+.recipe {
+  background: white;
+  border-radius: 19px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px #0000000D;
+}
+
+.recipe-top {
+  min-height: 125px;
+  background: #EDE5D8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 65px;
+}
+
+.recipe-content { padding: 17px; }
+
+.recipe h3 {
+  color: #6B705C;
+  margin: 0 0 9px;
+  font-size: 19px;
+}
+
+.info {
+  font-size: 13px;
+  color: #92877A;
+  margin-bottom: 12px;
+}
+
+.recipe p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.details, .add {
+  border: none;
+  border-radius: 11px;
+  padding: 11px;
+  font-weight: bold;
+}
+
+.details {
+  background: #E9E4D9;
+  color: #51483F;
+  flex: 1;
+}
+
+.add {
+  background: #C85A32;
+  color: white;
+  flex: 1;
+}
+
+.favorite {
+  background: #FAF6F0;
+  border: none;
+  border-radius: 10px;
+  font-size: 22px;
+  padding: 5px 10px;
+}
+
+.panel {
+  background: white;
+  border-radius: 19px;
+  padding: 20px;
+  margin-top: 25px;
+  box-shadow: 0 4px 15px #0000000D;
+}
+
+.panel h2 { color: #C85A32; }
+
+#ingredients {
+  width: 100%;
+  min-height: 140px;
+  border: 1px solid #E7D8C8;
+  border-radius: 12px;
+  padding: 13px;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.7;
+  resize: vertical;
+}
+
+.copy {
+  width: 100%;
+  margin-top: 12px;
+  padding: 14px;
+  background: #6B705C;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.back {
+  display: block;
+  width: fit-content;
+  margin: 25px auto;
+  background: #6B705C;
+  color: white;
+  padding: 13px 22px;
+  text-decoration: none;
+  border-radius: 12px;
+}
+
+.empty {
+  text-align: center;
+  padding: 25px;
+  color: #81776C;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #0008;
+  padding: 18px;
+  z-index: 10;
+  overflow-y: auto;
+}
+
+.modal-box {
+  background: #fff;
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 23px;
+  border-radius: 20px;
+}
+
+.modal-box h2 { color: #C85A32; }
+
+.modal-box li {
+  margin: 9px 0;
+  line-height: 1.5;
+}
+
+.close {
+  background: #6B705C;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+}
+
+@media(max-width:450px) {
+  .grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+  <div class="logo">🍲</div>
+  <h1>Οι Συνταγές μας</h1>
+  <div class="subtitle">
+    Νόστιμες ιδέες για κάθε μέρα!
+  </div>
+</header>
+
+<input
+  class="search"
+  id="search"
+  placeholder="🔎 Αναζήτησε συνταγή..."
+  type="search"
+>
+
+<div class="categories" id="categories">
+  <button class="active" data-category="Όλα">Όλα</button>
+  <button data-category="Κοτόπουλο">🍗 Κοτόπουλο</button>
+  <button data-category="Κρέας">🥩 Κρέας</button>
+  <button data-category="Ζυμαρικά">🍝 Ζυμαρικά</button>
+  <button data-category="Λαχανικά">🥗 Λαχανικά</button>
+  <button data-category="Γλυκά">🍰 Γλυκά</button>
+  <button data-category="Αγαπημένα">❤️ Αγαπημένα</button>
+</div>
+
+<div class="grid" id="recipes"></div>
+
+<section class="panel">
+  <h2>🛒 Τα υλικά που επέλεξες</h2>
+  <p>
+    Συγκέντρωσε τα υλικά από τις συνταγές
+    που θέλεις να μαγειρέψεις.
+  </p>
+
+  <textarea id="ingredients"
+    placeholder="Τα υλικά σου θα εμφανιστούν εδώ..."
+  ></textarea>
+
+  <button class="copy" onclick="copyIngredients()">
+    📋 Αντιγραφή υλικών
+  </button>
+
+  <p id="message" style="text-align:center"></p>
+</section>
+
+<a class="back" href="index.html">
+  ← Επιστροφή στη λίστα αγορών
+</a>
+
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div id="modalContent"></div>
+    <button class="close" onclick="closeModal()">
+      Κλείσιμο
+    </button>
+  </div>
+</div>
+
+<script>
+const recipes = [
+{
+ id:1,
+ name:"Κοτόπουλο με πατάτες",
+ category:"Κοτόπουλο",
+ emoji:"🍗",
+ time:"60 λεπτά",
+ description:"Κλασικό σπιτικό φαγητό στον φούρνο.",
+ ingredients:[
+  "1 κιλό κοτόπουλο",
+  "1 κιλό πατάτες",
+  "2 λεμόνια",
+  "Ελαιόλαδο",
+  "Ρίγανη",
+  "Αλάτι και πιπέρι"
+ ],
+ steps:[
+  "Καθάρισε και κόψε τις πατάτες.",
+  "Βάλε το κοτόπουλο και τις πατάτες στο ταψί.",
+  "Πρόσθεσε λεμόνι, λάδι και μυρωδικά.",
+  "Ψήσε στους 190°C μέχρι να ψηθούν καλά."
+ ]
+},
+{
+ id:2,
+ name:"Μακαρόνια με κιμά",
+ category:"Ζυμαρικά",
+ emoji:"🍝",
+ time:"40 λεπτά",
+ description:"Αγαπημένο οικογενειακό πιάτο.",
+ ingredients:[
+  "500 γρ. μακαρόνια",
+  "500 γρ. κιμάς",
+  "1 κρεμμύδι",
+  "1 συσκευασία ντομάτα",
+  "Ελαιόλαδο",
+  "Αλάτι και πιπέρι"
+ ],
+ steps:[
+  "Σόταρε το κρεμμύδι με λίγο λάδι.",
+  "Πρόσθεσε τον κιμά και ανακάτεψε.",
+  "Βάλε την ντομάτα και άφησε τη σάλτσα να μαγειρευτεί.",
+  "Βράσε τα μακαρόνια και σέρβιρε."
+ ]
+},
+{
+ id:3,
+ name:"Μπιφτέκια με πατάτες",
+ category:"Κρέας",
+ emoji:"🍔",
+ time:"50 λεπτά",
+ description:"Ζουμερά μπιφτέκια στον φούρνο.",
+ ingredients:[
+  "500 γρ. κιμάς",
+  "1 κιλό πατάτες",
+  "1 κρεμμύδι",
+  "1 αυγό",
+  "Τριμμένη φρυγανιά",
+  "Ρίγανη",
+  "Λεμόνι"
+ ],
+ steps:[
+  "Ανακάτεψε τον κιμά με το κρεμμύδι, το αυγό και τη φρυγανιά.",
+  "Πλάσε τα μπιφτέκια.",
+  "Κόψε τις πατάτες και βάλε τα όλα σε ταψί.",
+  "Ψήσε στους 190°C μέχρι να ψηθούν καλά."
+ ]
+},
+{
+ id:4,
+ name:"Ομελέτα λαχανικών",
+ category:"Λαχανικά",
+ emoji:"🍳",
+ time:"20 λεπτά",
+ description:"Εύκολο και γρήγορο γεύμα.",
+ ingredients:[
+  "4 αυγά",
+  "1 πιπεριά",
+  "1 ντομάτα",
+  "100 γρ. τυρί",
+  "Ελαιόλαδο",
+  "Αλάτι και πιπέρι"
+ ],
+ steps:[
+  "Κόψε τα λαχανικά.",
+  "Χτύπησε τα αυγά.",
+  "Σόταρε τα λαχανικά σε αντικολλητικό τηγάνι.",
+  "Πρόσθεσε τα αυγά και το τυρί και μαγείρεψε μέχρι να σταθεροποιηθούν."
+ ]
+},
+{
+ id:5,
+ name:"Σπιτικό κέικ",
+ category:"Γλυκά",
+ emoji:"🍰",
+ time:"55 λεπτά",
+ description:"Αφράτο κέικ για τον καφέ.",
+ ingredients:[
+  "3 αυγά",
+  "200 γρ. ζάχαρη",
+  "200 γρ. γιαούρτι",
+  "200 ml ελαιόλαδο ή σπορέλαιο",
+  "300 γρ. αλεύρι",
+  "1 φακελάκι μπέικιν πάουντερ",
+  "Βανίλια"
+ ],
+ steps:[
+  "Χτύπησε τα αυγά με τη ζάχαρη.",
+  "Πρόσθεσε το γιαούρτι και το λάδι.",
+  "Ρίξε το αλεύρι και το μπέικιν πάουντερ.",
+  "Ψήσε στους 180°C περίπου 40 λεπτά, ελέγχοντας με οδοντογλυφίδα."
+ ]
+},
+{
+ id:6,
+ name:"Πατάτες φούρνου",
+ category:"Λαχανικά",
+ emoji:"🥔",
+ time:"50 λεπτά",
+ description:"Απλό συνοδευτικό για κάθε τραπέζι.",
+ ingredients:[
+  "1 κιλό πατάτες",
+  "2 λεμόνια",
+  "Ελαιόλαδο",
+  "Ρίγανη",
+  "Αλάτι",
+  "Πιπέρι"
+ ],
+ steps:[
+  "Κόψε τις πατάτες σε κομμάτια.",
+  "Βάλε τις σε ταψί με λάδι και λεμόνι.",
+  "Πρόσθεσε τα μυρωδικά.",
+  "Ψήσε στους 190°C μέχρι να μαλακώσουν και να ροδίσουν."
+ ]
+}
+];
+
+const favoritesKey = "recipes-favorites-v1";
+let favorites = JSON.parse(localStorage.getItem(favoritesKey) || "[]");
+let selectedCategory = "Όλα";
+let selectedIngredients = [];
+
+function render() {
+ const term = document.getElementById("search").value
+   .toLowerCase().trim();
+
+ const filtered = recipes.filter(r => {
+  const matchesSearch =
+   r.name.toLowerCase().includes(term) ||
+   r.ingredients.join(" ").toLowerCase().includes(term);
+
+  const matchesCategory =
+   selectedCategory === "Όλα" ||
+   r.category === selectedCategory ||
+   (selectedCategory === "Αγαπημένα" && favorites.includes(r.id));
+
+  return matchesSearch && matchesCategory;
+ });
+
+ const container = document.getElementById("recipes");
+
+ if (!filtered.length) {
+  container.innerHTML =
+   '<div class="empty">Δεν βρέθηκαν συνταγές. 🍲</div>';
+  return;
+ }
+
+ container.innerHTML = filtered.map(r => `
+  <article class="recipe">
+   <div class="recipe-top">${r.emoji}</div>
+   <div class="recipe-content">
+    <div style="display:flex;justify-content:space-between;gap:8px">
+     <h3>${r.name}</h3>
+     <button class="favorite"
+       onclick="toggleFavorite(${r.id})">
+       ${favorites.includes(r.id) ? "❤️" : "🤍"}
+     </button>
+    </div>
+    <div class="info">⏱ ${r.time} · ${r.category}</div>
+    <p>${r.description}</p>
+    <div class="actions">
+     <button class="details"
+       onclick="showDetails(${r.id})">Συνταγή</button>
+     <button class="add"
+       onclick="addIngredients(${r.id})">+ Υλικά</button>
+    </div>
+   </div>
+  </article>
+ `).join("");
+}
+
+function toggleFavorite(id) {
+ if (favorites.includes(id)) {
+  favorites = favorites.filter(x => x !== id);
+ } else {
+  favorites.push(id);
+ }
+ localStorage.setItem(favoritesKey, JSON.stringify(favorites));
+ render();
+}
+
+function showDetails(id) {
+ const r = recipes.find(x => x.id === id);
+
+ document.getElementById("modalContent").innerHTML = `
+  <h2>${r.emoji} ${r.name}</h2>
+  <p>⏱ Χρόνος: ${r.time}</p>
+  <h3>Υλικά</h3>
+  <ul>${r.ingredients.map(x => `<li>${x}</li>`).join("")}</ul>
+  <h3>Εκτέλεση</h3>
+  <ol>${r.steps.map(x => `<li>${x}</li>`).join("")}</ol>
+ `;
+
+ document.getElementById("modal").style.display = "block";
+}
+
+function closeModal() {
+ document.getElementById("modal").style.display = "none";
+}
+
+function addIngredients(id) {
+ const r = recipes.find(x => x.id === id);
+
+ r.ingredients.forEach(item => {
+  if (!selectedIngredients.includes(item)) {
+   selectedIngredients.push(item);
+  }
+ });
+
+ document.getElementById("ingredients").value =
+  selectedIngredients.map(x => "□ " + x).join("\n");
+
+ document.getElementById("message").textContent =
+  "Τα υλικά προστέθηκαν στη συγκεντρωτική λίστα! ❤️";
+}
+
+function copyIngredients() {
+ const area = document.getElementById("ingredients");
+
+ if (!area.value.trim()) {
+  document.getElementById("message").textContent =
+   "Επίλεξε πρώτα μια συνταγή.";
+  return;
+ }
+
+ area.select();
+ area.setSelectionRange(0, area.value.length);
+
+ try {
+  const success = document.execCommand("copy");
+  document.getElementById("message").textContent =
+   success
+    ? "Τα υλικά αντιγράφηκαν! Μπορείς να τα επικολλήσεις στη λίστα αγορών σου. ❤️"
+    : "Επίλεξε και αντέγραψε τα υλικά χειροκίνητα.";
+ } catch (e) {
+  document.getElementById("message").textContent =
+   "Επίλεξε και αντέγραψε τα υλικά χειροκίνητα.";
+ }
+}
+
+document.getElementById("search").addEventListener("input", render);
+
+document.getElementById("categories").addEventListener("click", e => {
+ const btn = e.target.closest("button[data-category]");
+ if (!btn) return;
+
+ selectedCategory = btn.dataset.category;
+
+ document.querySelectorAll(".categories button").forEach(b => {
+  b.classList.toggle("active", b === btn);
+ });
+
+ render();
+});
+
+render();
+</script>
+</body>
+</html>
