@@ -1,0 +1,397 @@
+﻿
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FAF6F0">
+<title>Λίστα Σούπερ Μάρκετ</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23FAF6F0'/%3E%3Cpath d='M18 39h64L73 82H27z' fill='%23C85A32' stroke='%232C2520' stroke-width='4' stroke-linejoin='round'/%3E%3Cpath d='M34 40 50 15l16 25' fill='none' stroke='%236B705C' stroke-width='7' stroke-linecap='round'/%3E%3Cpath d='M39 48v25M50 48v25M61 48v25' stroke='%23FAF6F0' stroke-width='4'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23FAF6F0'/%3E%3Cpath d='M18 39h64L73 82H27z' fill='%23C85A32' stroke='%232C2520' stroke-width='4' stroke-linejoin='round'/%3E%3Cpath d='M34 40 50 15l16 25' fill='none' stroke='%236B705C' stroke-width='7' stroke-linecap='round'/%3E%3Cpath d='M39 48v25M50 48v25M61 48v25' stroke='%23FAF6F0' stroke-width='4'/%3E%3C/svg%3E">
+<style>
+:root{--bg:#FAF6F0;--card:#fff;--ink:#2C2520;--muted:#81766c;--line:#E8DFD5;--terra:#C85A32;--sage:#6B705C;--sage2:#e8ecdf;--shadow:0 8px 25px #60432b12}
+*{box-sizing:border-box}body{position:relative;isolation:isolate;margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;padding:18px 14px 190px;max-width:760px;margin-inline:auto}
+body.dark{--bg:#211e1b;--card:#302a25;--ink:#f8efe5;--muted:#c0b2a4;--line:#51463d;--sage2:#3c4435;--shadow:0 8px 25px #0004}
+button,input,select{font:inherit}button{cursor:pointer;border:0;transition:transform .15s,filter .15s}button:active{transform:scale(.96)}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 18px}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:52px;height:52px;display:grid;place-items:center;animation:float 3s ease-in-out infinite;filter:drop-shadow(0 5px 5px #8e4d2630);flex:0 0 52px}.logo svg{width:100%;height:100%;display:block}
+h1{font-size:clamp(22px,6vw,30px);line-height:1.1;margin:0}.subtitle{font-size:13px;color:var(--muted);margin-top:5px}
+.iconbtn{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:10px 12px;color:var(--ink);font-size:19px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;margin:14px 0;box-shadow:var(--shadow)}
+.section-title{font-size:15px;font-weight:800;margin:0 0 12px}
+.quick{display:flex;gap:9px;overflow-x:auto;padding:2px 1px 8px;scrollbar-width:thin}
+.quick button{flex:0 0 86px;min-height:91px;background:#f3e9dd;color:#553a2a;border:1px solid #ead8c6;border-radius:15px;padding:8px 5px;font-size:12px;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+.quick-photo{width:48px;height:48px;display:grid;place-items:center}
+.quick-photo svg{width:100%;height:100%;display:block;filter:drop-shadow(0 2px 2px #60432b20)}
+.quick-name{display:block;line-height:1.1}
+body.dark .quick button{background:#45372e;color:#f5e6d7;border-color:#5d493a}
+.progress-head{display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:9px}.track{height:12px;background:var(--sage2);border-radius:20px;overflow:hidden}.bar{height:100%;width:0;background:var(--sage);border-radius:20px;transition:width .35s;position:relative}.bar:after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent,#ffffff80,transparent);animation:shine 2.4s infinite}.done-msg{color:var(--sage);font-weight:800;font-size:13px;margin-top:9px;display:none}
+form.add{display:grid;grid-template-columns:1fr 90px;gap:9px}input,select{min-width:0;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--bg);color:var(--ink);outline-color:var(--terra)}.wide{grid-column:1/-1}.fields{display:grid;grid-template-columns:1fr 1fr;gap:9px}.primary{background:var(--terra);color:white;border-radius:12px;padding:12px 15px;font-weight:800}.secondary{background:var(--sage2);color:var(--sage);border-radius:12px;padding:10px 12px;font-weight:700}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.tools input{flex:1;min-width:150px}.hidebtn{white-space:nowrap}
+.category{margin:17px 0 8px;color:var(--sage);font-weight:900;font-size:14px;display:flex;align-items:center;gap:7px}
+.item{display:grid;grid-template-columns:46px minmax(0,1fr) auto;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);animation:appear .25s ease}.item:last-child{border-bottom:0}.thumb{width:44px;height:44px;border-radius:13px;background:#f3e8dc;display:grid;place-items:center;font-size:25px;overflow:hidden}.thumb img{width:100%;height:100%;object-fit:cover}.item.checked .name{text-decoration:line-through;color:var(--muted)}.item.checked{opacity:.62}.name{font-weight:750;font-size:14px;overflow-wrap:anywhere}.meta{font-size:12px;color:var(--muted);margin-top:3px}.right{text-align:right}.price{font-size:14px;font-weight:850}.qty{display:flex;align-items:center;gap:7px;justify-content:flex-end;margin-top:6px}.qty button{width:25px;height:25px;border-radius:8px;background:var(--sage2);color:var(--sage);font-weight:900}.qty span{font-size:12px;min-width:13px;text-align:center}.check{width:20px;height:20px;accent-color:var(--sage);vertical-align:middle;margin-right:5px}
+.row-actions{display:flex;gap:5px;margin-top:5px;justify-content:flex-end}.tiny{font-size:11px;padding:5px 7px;border-radius:8px;background:var(--bg);color:var(--muted);border:1px solid var(--line)}
+.empty{text-align:center;color:var(--muted);padding:25px 5px;font-size:14px}.fall{position:fixed;top:-40px;z-index:-1;pointer-events:none;user-select:none;animation:fall linear infinite;opacity:.27;width:25px;height:25px}.fall svg{display:block;width:100%;height:100%;filter:drop-shadow(0 2px 2px #60432b25)}
+footer{text-align:center;color:var(--muted);font-size:12px;margin:24px 0 10px}footer a{color:var(--terra);font-weight:700;text-decoration:none}
+.bottom{position:fixed;z-index:5;bottom:0;left:0;right:0;background:#2C2520;color:#fff;padding:13px max(15px,calc((100vw - 730px)/2)) calc(13px + env(safe-area-inset-bottom));box-shadow:0 -8px 28px #24160f25}.bottom-inner{max-width:730px;margin:auto}.totals{display:flex;justify-content:space-between;align-items:center;gap:10px}.total-label{font-size:12px;color:#d9cfc5}.total{font-size:26px;font-weight:900}.budget{display:flex;align-items:center;gap:7px;font-size:12px}.budget input{width:85px;padding:8px;border:1px solid #78685c;background:#40372f;color:white;border-radius:9px}.remaining{font-size:12px;margin-top:5px;color:#e8d8c8}.over{background:#8f3028!important;animation:shake .35s}.bottom-actions{display:flex;gap:7px;margin-top:10px}.bottom-actions button{flex:1;font-size:11px;padding:9px 5px;border-radius:10px;font-weight:750}.danger{background:#59433a;color:#fff}.share{background:#6B705C;color:white}
+@keyframes float{50%{transform:translateY(-5px)}}@keyframes shine{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}@keyframes appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}@keyframes fall{to{transform:translateY(110vh) rotate(240deg)}}@keyframes shake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+@media(min-width:600px){body{padding-top:28px}.panel{padding:20px}.quick button{flex-basis:88px}}
+</style>
+</head>
+<body>
+<div class="fall" style="left:8%;animation-duration:18s"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M12 19c1-8 6-13 12-13s11 5 12 13" fill="none" stroke="#6B705C" stroke-width="3.2" stroke-linecap="round"/><path d="M7 19h34l-4 22H11z" fill="#C85A32" stroke="#8F4329" stroke-width="1.8" stroke-linejoin="round"/><path d="M16 22l-1 15M24 22v15M32 22l1 15M9 27h30M10 33h28" stroke="#FAF6F0" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+<div class="fall" style="left:27%;animation-duration:23s;animation-delay:-8s"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M12 19c1-8 6-13 12-13s11 5 12 13" fill="none" stroke="#6B705C" stroke-width="3.2" stroke-linecap="round"/><path d="M7 19h34l-4 22H11z" fill="#C85A32" stroke="#8F4329" stroke-width="1.8" stroke-linejoin="round"/><path d="M16 22l-1 15M24 22v15M32 22l1 15M9 27h30M10 33h28" stroke="#FAF6F0" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+<div class="fall" style="left:72%;animation-duration:20s;animation-delay:-4s"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M12 19c1-8 6-13 12-13s11 5 12 13" fill="none" stroke="#6B705C" stroke-width="3.2" stroke-linecap="round"/><path d="M7 19h34l-4 22H11z" fill="#C85A32" stroke="#8F4329" stroke-width="1.8" stroke-linejoin="round"/><path d="M16 22l-1 15M24 22v15M32 22l1 15M9 27h30M10 33h28" stroke="#FAF6F0" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+<div class="fall" style="left:91%;animation-duration:25s;animation-delay:-13s"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M12 19c1-8 6-13 12-13s11 5 12 13" fill="none" stroke="#6B705C" stroke-width="3.2" stroke-linecap="round"/><path d="M7 19h34l-4 22H11z" fill="#C85A32" stroke="#8F4329" stroke-width="1.8" stroke-linejoin="round"/><path d="M16 22l-1 15M24 22v15M32 22l1 15M9 27h30M10 33h28" stroke="#FAF6F0" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+
+<header>
+<div class="brand">
+<div class="logo" aria-hidden="true">
+<svg viewBox="0 0 64 64"><path d="M10 25h44l-5 31H15z" fill="#C85A32" stroke="#2C2520" stroke-width="2.8" stroke-linejoin="round"/><path d="M20 25 32 7l12 18" fill="none" stroke="#6B705C" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M23 31v18M32 31v18M41 31v18" stroke="#FAF6F0" stroke-width="3" stroke-linecap="round"/></svg>
+</div>
+<div><h1>Λίστα Σούπερ Μάρκετ</h1><div class="subtitle">Μικρές αγορές, όμορφη οργάνωση 🍁</div></div>
+</div>
+<button class="iconbtn" id="themeBtn" aria-label="Εναλλαγή θέματος">🌙</button>
+</header>
+
+<section class="panel">
+<div class="progress-head"><span>Πρόοδος αγορών</span><span id="progressText">Αγοράστηκαν 0 / 0</span></div>
+<div class="track"><div class="bar" id="progressBar"></div></div>
+<div class="done-msg" id="doneMsg">🎉 Μπράβο! Ολοκλήρωσες τις αγορές σου!</div>
+</section>
+
+<section class="panel"><h2 class="section-title">⚡ Γρήγορη προσθήκη</h2><div class="quick" id="quick"></div></section>
+
+<section class="panel">
+<h2 class="section-title">＋ Πρόσθεσε προϊόν</h2>
+<form class="add" id="addForm">
+<input id="productName" placeholder="π.χ. Γιαούρτι" aria-label="Όνομα προϊόντος" required>
+<button class="primary" type="submit">Προσθήκη</button>
+<div class="fields wide">
+<input id="productQty" type="number" min="1" step="1" value="1" aria-label="Ποσότητα" placeholder="Ποσότητα">
+<input id="productPrice" type="number" min="0" step="0.01" placeholder="Τιμή μονάδας €" aria-label="Τιμή μονάδας">
+</div>
+<select id="productCategory" class="wide" aria-label="Κατηγορία">
+<option>🥬 Φρούτα & Λαχανικά</option>
+<option>🥛 Γαλακτοκομικά</option>
+<option>🥖 Αρτοποιείο</option>
+<option>🥩 Κρέας & Ψάρια</option>
+<option>🥫 Τρόφιμα</option>
+<option>🧴 Καθαριστικά</option>
+<option>🧻 Προσωπική φροντίδα</option>
+<option>📦 Διάφορα</option>
+</select>
+</form>
+<div style="font-size:11px;color:var(--muted);margin-top:8px">Μπορείς να προσθέσεις φωτογραφία σε κάθε προϊόν μετά την καταχώριση.</div>
+</section>
+
+<section class="panel">
+<div class="tools">
+<input id="search" placeholder="🔎 Αναζήτηση προϊόντος..." aria-label="Αναζήτηση">
+<button class="secondary hidebtn" id="hideBought">Απόκρυψη αγορασμένων</button>
+</div>
+<div id="list"><div class="empty">Το καλάθι σου είναι άδειο. Πρόσθεσε το πρώτο προϊόν! 🧺</div></div>
+</section>
+
+<footer><a href="https://www.buymeacoffee.com/" target="_blank" rel="noopener">☕ Σου έλυσε τα χέρια; Κέρασέ με έναν καφέ</a></footer>
+
+<div class="bottom" id="bottom">
+<div class="bottom-inner">
+<div class="totals">
+<div><div class="total-label">ΣΥΝΟΛΙΚΟ ΚΟΣΤΟΣ</div><div class="total" id="total">0,00 €</div></div>
+<label class="budget">Όριο (€) <input id="budget" type="number" min="0" step="0.01" placeholder="π.χ. 80"></label>
+</div>
+<div class="remaining" id="remaining">Όρισε προαιρετικά το όριο των αγορών σου.</div>
+<div class="bottom-actions">
+<button class="danger" id="clearBought">Σβήσιμο αγορασμένων</button>
+<button class="share" id="share">Κοινοποίηση λίστας</button>
+<button class="danger" id="clearAll">Καθαρισμός όλων</button>
+</div>
+</div>
+</div>
+
+<script>
+(()=>{
+'use strict';
+const $=id=>document.getElementById(id);
+const KEY='fthinoporo-shopping-list-v1';
+const quickItems=[['🥛','Γάλα','🥛 Γαλακτοκομικά'],['🍞','Ψωμί','🥖 Αρτοποιείο'],['🥚','Αυγά','🥛 Γαλακτοκομικά'],['☕','Καφές','🥫 Τρόφιμα'],['🧀','Τυρί','🥛 Γαλακτοκομικά'],['🍅','Ντομάτες','🥬 Φρούτα & Λαχανικά']];
+const emojis={'Γάλα':'🥛','Ψωμί':'🍞','Αυγά':'🥚','Καφές':'☕','Τυρί':'🧀','Ντομάτες':'🍅','Γιαούρτι':'🥣','Μήλα':'🍎','Μπανάνες':'🍌','Πατάτες':'🥔','Κρεμμύδια':'🧅','Κοτόπουλο':'🍗','Νερό':'💧','Χυμός':'🧃','Μπισκότα':'🍪'};
+let items=[],hideBought=false;
+
+try{
+const saved=JSON.parse(localStorage.getItem(KEY)||'{}');
+items=Array.isArray(saved.items)?saved.items:[];
+$('budget').value=saved.budget||'';
+document.body.classList.toggle('dark',!!saved.dark);
+$('themeBtn').textContent=saved.dark?'☀️':'🌙';
+}catch(e){items=[]}
+
+const money=n=>Number(n||0).toLocaleString('el-GR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+
+function save(){
+try{
+localStorage.setItem(KEY,JSON.stringify({items,budget:$('budget').value,dark:document.body.classList.contains('dark')}));
+}catch(e){}
+}
+
+function vibrate(){if(navigator.vibrate)navigator.vibrate(18)}
+function emoji(name){return emojis[name]||'🛍️'}
+
+function add(name,category,qty=1,price=0){
+name=name.trim();
+if(!name)return;
+items.push({id:Date.now()+Math.random(),name,category,qty:Math.max(1,Number(qty)||1),price:Math.max(0,Number(price)||0),bought:false,image:''});
+save();
+render();
+vibrate();
+}
+
+const quickPictures={
+'Γάλα':`<svg viewBox="0 0 64 64" role="img" aria-label="Κουτί γάλα"><path d="M22 7h20l7 11v39H15V18z" fill="#fff" stroke="#8d9ca3" stroke-width="2"/><path d="M22 7l-7 11h34L42 7z" fill="#d9e9ed" stroke="#8d9ca3" stroke-width="2"/><path d="M15 25h34v19H15z" fill="#d8edf2"/><path d="M24 31c4-5 12-5 16 0-4 5-12 5-16 0z" fill="#fff"/><text x="32" y="41" font-size="8" text-anchor="middle" fill="#47717b" font-weight="bold">MILK</text></svg>`,
+'Ψωμί':`<svg viewBox="0 0 64 64" role="img" aria-label="Φρατζόλα ψωμί"><path d="M9 39c0-13 8-24 23-24s23 11 23 24c0 9-7 14-23 14S9 48 9 39z" fill="#d99a4e" stroke="#9c612e" stroke-width="2"/><path d="M20 24l7 8M31 19l7 9M42 24l6 7" stroke="#f8d69a" stroke-width="4" stroke-linecap="round"/><path d="M13 43c10 5 28 5 39 0" fill="none" stroke="#efbd76" stroke-width="2"/></svg>`,
+'Αυγά':`<svg viewBox="0 0 64 64" role="img" aria-label="Αυγοθήκη με αυγά"><path d="M7 29h50l-4 24H11z" fill="#b8a18a" stroke="#806b58" stroke-width="2"/><path d="M10 29l5-9h34l5 9" fill="#d6c4ae" stroke="#806b58" stroke-width="2"/><ellipse cx="21" cy="28" rx="7" ry="10" fill="#fff8e9" stroke="#d7c8ae"/><ellipse cx="32" cy="25" rx="7" ry="10" fill="#fff8e9" stroke="#d7c8ae"/><ellipse cx="43" cy="28" rx="7" ry="10" fill="#fff8e9" stroke="#d7c8ae"/></svg>`,
+'Καφές':`<svg viewBox="0 0 64 64" role="img" aria-label="Φλιτζάνι καφέ"><path d="M14 22h34v23c0 7-6 11-17 11S14 52 14 45z" fill="#fffaf2" stroke="#8c6650" stroke-width="2.5"/><path d="M48 27h5c10 0 8 16-5 16" fill="none" stroke="#8c6650" stroke-width="4"/><path d="M17 28h28v12H17z" fill="#6b3e27"/><path d="M23 16c-4-5 4-6 0-11M34 16c-4-5 4-6 0-11" fill="none" stroke="#b78a67" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="31" cy="57" rx="21" ry="3" fill="#d8c4ad"/></svg>`,
+'Τυρί':`<svg viewBox="0 0 64 64" role="img" aria-label="Κομμάτι κίτρινο τυρί"><path d="M8 39L39 13l17 11v27H8z" fill="#f3c94f" stroke="#b78a25" stroke-width="2.5" stroke-linejoin="round"/><path d="M8 39l31-26v16L8 52z" fill="#e7b83d" stroke="#b78a25" stroke-width="2"/><circle cx="31" cy="37" r="4" fill="#d69d25"/><circle cx="45" cy="31" r="3" fill="#d69d25"/><circle cx="21" cy="46" r="3" fill="#d69d25"/></svg>`,
+'Ντομάτες':`<svg viewBox="0 0 64 64" role="img" aria-label="Κόκκινη ντομάτα"><path d="M32 19c-5-6-16-5-21 4-7 13 2 31 21 31s28-18 21-31c-5-9-16-10-21-4z" fill="#df553b" stroke="#a83c2d" stroke-width="2"/><path d="M32 20l-3-9 8 6 7-5-2 9 9 1-11 4-8-4-8 5 3-9-9 1 9-5z" fill="#63804c" stroke="#49633b" stroke-width="1.5" stroke-linejoin="round"/></svg>`
+};
+
+quickItems.forEach(([em,name,cat])=>{
+const b=document.createElement('button');
+b.type='button';
+b.setAttribute('aria-label','Προσθήκη '+name);
+const picture=document.createElement('span');
+picture.className='quick-photo';
+picture.innerHTML=quickPictures[name];
+const label=document.createElement('span');
+label.className='quick-name';
+label.textContent=name;
+b.append(picture,label);
+b.addEventListener('click',()=>add(name,cat));
+$('quick').appendChild(b);
+});
+
+$('addForm').addEventListener('submit',e=>{
+e.preventDefault();
+add($('productName').value,$('productCategory').value,$('productQty').value,$('productPrice').value);
+$('productName').value='';
+$('productQty').value=1;
+$('productPrice').value='';
+$('productName').focus();
+});
+
+function render(){
+const root=$('list');
+root.innerHTML='';
+const term=$('search').value.trim().toLocaleLowerCase('el');
+const shown=items.filter(x=>(!hideBought||!x.bought)&&x.name.toLocaleLowerCase('el').includes(term));
+const cats=[...new Set(shown.map(x=>x.category))];
+
+if(!shown.length){
+root.innerHTML='<div class="empty">'+(items.length?'Δεν βρέθηκαν προϊόντα.':'Το καλάθι σου είναι άδειο. Πρόσθεσε το πρώτο προϊόν! 🧺')+'</div>';
+}
+
+cats.forEach(cat=>{
+const heading=document.createElement('div');
+heading.className='category';
+heading.textContent=cat;
+root.appendChild(heading);
+
+shown.filter(x=>x.category===cat).forEach(x=>{
+const row=document.createElement('div');
+row.className='item'+(x.bought?' checked':'');
+
+const thumb=document.createElement('div');
+thumb.className='thumb';
+if(x.image){
+const img=document.createElement('img');
+img.src=x.image;
+img.alt='Φωτογραφία '+x.name;
+img.onerror=()=>{thumb.textContent=emoji(x.name)};
+thumb.appendChild(img);
+}else{
+thumb.textContent=emoji(x.name);
+}
+
+const info=document.createElement('div');
+const label=document.createElement('label');
+label.className='name';
+const check=document.createElement('input');
+check.type='checkbox';
+check.className='check';
+check.checked=x.bought;
+check.addEventListener('change',()=>{
+x.bought=check.checked;
+save();
+render();
+vibrate();
+});
+label.append(check,document.createTextNode(x.name));
+
+const meta=document.createElement('div');
+meta.className='meta';
+meta.textContent='Τιμή μονάδας: '+money(x.price);
+info.append(label,meta);
+
+const right=document.createElement('div');
+right.className='right';
+
+const price=document.createElement('div');
+price.className='price';
+price.textContent=money(x.price*x.qty);
+
+const qty=document.createElement('div');
+qty.className='qty';
+
+const minus=document.createElement('button');
+minus.textContent='−';
+minus.setAttribute('aria-label','Μείωση ποσότητας');
+minus.onclick=()=>{
+x.qty=Math.max(1,x.qty-1);
+save();
+render();
+};
+
+const q=document.createElement('span');
+q.textContent=x.qty;
+
+const plus=document.createElement('button');
+plus.textContent='+';
+plus.setAttribute('aria-label','Αύξηση ποσότητας');
+plus.onclick=()=>{
+x.qty++;
+save();
+render();
+};
+
+qty.append(minus,q,plus);
+
+const actions=document.createElement('div');
+actions.className='row-actions';
+
+const edit=document.createElement('button');
+edit.className='tiny';
+edit.textContent='Τιμή';
+edit.onclick=()=>{
+const v=prompt('Νέα τιμή μονάδας (€):',x.price);
+if(v!==null&&v.trim()!==''&&Number.isFinite(Number(v))&&Number(v)>=0){
+x.price=Number(v);
+save();
+render();
+}
+};
+
+const photo=document.createElement('button');
+photo.className='tiny';
+photo.textContent='📷 Φωτογραφία';
+photo.onclick=()=>{
+const input=document.createElement('input');
+input.type='file';
+input.accept='image/*';
+input.onchange=()=>{
+const file=input.files[0];
+if(!file)return;
+if(file.size>3*1024*1024){
+alert('Η φωτογραφία πρέπει να είναι έως 3 MB.');
+return;
+}
+const reader=new FileReader();
+reader.onload=()=>{
+x.image=reader.result;
+save();
+render();
+};
+reader.readAsDataURL(file);
+};
+input.click();
+};
+
+const del=document.createElement('button');
+del.className='tiny';
+del.textContent='✕';
+del.setAttribute('aria-label','Διαγραφή προϊόντος');
+del.onclick=()=>{
+items=items.filter(y=>y.id!==x.id);
+save();
+render();
+};
+
+actions.append(edit,photo,del);
+right.append(price,qty,actions);
+row.append(thumb,info,right);
+root.appendChild(row);
+});
+});
+
+const bought=items.filter(x=>x.bought).length;
+$('progressText').textContent=`Αγοράστηκαν ${bought} / ${items.length}`;
+$('progressBar').style.width=(items.length?bought/items.length*100:0)+'%';
+$('doneMsg').style.display=items.length&&bought===items.length?'block':'none';
+if(items.length&&bought===items.length)$('progressBar').style.background='#4f8a57';
+
+const total=items.reduce((s,x)=>s+x.qty*x.price,0);
+$('total').textContent=money(total);
+const budget=Number($('budget').value);
+const over=$('budget').value!==''&&total>budget;
+$('bottom').classList.toggle('over',over);
+$('remaining').textContent=$('budget').value===''?'Όρισε προαιρετικά το όριο των αγορών σου.':over?'⚠️ Ξεπέρασες το όριο κατά '+money(total-budget):'Σου απομένουν '+money(budget-total);
+save();
+}
+
+$('search').addEventListener('input',render);
+$('budget').addEventListener('input',render);
+
+$('hideBought').addEventListener('click',()=>{
+hideBought=!hideBought;
+$('hideBought').textContent=hideBought?'Εμφάνιση αγορασμένων':'Απόκρυψη αγορασμένων';
+render();
+});
+
+$('themeBtn').addEventListener('click',()=>{
+document.body.classList.toggle('dark');
+$('themeBtn').textContent=document.body.classList.contains('dark')?'☀️':'🌙';
+save();
+});
+
+$('clearBought').addEventListener('click',()=>{
+if(!items.some(x=>x.bought)){
+alert('Δεν υπάρχουν αγορασμένα προϊόντα.');
+return;
+}
+if(confirm('Να διαγραφούν τα αγορασμένα προϊόντα;')){
+items=items.filter(x=>!x.bought);
+save();
+render();
+}
+});
+
+$('clearAll').addEventListener('click',()=>{
+if(items.length&&confirm('Να διαγραφεί ολόκληρη η λίστα;')){
+items=[];
+save();
+render();
+}
+});
+
+$('share').addEventListener('click',async()=>{
+const lines=items.length?items.map(x=>(x.bought?'✓ ':'□ ')+x.name+' × '+x.qty+' — '+money(x.qty*x.price)).join('\n'):'(Άδεια λίστα)';
+const text='🛒 Λίστα Σούπερ Μάρκετ\n'+lines+'\n\nΣύνολο: '+$('total').textContent;
+try{
+if(navigator.share){
+await navigator.share({title:'Λίστα Σούπερ Μάρκετ',text});
+}else if(navigator.clipboard?.writeText){
+await navigator.clipboard.writeText(text);
+alert('Η λίστα αντιγράφηκε. Μπορείς να την επικολλήσεις σε Viber ή WhatsApp.');
+}else{
+prompt('Αντέγραψε τη λίστα:',text);
+}
+}catch(e){
+if(e.name!=='AbortError')alert('Δεν ήταν δυνατή η κοινοποίηση από αυτόν τον browser.');
+}
+});
+
+render();
+})();
+</script>
+</body>
+</html>
