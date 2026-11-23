@@ -1,0 +1,1204 @@
+﻿<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Λίστα Σούπερ Μάρκετ</title>
+  <meta name="theme-color" content="#FAF6F0" id="theme-color-meta" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Λίστα Αγορών" />
+
+  <!-- Εικονίδιο Καλαθιού (Favicon & Apple Touch Icon για αρχική οθόνη κινητού) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://w3.org' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23C85A32'/%3E%3Ctext x='50' y='68' font-size='58' text-anchor='middle'%3E%F0%9F%9B%92%3C/text%3E%3C/svg%3E" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://w3.org' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23C85A32'/%3E%3Ctext x='90' y='122' font-size='100' text-anchor='middle'%3E%F0%9F%9B%92%3C/text%3E%3C/svg%3E" />
+
+  <style>
+    :root {
+      --bg-color: #FAF6F0;
+      --surface: #FFFFFF;
+      --surface-alt: #F3ECE1;
+      --text-main: #2F2A25;
+      --text-muted: #786E65;
+      --terracotta: #C85A32;
+      --terracotta-dark: #A64623;
+      --sage: #6B705C;
+      --sage-light: #A5A58D;
+      --success: #3A7D44;
+      --success-bg: #E6F4EA;
+      --danger: #C92A2A;
+      --danger-bg: #FFE3E3;
+      --border: #E5DDD0;
+      --shadow: 0 4px 14px rgba(47, 42, 37, 0.07);
+      --bottom-bar-bg: rgba(255, 255, 255, 0.96);
+    }
+
+    body.dark-mode {
+      --bg-color: #1C1917;
+      --surface: #292524;
+      --surface-alt: #342F2D;
+      --text-main: #F5F2EB;
+      --text-muted: #A8A29E;
+      --terracotta: #DF6D44;
+      --terracotta-dark: #C85A32;
+      --sage: #848A73;
+      --sage-light: #575C4B;
+      --success: #4CAF50;
+      --success-bg: #1E3323;
+      --danger: #F87171;
+      --danger-bg: #3F1D1D;
+      --border: #3F3A37;
+      --shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+      --bottom-bar-bg: rgba(41, 37, 36, 0.96);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.45;
+      min-height: 100vh;
+      padding-bottom: 135px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      overflow-x: hidden;
+    }
+
+    /* Φθινοπωρινά Φύλλα στο Φόντο */
+    #leaves-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .leaf {
+      position: absolute;
+      top: -40px;
+      opacity: 0.25;
+      user-select: none;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-40px) translateX(0) rotate(0deg);
+      }
+      50% {
+        transform: translateY(50vh) translateX(25px) rotate(180deg);
+      }
+      100% {
+        transform: translateY(108vh) translateX(-15px) rotate(360deg);
+      }
+    }
+
+    /* Κύριο Container */
+    .app-container {
+      position: relative;
+      z-index: 1;
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 16px 14px 24px;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-basket {
+      font-size: 2rem;
+      display: inline-block;
+      animation: gentleFloat 3.2s ease-in-out infinite;
+    }
+
+    @keyframes gentleFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-5px) rotate(-4deg); }
+    }
+
+    h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--terracotta);
+      letter-spacing: -0.3px;
+    }
+
+    .subtitle {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .theme-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow);
+      transition: transform 0.15s ease, background-color 0.3s ease;
+    }
+
+    /* Εφέ πατήματος σε όλα τα κουμπιά */
+    button:active, .pressable:active {
+      transform: scale(0.94) !important;
+    }
+
+    /* Κάρτες */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    /* Μπάρα Προόδου */
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 14px;
+      background: var(--surface-alt);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--terracotta), #E07A5F);
+      border-radius: 999px;
+      position: relative;
+      overflow: hidden;
+      transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s ease;
+    }
+
+    .progress-fill.completed {
+      background: linear-gradient(90deg, var(--success), #52B788);
+    }
+
+    /* Εφέ γυαλάδας στη μπάρα προόδου */
+    .progress-fill::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+      animation: shine 2.2s infinite;
+    }
+
+    @keyframes shine {
+      0% { left: -100%; }
+      100% { left: 200%; }
+    }
+
+    .reward-banner {
+      display: none;
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: var(--success-bg);
+      color: var(--success);
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-align: center;
+      animation: slideIn 0.3s ease;
+    }
+
+    .reward-banner.show {
+      display: block;
+    }
+
+    /* Γρήγορη Προσθήκη (1 πάτημα) */
+    .quick-bar-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .quick-scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+
+    .quick-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .quick-chip {
+      flex: 0 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 8px 13px;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+      transition: transform 0.12s ease, border-color 0.2s ease;
+    }
+
+    .quick-chip:hover {
+      border-color: var(--terracotta);
+    }
+
+    /* Φόρμα Προσθήκης */
+    .add-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    input, select {
+      font-family: inherit;
+      font-size: 0.95rem;
+      padding: 10px 12px;
+      border-radius: 11px;
+      border: 1px solid var(--border);
+      background: var(--surface-alt);
+      color: var(--text-main);
+      outline: none;
+      transition: border-color 0.2s ease, background-color 0.3s ease;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--terracotta);
+    }
+
+    #item-name {
+      flex: 1;
+      min-width: 0;
+    }
+
+    #item-qty {
+      width: 74px;
+      text-align: center;
+    }
+
+    #item-price {
+      width: 96px;
+      text-align: right;
+    }
+
+    #item-category {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .btn-primary {
+      background: var(--terracotta);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 11px;
+      padding: 11px 16px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.12s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary:hover {
+      background: var(--terracotta-dark);
+    }
+
+    /* Αναζήτηση & Φίλτρο */
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+      align-items: center;
+    }
+
+    .search-wrap {
+      position: relative;
+      flex: 1;
+    }
+
+    .search-wrap span {
+      position: absolute;
+      left: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.9rem;
+      pointer-events: none;
+    }
+
+    #search-input {
+      width: 100%;
+      padding-left: 34px;
+      background: var(--surface);
+    }
+
+    .toggle-hide-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 10px 12px;
+      border-radius: 11px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .toggle-hide-btn.active {
+      background: var(--sage);
+      color: #FFFFFF;
+      border-color: var(--sage);
+    }
+
+    /* Ομάδες Κατηγοριών */
+    .category-group {
+      margin-bottom: 16px;
+    }
+
+    .category-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--sage);
+      margin-bottom: 8px;
+      padding-left: 4px;
+      display: flex;
+align-items: center;
+justify-content: space-between;
+}
+body.dark-mode .category-title {
+color: #B7BFA3;
+}
+/* Στοιχείο Λίστας */
+.item-card {
+background: var(--surface);
+border: 1px solid var(--border);
+border-radius: 14px;
+padding: 11px 12px;
+margin-bottom: 8px;
+display: flex;
+align-items: center;
+gap: 10px;
+box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+animation: slideIn 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+transition: opacity 0.25s ease, background-color 0.25s ease;
+}
+@keyframes slideIn {
+from {
+opacity: 0;
+transform: translateY(10px) scale(0.98);
+}
+to {
+opacity: 1;
+transform: translateY(0) scale(1);
+}
+}
+.item-card.checked {
+opacity: 0.62;
+background: var(--surface-alt);
+}
+.checkbox-custom {
+width: 24px;
+height: 24px;
+border-radius: 7px;
+border: 2px solid var(--terracotta);
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+flex-shrink: 0;
+background: transparent;
+color: #FFFFFF;
+font-size: 0.9rem;
+font-weight: bold;
+transition: background 0.2s ease, border-color 0.2s ease;
+}
+.item-card.checked .checkbox-custom {
+background: var(--sage);
+border-color: var(--sage);
+}
+.item-info {
+flex: 1;
+min-width: 0;
+}
+.item-name {
+font-size: 0.98rem;
+font-weight: 600;
+word-break: break-word;
+}
+.item-card.checked .item-name {
+text-decoration: line-through;
+color: var(--text-muted);
+}
+.item-sub {
+font-size: 0.76rem;
+color: var(--text-muted);
+margin-top: 2px;
+}
+/* Έλεγχοι Ποσότητας & Τιμής */
+.item-controls {
+display: flex;
+align-items: center;
+gap: 6px;
+flex-shrink: 0;
+}
+.qty-box {
+display: flex;
+align-items: center;
+background: var(--surface-alt);
+border-radius: 8px;
+border: 1px solid var(--border);
+overflow: hidden;
+}
+.qty-btn {
+background: none;
+border: none;
+color: var(--text-main);
+width: 26px;
+height: 28px;
+font-size: 1rem;
+font-weight: 700;
+cursor: pointer;
+}
+.qty-val {
+min-width: 22px;
+text-align: center;
+font-size: 0.85rem;
+font-weight: 700;
+}
+.inline-price-wrap {
+display: flex;
+align-items: center;
+background: var(--surface-alt);
+border: 1px solid var(--border);
+border-radius: 8px;
+padding: 0 6px;
+height: 30px;
+}
+.inline-price {
+width: 52px;
+border: none;
+background: transparent;
+padding: 2px;
+font-size: 0.85rem;
+font-weight: 700;
+text-align: right;
+color: var(--text-main);
+}
+.inline-price-wrap span {
+font-size: 0.8rem;
+color: var(--text-muted);
+margin-left: 2px;
+}
+.del-btn {
+background: none;
+border: none;
+color: var(--text-muted);
+font-size: 1rem;
+padding: 4px;
+cursor: pointer;
+opacity: 0.75;
+}
+.del-btn:hover {
+color: var(--danger);
+opacity: 1;
+}
+/* Κενή Λίστα */
+.empty-state {
+text-align: center;
+padding: 36px 16px;
+color: var(--text-muted);
+}
+.empty-state .big-emoji {
+font-size: 2.8rem;
+margin-bottom: 8px;
+display: block;
+}
+/* Ενέργειες Λίστας */
+.actions-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 8px;
+margin-top: 16px;
+}
+.action-btn {
+padding: 11px 10px;
+border-radius: 12px;
+border: 1px solid var(--border);
+background: var(--surface);
+color: var(--text-main);
+font-size: 0.84rem;
+font-weight: 700;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 6px;
+box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+transition: transform 0.12s ease;
+}
+.action-btn.share {
+background: var(--sage);
+color: #FFFFFF;
+border-color: var(--sage);
+grid-column: span 2;
+}
+.action-btn.danger {
+color: var(--danger);
+}
+/* Footer Κέρασμα */
+footer {
+text-align: center;
+margin-top: 24px;
+padding-bottom: 12px;
+}
+.coffee-link {
+display: inline-block;
+font-size: 0.82rem;
+color: var(--text-muted);
+text-decoration: none;
+padding: 8px 14px;
+border-radius: 999px;
+border: 1px dashed var(--border);
+transition: all 0.2s ease;
+}
+.coffee-link:hover {
+color: var(--terracotta);
+border-color: var(--terracotta);
+}
+/* Σταθερή Κάτω Μπάρα Κόστους & Ορίου */
+.bottom-bar {
+position: fixed;
+bottom: 0;
+left: 0;
+right: 0;
+z-index: 20;
+background: var(--bottom-bar-bg);
+backdrop-filter: blur(10px);
+-webkit-backdrop-filter: blur(10px);
+border-top: 1px solid var(--border);
+padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.08);
+transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.bottom-bar.over-budget {
+background: var(--danger-bg);
+border-top-color: var(--danger);
+}
+.bottom-bar.shake {
+animation: shakeBar 0.45s cubic-bezier(.36,.07,.19,.97) both;
+}
+@keyframes shakeBar {
+10%, 90% { transform: translate3d(-2px, 0, 0); }
+20%, 80% { transform: translate3d(4px, 0, 0); }
+30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+40%, 60% { transform: translate3d(6px, 0, 0); }
+}
+.bottom-inner {
+max-width: 560px;
+margin: 0 auto;
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 10px;
+}
+.total-block .label {
+font-size: 0.72rem;
+color: var(--text-muted);
+text-transform: uppercase;
+font-weight: 700;
+}
+.total-block .amount {
+font-size: 1.35rem;
+font-weight: 800;
+color: var(--terracotta);
+}
+.bottom-bar.over-budget .total-block .amount {
+color: var(--danger);
+}
+.budget-block {
+display: flex;
+flex-direction: column;
+align-items: flex-end;
+}
+.budget-input-row {
+display: flex;
+align-items: center;
+gap: 6px;
+font-size: 0.8rem;
+font-weight: 700;
+}
+#budget-input {
+width: 78px;
+padding: 5px 8px;
+font-size: 0.88rem;
+font-weight: 700;
+text-align: right;
+border-radius: 8px;
+background: var(--surface);
+}
+.remaining-text {
+font-size: 0.76rem;
+font-weight: 700;
+margin-top: 3px;
+color: var(--sage);
+}
+.bottom-bar.over-budget .remaining-text {
+color: var(--danger);
+}
+/* Toast ειδοποίηση */
+.toast {
+position: fixed;
+top: 16px;
+left: 50%;
+transform: translateX(-50%) translateY(-80px);
+background: var(--text-main);
+color: var(--bg-color);
+padding: 10px 18px;
+border-radius: 999px;
+font-size: 0.85rem;
+font-weight: 600;
+z-index: 50;
+box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+pointer-events: none;
+}
+.toast.show {
+transform: translateX(-50%) translateY(0);
+}
+
+
+🛒
+
+Λίστα Σούπερ Μάρκετ
+Οργανωμένες αγορές με ζεστή διάθεση
+
+
+🌙
+Αγοράστηκαν 0 / 0
+0%
+
+
+
+
+
+🎉 Μπράβο! Ολοκλήρωσες όλες τις αγορές σου!
+⚡ Γρήγορη Προσθήκη
+
+🥛 Γάλα
+🍞 Ψωμί
+🥚 Αυγά
+☕ Καφές
+🧀 Τυρί
+🍅 Ντομάτες
+🍎 Φρούτα & Λαχανικά
+🥛 Γαλακτοκομικά
+🥖 Αρτοποιείο
+🥩 Κρέας & Ψάρι
+🍝 Τρόφιμα & Ζυμαρικά
+☕ Ροφήματα
+🧼 Καθαριστικά & Σπίτι
+🧴 Προσωπική Φροντίδα
+📦 Λοιπά
+
++ Προσθήκη
+
+🔍
+
+
+👁️ Απόκρυψη αγορασμένων
+📤 Κοινοποίηση Λίστας (Viber / WhatsApp)
+🧹 Σβήσιμο Αγορασμένων
+🗑️ Καθαρισμός Όλης της Λίστας
+☕ Σου έλυσε τα χέρια; Κέρασέ με έναν καφέ
+
+
+Συνολικό Κόστος
+0,00 €
+
+
+Όριο (€):
+Όρισε προϋπολογισμό
+
+
+(function () {
+// Κλειδιά αποθήκευσης στο localStorage
+const STORAGE_KEYS = {
+ITEMS: 'sm_autumn_items_v1',
+BUDGET: 'sm_autumn_budget_v1',
+THEME: 'sm_autumn_theme_v1',
+HIDE_CHECKED: 'sm_autumn_hide_checked_v1'
+};
+// Κατάσταση Εφαρμογής
+let items = [];
+let budget = '';
+let hideChecked = false;
+let searchQuery = '';
+let wasOverBudget = false;
+// Στοιχεία DOM
+const leavesContainer = document.getElementById('leaves-container');
+const themeToggleBtn = document.getElementById('theme-toggle');
+const themeMeta = document.getElementById('theme-color-meta');
+const progressLabel = document.getElementById('progress-label');
+const progressPercent = document.getElementById('progress-percent');
+const progressFill = document.getElementById('progress-fill');
+const rewardBanner = document.getElementById('reward-banner');
+const addForm = document.getElementById('add-form');
+const itemNameInput = document.getElementById('item-name');
+const itemQtyInput = document.getElementById('item-qty');
+const itemPriceInput = document.getElementById('item-price');
+const itemCategorySelect = document.getElementById('item-category');
+const searchInput = document.getElementById('search-input');
+const toggleHideBtn = document.getElementById('toggle-hide-btn');
+const listContainer = document.getElementById('list-container');
+const shareBtn = document.getElementById('share-btn');
+const clearCheckedBtn = document.getElementById('clear-checked-btn');
+const clearAllBtn = document.getElementById('clear-all-btn');
+const bottomBar = document.getElementById('bottom-bar');
+const totalCostEl = document.getElementById('total-cost');
+const budgetInput = document.getElementById('budget-input');
+const remainingTextEl = document.getElementById('remaining-text');
+const toastEl = document.getElementById('toast');
+// Διακριτική δόνηση στο κινητό
+function vibrate(ms = 18) {
+if (navigator.vibrate) {
+navigator.vibrate(ms);
+}
+}
+// Εμφάνιση σύντομης ειδοποίησης (Toast)
+let toastTimer;
+function showToast(msg) {
+toastEl.textContent = msg;
+toastEl.classList.add('show');
+clearTimeout(toastTimer);
+toastTimer = setTimeout(() => {
+toastEl.classList.remove('show');
+}, 2200);
+}
+// Δημιουργία φθινοπωρινών φύλλων στο φόντο
+function initLeaves() {
+const leafSymbols = ['🍂', '🍁'];
+const count = 12;
+for (let i = 0; i < count; i++) {
+const leaf = document.createElement('span');
+leaf.className = 'leaf';
+leaf.textContent = leafSymbols[i % leafSymbols.length];
+leaf.style.left = Math.random() * 96 + '%';
+leaf.style.fontSize = (14 + Math.random() * 12) + 'px';
+leaf.style.animationDuration = (11 + Math.random() * 12) + 's';
+leaf.style.animationDelay = (-Math.random() * 15) + 's';
+leavesContainer.appendChild(leaf);
+}
+}
+// Φόρτωση δεδομένων από localStorage
+function loadState() {
+try {
+const savedItems = localStorage.getItem(STORAGE_KEYS.ITEMS);
+if (savedItems) {
+items = JSON.parse(savedItems);
+}
+const savedBudget = localStorage.getItem(STORAGE_KEYS.BUDGET);
+if (savedBudget !== null) {
+budget = savedBudget;
+budgetInput.value = budget;
+}
+const savedHide = localStorage.getItem(STORAGE_KEYS.HIDE_CHECKED);
+if (savedHide === 'true') {
+hideChecked = true;
+toggleHideBtn.classList.add('active');
+toggleHideBtn.textContent = '🙈 Εμφάνιση αγορασμένων';
+}
+const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME);
+if (savedTheme === 'dark') {
+document.body.classList.add('dark-mode');
+themeToggleBtn.textContent = '☀️';
+themeMeta.setAttribute('content', '#1C1917');
+}
+} catch (e) {
+console.error('Σφάλμα φόρτωσης localStorage:', e);
+}
+}
+// Αποθήκευση δεδομένων στο localStorage
+function saveState() {
+try {
+localStorage.setItem(STORAGE_KEYS.ITEMS, JSON.stringify(items));
+localStorage.setItem(STORAGE_KEYS.BUDGET, budget);
+localStorage.setItem(STORAGE_KEYS.HIDE_CHECKED, String(hideChecked));
+} catch (e) {
+console.error('Σφάλμα αποθήκευσης localStorage:', e);
+}
+}
+// Μορφοποίηση νομίσματος
+function formatEuro(num) {
+return num.toFixed(2).replace('.', ',') + ' €';
+}
+// Προσθήκη προϊόντος
+function addItem(name, qty, price, category) {
+const cleanName = name.trim();
+if (!cleanName) return;
+const parsedQty = Math.max(1, parseInt(qty, 10) || 1);
+const parsedPrice = Math.max(0, parseFloat(price) || 0);
+// Αν υπάρχει ήδη ίδιο προϊόν (μη αγορασμένο), αύξησε την ποσότητα
+const existing = items.find(
+(it) => !it.checked && it.name.toLowerCase() === cleanName.toLowerCase() && it.category === category
+);
+if (existing) {
+existing.qty += parsedQty;
+if (parsedPrice > 0) existing.price = parsedPrice;
+showToast(+1 ${existing.name} (Σύνολο: ${existing.qty}));
+} else {
+items.unshift({
+id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+name: cleanName,
+qty: parsedQty,
+price: parsedPrice,
+category: category,
+checked: false
+});
+showToast(Προστέθηκε: ${cleanName});
+}
+vibrate(20);
+saveState();
+render();
+}
+// Ενημέρωση Προόδου & Οικονομικών
+function updateSummary() {
+const totalCount = items.length;
+const checkedCount = items.filter((it) => it.checked).length;
+const pct = totalCount === 0 ? 0 : Math.round((checkedCount / totalCount) * 100);
+progressLabel.textContent = Αγοράστηκαν ${checkedCount} / ${totalCount};
+progressPercent.textContent = ${pct}%;
+progressFill.style.width = ${pct}%;
+if (totalCount > 0 && checkedCount === totalCount) {
+progressFill.classList.add('completed');
+rewardBanner.classList.add('show');
+} else {
+progressFill.classList.remove('completed');
+rewardBanner.classList.remove('show');
+}
+// Υπολογισμός συνολικού κόστους
+const totalCost = items.reduce((sum, it) => sum + (it.qty * it.price), 0);
+totalCostEl.textContent = formatEuro(totalCost);
+// Υπολογισμός Ορίου / Υπολοίπου
+const budgetVal = parseFloat(budget);
+if (!isNaN(budgetVal) && budget !== '' && budgetVal >= 0) {
+const diff = budgetVal - totalCost;
+if (diff < 0) {
+bottomBar.classList.add('over-budget');
+remainingTextEl.textContent = ⚠️ Υπέρβαση κατά ${formatEuro(Math.abs(diff))};
+if (!wasOverBudget) {
+bottomBar.classList.remove('shake');
+void bottomBar.offsetWidth; // trigger reflow
+bottomBar.classList.add('shake');
+vibrate([40, 30, 40]);
+}
+wasOverBudget = true;
+} else {
+bottomBar.classList.remove('over-budget', 'shake');
+remainingTextEl.textContent = Υπόλοιπο: ${formatEuro(diff)};
+wasOverBudget = false;
+}
+} else {
+bottomBar.classList.remove('over-budget', 'shake');
+remainingTextEl.textContent = 'Όρισε προϋπολογισμό';
+wasOverBudget = false;
+}
+}
+// Σχεδίαση Λίστας
+function render() {
+updateSummary();
+listContainer.innerHTML = '';
+const q = searchQuery.trim().toLowerCase();
+const filtered = items.filter((it) => {
+if (hideChecked && it.checked) return false;
+if (q && !it.name.toLowerCase().includes(q) && !it.category.toLowerCase().includes(q)) return false;
+return true;
+});
+if (filtered.length === 0) {
+const empty = document.createElement('div');
+empty.className = 'empty-state';
+empty.innerHTML = items.length === 0
+? <span class="big-emoji">🍂</span><strong>Το καλάθι σου είναι άδειο!</strong><br><small>Πρόσθεσε προϊόντα από πάνω ή πάτα ένα γρήγορο κουμπί.</small>
+: <span class="big-emoji">🔍</span><strong>Δεν βρέθηκαν προϊόντα</strong><br><small>Δοκίμασε άλλη αναζήτηση ή εμφάνισε τα αγορασμένα.</small>;
+listContainer.appendChild(empty);
+return;
+}
+// Ομαδοποίηση ανά κατηγορία
+const groups = {};
+filtered.forEach((it) => {
+if (!groups[it.category]) groups[it.category] = [];
+groups[it.category].push(it);
+});
+Object.keys(groups).forEach((cat) => {
+const groupDiv = document.createElement('div');
+groupDiv.className = 'category-group';
+const catTitle = document.createElement('div');
+catTitle.className = 'category-title';
+catTitle.innerHTML = <span>${cat}</span><span>${groups[cat].length}</span>;
+groupDiv.appendChild(catTitle);
+groups[cat].forEach((item) => {
+const card = document.createElement('div');
+card.className = 'item-card' + (item.checked ? ' checked' : '');
+// Checkbox
+const checkBtn = document.createElement('button');
+checkBtn.type = 'button';
+checkBtn.className = 'checkbox-custom';
+checkBtn.setAttribute('aria-label', item.checked ? 'Αποεπιλογή' : 'Επιλογή ως αγορασμένο');
+checkBtn.textContent = item.checked ? '✓' : '';
+checkBtn.addEventListener('click', () => {
+item.checked = !item.checked;
+vibrate(15);
+saveState();
+render();
+});
+// Όνομα & υποσύνολο γραμμής
+const infoDiv = document.createElement('div');
+infoDiv.className = 'item-info';
+const nameEl = document.createElement('div');
+nameEl.className = 'item-name';
+nameEl.textContent = item.name;
+const subEl = document.createElement('div');
+subEl.className = 'item-sub';
+const lineTotal = item.qty * item.price;
+subEl.textContent = item.price > 0
+? ${item.qty} × ${formatEuro(item.price)} = ${formatEuro(lineTotal)}
+: ${item.qty} τεμ. • Χωρίς τιμή;
+infoDiv.appendChild(nameEl);
+infoDiv.appendChild(subEl);
+// Έλεγχοι (- / +, τιμή, διαγραφή)
+const controlsDiv = document.createElement('div');
+controlsDiv.className = 'item-controls';
+// Ποσότητα
+const qtyBox = document.createElement('div');
+qtyBox.className = 'qty-box';
+const minusBtn = document.createElement('button');
+minusBtn.type = 'button';
+minusBtn.className = 'qty-btn';
+minusBtn.textContent = '−';
+minusBtn.setAttribute('aria-label', 'Μείωση ποσότητας');
+minusBtn.addEventListener('click', () => {
+if (item.qty > 1) {
+item.qty -= 1;
+vibrate(12);
+saveState();
+render();
+}
+});
+const qtyVal = document.createElement('span');
+qtyVal.className = 'qty-val';
+qtyVal.textContent = item.qty;
+const plusBtn = document.createElement('button');
+plusBtn.type = 'button';
+plusBtn.className = 'qty-btn';
+plusBtn.textContent = '+';
+plusBtn.setAttribute('aria-label', 'Αύξηση ποσότητας');
+plusBtn.addEventListener('click', () => {
+item.qty += 1;
+vibrate(12);
+saveState();
+render();
+});
+qtyBox.appendChild(minusBtn);
+qtyBox.appendChild(qtyVal);
+qtyBox.appendChild(plusBtn);
+// Αλλαγή τιμής απευθείας πάνω στη λίστα
+const priceWrap = document.createElement('div');
+priceWrap.className = 'inline-price-wrap';
+const priceInput = document.createElement('input');
+priceInput.type = 'number';
+priceInput.className = 'inline-price';
+priceInput.step = '0.01';
+priceInput.min = '0';
+priceInput.placeholder = '0.00';
+priceInput.value = item.price > 0 ? item.price : '';
+priceInput.setAttribute('aria-label', 'Τιμή μονάδας');
+priceInput.addEventListener('change', (e) => {
+const val = Math.max(0, parseFloat(e.target.value) || 0);
+item.price = val;
+saveState();
+render();
+});
+const euroSign = document.createElement('span');
+euroSign.textContent = '€';
+priceWrap.appendChild(priceInput);
+priceWrap.appendChild(euroSign);
+// Διαγραφή
+const delBtn = document.createElement('button');
+delBtn.type = 'button';
+delBtn.className = 'del-btn';
+delBtn.textContent = '✕';
+delBtn.setAttribute('aria-label', 'Διαγραφή προϊόντος');
+delBtn.addEventListener('click', () => {
+items = items.filter((x) => x.id !== item.id);
+vibrate(15);
+saveState();
+render();
+});
+controlsDiv.appendChild(qtyBox);
+controlsDiv.appendChild(priceWrap);
+controlsDiv.appendChild(delBtn);
+card.appendChild(checkBtn);
+card.appendChild(infoDiv);
+card.appendChild(controlsDiv);
+groupDiv.appendChild(card);
+});
+listContainer.appendChild(groupDiv);
+});
+}
+// Event Listeners
+themeToggleBtn.addEventListener('click', () => {
+const isDark = document.body.classList.toggle('dark-mode');
+themeToggleBtn.textContent = isDark ? '☀️' : '🌙';
+themeMeta.setAttribute('content', isDark ? '#1C1917' : '#FAF6F0');
+localStorage.setItem(STORAGE_KEYS.THEME, isDark ? 'dark' : 'light');
+vibrate(15);
+});
+document.querySelectorAll('.quick-chip').forEach((btn) => {
+btn.addEventListener('click', () => {
+addItem(btn.dataset.name, 1, 0, btn.dataset.cat);
+});
+});
+addForm.addEventListener('submit', (e) => {
+e.preventDefault();
+addItem(
+itemNameInput.value,
+itemQtyInput.value,
+itemPriceInput.value,
+itemCategorySelect.value
+);
+itemNameInput.value = '';
+itemQtyInput.value = '1';
+itemPriceInput.value = '';
+itemNameInput.focus();
+});
+searchInput.addEventListener('input', (e) => {
+searchQuery = e.target.value;
+render();
+});
+toggleHideBtn.addEventListener('click', () => {
+hideChecked = !hideChecked;
+toggleHideBtn.classList.toggle('active', hideChecked);
+toggleHideBtn.textContent = hideChecked ? '🙈 Εμφάνιση αγορασμένων' : '👁️ Απόκρυψη αγορασμένων';
+vibrate(15);
+saveState();
+render();
+});
+budgetInput.addEventListener('input', (e) => {
+budget = e.target.value;
+saveState();
+updateSummary();
+});
+clearCheckedBtn.addEventListener('click', () => {
+const checkedCount = items.filter((it) => it.checked).length;
+if (checkedCount === 0) {
+showToast('Δεν υπάρχουν αγορασμένα προϊόντα');
+return;
+}
+items = items.filter((it) => !it.checked);
+vibrate(25);
+saveState();
+render();
+showToast(Σβήστηκαν ${checkedCount} αγορασμένα);
+});
+clearAllBtn.addEventListener('click', () => {
+if (items.length === 0) return;
+if (confirm('Σίγουρα θέλεις να καθαρίσεις όλη τη λίστα;')) {
+items = [];
+vibrate(35);
+saveState();
+render();
+showToast('Η λίστα καθαρίστηκε');
+}
+});
+shareBtn.addEventListener('click', async () => {
+if (items.length === 0) {
+showToast('Η λίστα είναι άδεια!');
+return;
+}
+let text = '🛒 Λίστα Σούπερ Μάρκετ\n\n';
+const groups = {};
+items.forEach((it) => {
+if (!groups[it.category]) groups[it.category] = [];
+groups[it.category].push(it);
+});
+Object.keys(groups).forEach((cat) => {
+text += ${cat}\n;
+groups[cat].forEach((it) => {
+const mark = it.checked ? '✅' : '⬜';
+const priceStr = it.price > 0 ?  (${formatEuro(it.qty * it.price)}) : '';
+text += ${mark} ${it.name} x${it.qty}${priceStr}\n;
+});
+text += '\n';
+});
+const total = items.reduce((s, it) => s + it.qty * it.price, 0);
+if (total > 0) {
+text += 💰 Σύνολο: ${formatEuro(total)};
+}
+vibrate(20);
+if (navigator.share) {
+try {
+await navigator.share({
+title: 'Λίστα Σούπερ Μάρκετ',
+text: text
+});
+} catch (err) {
+// Ακύρωση κοινοποίησης από τον χρήστη
+}
+} else if (navigator.clipboard) {
+await navigator.clipboard.writeText(text);
+showToast('📋 Η λίστα αντιγράφηκε! Κάνε επικόλληση σε Viber/WhatsApp');
+}
+});
+// Αρχικοποίηση
+initLeaves();
+loadState();
+render();
+})();
