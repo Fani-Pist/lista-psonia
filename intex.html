@@ -9,62 +9,68 @@
   <meta name="apple-mobile-web-app-title" content="Λίστα Σούπερ Μάρκετ" />
   <title>Λίστα Σούπερ Μάρκετ 🛒</title>
 
-  <!-- Favicon & Apple Touch Icon (SVG Basket) -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://w3.org' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23C85A32'/%3E%3Ctext x='50' y='68' font-size='56' text-anchor='middle'%3E🛒%3C/text%3E%3C/svg%3E" />
-  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://w3.org' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23C85A32'/%3E%3Ctext x='50' y='68' font-size='56' text-anchor='middle'%3E🛒%3C/text%3E%3C/svg%3E" />
+  <!-- Favicon & Apple Touch Icon (SVG Data URI) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://w3.org' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23C85A32'/%3E%3Ctext x='50' y='68' font-size='56' text-anchor='middle'%3E%F0%9F%9B%92%3C/text%3E%3C/svg%3E" />
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://w3.org' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23C85A32'/%3E%3Ctext x='50' y='68' font-size='56' text-anchor='middle'%3E%F0%9F%9B%92%3C/text%3E%3C/svg%3E" />
 
   <style>
     :root {
-      --bg: #FAF6F0;
-      --surface: #FFFFFF;
-      --surface-soft: #F3ECE1;
-      --text: #2E2925;
-      --text-muted: #7A7167;
-      --terracotta: #C85A32;
-      --terracotta-dark: #A94724;
+      --bg-color: #FAF6F0;
+      --surface-color: #FFFFFF;
+      --surface-alt: #F3ECE1;
+      --text-main: #2D2A26;
+      --text-muted: #7A736B;
+      --accent: #C85A32;
+      --accent-hover: #B04A25;
       --sage: #6B705C;
-      --sage-light: #A5A58D;
+      --sage-light: #E8EBE2;
       --success: #3E8E41;
-      --danger: #D62828;
-      --border: #E6DDD0;
-      --shadow: 0 4px 14px rgba(46, 41, 37, 0.07);
+      --danger: #D9381E;
+      --border-color: #E6DDD0;
+      --shadow: 0 4px 12px rgba(45, 42, 38, 0.06);
+      --radius: 14px;
     }
 
     body.dark {
-      --bg: #1C1917;
-      --surface: #292524;
-      --surface-soft: #35302E;
-      --text: #F5F0E8;
-      --text-muted: #A8A29E;
-      --terracotta: #D96B43;
-      --terracotta-dark: #B8522E;
-      --sage: #848A72;
-      --sage-light: #5C614F;
+      --bg-color: #1C1917;
+      --surface-color: #262320;
+      --surface-alt: #322E2A;
+      --text-main: #F5EFE6;
+      --text-muted: #A89F94;
+      --accent: #D96B43;
+      --accent-hover: #E57A53;
+      --sage: #8A9178;
+      --sage-light: #2F3329;
       --success: #4CAF50;
-      --danger: #EF4444;
-      --border: #3F3A36;
-      --shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+      --danger: #EF5350;
+      --border-color: #3D3833;
+      --shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
     }
 
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
       -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.4;
+      padding-bottom: 145px;
       transition: background-color 0.3s ease, color 0.3s ease;
-      padding-bottom: 135px;
       overflow-x: hidden;
     }
 
     /* Falling Autumn Leaves */
-    #leaves-container {
+    .leaves-container {
       position: fixed;
-      inset: 0;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
       z-index: 0;
       overflow: hidden;
@@ -73,37 +79,37 @@
     .leaf {
       position: absolute;
       top: -40px;
-      font-size: 1.25rem;
-      opacity: 0.32;
-      user-select: none;
+      font-size: 1.2rem;
+      opacity: 0.35;
       animation: fall linear infinite;
     }
 
     @keyframes fall {
       0% {
-        transform: translateY(-40px) translateX(0) rotate(0deg);
+        transform: translateY(-40px) rotate(0deg) translateX(0px);
       }
       50% {
-        transform: translateY(50vh) translateX(22px) rotate(180deg);
+        transform: translateY(50vh) rotate(180deg) translateX(20px);
       }
       100% {
-        transform: translateY(105vh) translateX(-18px) rotate(360deg);
+        transform: translateY(105vh) rotate(360deg) translateX(-15px);
       }
     }
 
+    /* Main Container */
     .app-container {
       position: relative;
       z-index: 1;
       max-width: 540px;
       margin: 0 auto;
-      padding: 14px 14px 30px;
+      padding: 16px;
     }
 
     /* Header */
     header {
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       margin-bottom: 14px;
     }
 
@@ -113,54 +119,52 @@
       gap: 10px;
     }
 
-    .logo-float {
+    .logo-cart {
       font-size: 2rem;
       display: inline-block;
-      animation: floatLogo 3s ease-in-out infinite;
+      animation: floatCart 3s ease-in-out infinite;
     }
 
-    @keyframes floatLogo {
-      0%, 100% { transform: translateY(0) rotate(-3deg); }
-      50% { transform: translateY(-5px) rotate(4deg); }
+    @keyframes floatCart {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-5px) rotate(-4deg); }
     }
 
     h1 {
-      font-size: 1.3rem;
-      margin: 0;
+      font-size: 1.35rem;
       font-weight: 800;
-      color: var(--terracotta);
+      color: var(--accent);
       letter-spacing: -0.3px;
     }
 
     .theme-btn {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text);
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 50%;
       width: 42px;
       height: 42px;
-      border-radius: 50%;
       font-size: 1.2rem;
       cursor: pointer;
-      box-shadow: var(--shadow);
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.12s ease;
+      box-shadow: var(--shadow);
+      transition: transform 0.15s ease;
     }
 
-    /* Button Press Effect */
+    /* Press effect on all buttons */
     button:active {
       transform: scale(0.94);
     }
 
-    /* Progress Section */
+    /* Progress Bar Card */
     .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
       padding: 14px;
+      margin-bottom: 14px;
       box-shadow: var(--shadow);
-      margin-bottom: 12px;
     }
 
     .progress-header {
@@ -168,14 +172,14 @@
       justify-content: space-between;
       align-items: center;
       font-size: 0.9rem;
-      font-weight: 700;
+      font-weight: 600;
       margin-bottom: 8px;
     }
 
     .progress-track {
       width: 100%;
       height: 12px;
-      background: var(--surface-soft);
+      background: var(--surface-alt);
       border-radius: 999px;
       overflow: hidden;
       position: relative;
@@ -184,18 +188,18 @@
     .progress-fill {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, var(--sage), var(--terracotta));
+      background: linear-gradient(90deg, var(--accent), #E07A5F);
       border-radius: 999px;
-      transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s ease;
+      transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s ease;
       position: relative;
       overflow: hidden;
     }
 
-    .progress-fill.complete {
-      background: var(--success);
+    .progress-fill.completed {
+      background: linear-gradient(90deg, var(--success), #66BB6A);
     }
 
-    /* Gloss Shine Effect */
+    /* Shimmer effect */
     .progress-fill::after {
       content: "";
       position: absolute;
@@ -203,31 +207,35 @@
       left: -100%;
       width: 60%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
-      animation: shine 2.4s infinite;
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.45) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      animation: shimmer 2.2s infinite;
     }
 
-    @keyframes shine {
-      0% { left: -100%; }
+    @keyframes shimmer {
       100% { left: 160%; }
     }
 
     .reward-msg {
+      display: none;
       margin-top: 8px;
-      font-size: 0.85rem;
+      font-size: 0.88rem;
       font-weight: 700;
       color: var(--success);
       text-align: center;
-      display: none;
+      animation: popIn 0.3s ease;
     }
 
     .reward-msg.show {
       display: block;
-      animation: popIn 0.3s ease;
     }
 
     /* Quick Add Horizontal Bar */
-    .quick-bar {
+    .quick-add-scroll {
       display: flex;
       gap: 8px;
       overflow-x: auto;
@@ -235,98 +243,103 @@
       margin-bottom: 12px;
       scrollbar-width: none;
     }
-    .quick-bar::-webkit-scrollbar { display: none; }
+
+    .quick-add-scroll::-webkit-scrollbar {
+      display: none;
+    }
 
     .quick-chip {
       flex: 0 0 auto;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 8px 13px;
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 8px 12px;
       border-radius: 999px;
       font-size: 0.88rem;
       font-weight: 600;
       cursor: pointer;
       box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-      transition: transform 0.1s ease, background 0.2s;
+      transition: background 0.2s, border-color 0.2s;
     }
 
     .quick-chip:hover {
-      border-color: var(--terracotta);
+      border-color: var(--accent);
     }
 
-    /* Add Product Form */
+    /* Add Item Form */
     .add-form {
       display: grid;
-      grid-template-columns: 1fr 78px 86px;
+      grid-template-columns: 1fr 76px 84px;
       gap: 8px;
     }
 
     .add-form input,
     .add-form select {
       width: 100%;
-      padding: 10px 11px;
-      border-radius: 11px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--text);
-      font-size: 0.92rem;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      background: var(--surface-alt);
+      color: var(--text-main);
+      font-size: 0.95rem;
       outline: none;
     }
 
     .add-form input:focus,
     .add-form select:focus {
-      border-color: var(--terracotta);
+      border-color: var(--accent);
     }
 
-    .cat-row {
+    .form-bottom-row {
       grid-column: 1 / -1;
       display: flex;
       gap: 8px;
+      margin-top: 2px;
     }
 
     .btn-primary {
-      background: var(--terracotta);
+      background: var(--accent);
       color: #fff;
       border: none;
-      border-radius: 11px;
-      padding: 10px 16px;
-      font-weight: 700;
+      border-radius: 10px;
+      padding: 10px 18px;
       font-size: 0.95rem;
+      font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
-      transition: background 0.2s, transform 0.1s;
+      transition: background 0.2s;
     }
 
     .btn-primary:hover {
-      background: var(--terracotta-dark);
+      background: var(--accent-hover);
     }
 
-    /* Search & Filter Row */
-    .toolbar {
+    /* Filter & Search Row */
+    .filter-bar {
       display: flex;
       gap: 8px;
       margin-bottom: 14px;
+      align-items: center;
     }
 
-    .search-box {
+    .search-input {
       flex: 1;
       padding: 9px 12px;
-      border-radius: 11px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text);
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      background: var(--surface-color);
+      color: var(--text-main);
       font-size: 0.9rem;
       outline: none;
     }
 
     .toggle-hide-btn {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text);
       padding: 9px 12px;
-      border-radius: 11px;
-      font-size: 0.82rem;
+      border-radius: 10px;
+      border: 1px solid var(--sage);
+      background: var(--surface-color);
+      color: var(--sage);
+      font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
       white-space: nowrap;
@@ -335,42 +348,47 @@
     .toggle-hide-btn.active {
       background: var(--sage);
       color: #fff;
-      border-color: var(--sage);
     }
 
-    /* Category Groups */
+    /* Category Groups & Items */
     .category-group {
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
 
     .category-title {
       font-size: 0.85rem;
-      font-weight: 800;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.5px;
       color: var(--sage);
-      margin: 0 0 6px 4px;
-      display: flex;
-      justify-content: space-between;
+      margin-bottom: 6px;
+      padding-left: 4px;
     }
 
     .item-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
       padding: 10px 12px;
       margin-bottom: 8px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      box-shadow: var(--shadow);
-      animation: slideIn 0.28s ease-out;
-      transition: opacity 0.2s ease, background 0.2s ease;
+      justify-content: space-between;
+      gap: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+      animation: slideIn 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: opacity 0.25s ease, background 0.25s ease;
     }
 
     @keyframes slideIn {
-      from { opacity: 0; transform: translateY(10px) scale(0.98); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
+      from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
     @keyframes popIn {
@@ -379,8 +397,8 @@
     }
 
     .item-card.checked {
-      opacity: 0.58;
-      background: var(--surface-soft);
+      opacity: 0.62;
+      background: var(--surface-alt);
     }
 
     .item-card.checked .item-name {
@@ -388,40 +406,33 @@
       color: var(--text-muted);
     }
 
-    .check-btn {
-      width: 26px;
-      height: 26px;
-      border-radius: 8px;
-      border: 2px solid var(--terracotta);
-      background: transparent;
-      color: #fff;
-      font-size: 0.95rem;
+    .item-left {
       display: flex;
       align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-
-    .item-card.checked .check-btn {
-      background: var(--sage);
-      border-color: var(--sage);
-    }
-
-    .item-info {
+      gap: 10px;
       flex: 1;
       min-width: 0;
     }
-
-    .item-name {
-      font-weight: 700;
+.custom-checkbox {
+width: 24px;
+height: 24px;
+accent-color: var(--sage);
+cursor: pointer;
+flex-shrink: 0;
+}
+.item-info {
+display: flex;
+flex-direction: column;
+min-width: 0;
+}
+.item-name {
+font-weight: 600;
 font-size: 0.98rem;
 word-break: break-word;
 }
-.item-sub {
+.item-subtotal {
 font-size: 0.78rem;
 color: var(--text-muted);
-margin-top: 2px;
 }
 .item-controls {
 display: flex;
@@ -432,48 +443,48 @@ flex-shrink: 0;
 .qty-box {
 display: flex;
 align-items: center;
-background: var(--bg);
-border: 1px solid var(--border);
-border-radius: 9px;
+background: var(--surface-alt);
+border-radius: 8px;
+border: 1px solid var(--border-color);
 overflow: hidden;
 }
 .qty-btn {
 background: transparent;
 border: none;
-color: var(--text);
-width: 26px;
+color: var(--text-main);
+width: 28px;
 height: 28px;
-font-weight: 800;
 font-size: 1rem;
+font-weight: 700;
 cursor: pointer;
 }
 .qty-val {
 min-width: 22px;
 text-align: center;
-font-size: 0.85rem;
+font-size: 0.88rem;
 font-weight: 700;
 }
-.price-input-wrap {
+.inline-price-wrap {
 display: flex;
 align-items: center;
-background: var(--bg);
-border: 1px solid var(--border);
-border-radius: 9px;
+background: var(--surface-alt);
+border: 1px solid var(--border-color);
+border-radius: 8px;
 padding: 0 5px;
-width: 66px;
 height: 30px;
 }
-.price-input-wrap span {
-font-size: 0.78rem;
+.inline-price-wrap span {
+font-size: 0.8rem;
 color: var(--text-muted);
+margin-right: 2px;
 }
 .inline-price {
-width: 100%;
+width: 48px;
 border: none;
 background: transparent;
-color: var(--text);
-font-size: 0.85rem;
-font-weight: 700;
+color: var(--text-main);
+font-size: 0.88rem;
+font-weight: 600;
 text-align: right;
 outline: none;
 }
@@ -481,14 +492,21 @@ outline: none;
 background: transparent;
 border: none;
 color: var(--text-muted);
-font-size: 1rem;
+font-size: 1.05rem;
 cursor: pointer;
 padding: 4px;
 }
 .del-btn:hover {
 color: var(--danger);
 }
-/* Action Buttons */
+/* Empty State */
+.empty-state {
+text-align: center;
+padding: 32px 16px;
+color: var(--text-muted);
+font-size: 0.95rem;
+}
+/* Bottom Action Buttons */
 .actions-grid {
 display: grid;
 grid-template-columns: 1fr 1fr;
@@ -496,14 +514,18 @@ gap: 8px;
 margin-top: 16px;
 }
 .action-btn {
-padding: 11px 10px;
-border-radius: 12px;
-border: 1px solid var(--border);
-background: var(--surface);
-color: var(--text);
-font-size: 0.85rem;
-font-weight: 700;
+padding: 10px;
+border-radius: 10px;
+border: 1px solid var(--border-color);
+background: var(--surface-color);
+color: var(--text-main);
+font-size: 0.86rem;
+font-weight: 600;
 cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 6px;
 box-shadow: var(--shadow);
 }
 .action-btn.share {
@@ -515,26 +537,23 @@ border-color: var(--sage);
 .action-btn.danger {
 color: var(--danger);
 }
+/* Coffee Footer Link */
 .coffee-footer {
 text-align: center;
 margin-top: 22px;
-font-size: 0.85rem;
+margin-bottom: 10px;
 }
-.coffee-footer a {
-color: var(--terracotta);
-text-decoration: none;
-font-weight: 700;
-padding: 6px 12px;
-border-radius: 999px;
-background: var(--surface);
-border: 1px solid var(--border);
-display: inline-block;
-}
-.empty-state {
-text-align: center;
-padding: 28px 12px;
+.coffee-link {
+font-size: 0.82rem;
 color: var(--text-muted);
-font-size: 0.92rem;
+text-decoration: none;
+border-bottom: 1px dashed var(--text-muted);
+padding-bottom: 2px;
+transition: color 0.2s;
+}
+.coffee-link:hover {
+color: var(--accent);
+border-color: var(--accent);
 }
 /* Fixed Bottom Budget Bar */
 .bottom-bar {
@@ -542,35 +561,38 @@ position: fixed;
 bottom: 0;
 left: 0;
 right: 0;
-background: var(--surface);
-border-top: 2px solid var(--border);
-padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
-z-index: 20;
-box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
+background: var(--surface-color);
+border-top: 2px solid var(--border-color);
+padding: 10px 16px;
+z-index: 10;
+box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
 transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.bottom-bar-inner {
+max-width: 540px;
+margin: 0 auto;
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: 10px;
 }
 .bottom-bar.over-budget {
 background: #FDECEA;
 border-top-color: var(--danger);
-animation: shake 0.4s ease-in-out;
 }
 body.dark .bottom-bar.over-budget {
-background: #451A1A;
+background: #3B1816;
+border-top-color: var(--danger);
 }
-@keyframes shake {
+@keyframes shakeBar {
 0%, 100% { transform: translateX(0); }
 20% { transform: translateX(-6px); }
 40% { transform: translateX(6px); }
 60% { transform: translateX(-4px); }
 80% { transform: translateX(4px); }
 }
-.bottom-inner {
-max-width: 540px;
-margin: 0 auto;
-display: flex;
-align-items: center;
-justify-content: space-between;
-gap: 10px;
+.shake {
+animation: shakeBar 0.4s ease;
 }
 .total-block {
 display: flex;
@@ -582,53 +604,46 @@ color: var(--text-muted);
 font-weight: 600;
 }
 .total-amount {
-font-size: 1.35rem;
-font-weight: 900;
-color: var(--terracotta);
+font-size: 1.3rem;
+font-weight: 800;
+color: var(--accent);
 }
-.bottom-bar.over-budget .total-amount {
+.bottom-bar.over-budget .total-amount,
+.bottom-bar.over-budget .remaining-text {
 color: var(--danger);
 }
-.budget-block {
-display: flex;
-align-items: center;
-gap: 8px;
-}
-.budget-input-group {
+.budget-controls {
 display: flex;
 flex-direction: column;
 align-items: flex-end;
 }
-.budget-input-group label {
-font-size: 0.72rem;
-color: var(--text-muted);
-font-weight: 700;
+.budget-input-row {
+display: flex;
+align-items: center;
+gap: 6px;
 }
-.budget-input-group input {
-width: 82px;
+.budget-input-row label {
+font-size: 0.82rem;
+font-weight: 600;
+color: var(--text-muted);
+}
+.budget-input {
+width: 78px;
 padding: 6px 8px;
-border-radius: 9px;
-border: 1px solid var(--border);
-background: var(--bg);
-color: var(--text);
-font-weight: 800;
+border-radius: 8px;
+border: 1px solid var(--border-color);
+background: var(--surface-alt);
+color: var(--text-main);
 font-size: 0.92rem;
+font-weight: 700;
 text-align: right;
 outline: none;
 }
-.remaining-badge {
+.remaining-text {
 font-size: 0.78rem;
-font-weight: 800;
-padding: 6px 9px;
-border-radius: 10px;
-background: var(--surface-soft);
+font-weight: 700;
 color: var(--sage);
-text-align: right;
-min-width: 88px;
-}
-.bottom-bar.over-budget .remaining-badge {
-background: var(--danger);
-color: #fff;
+margin-top: 3px;
 }
 
 
@@ -642,7 +657,7 @@ color: #fff;
 
 
 
-🎉 Μπράβο! Ολοκλήρωσες όλες τις αγορές σου!
+🎉 Μπράβο! Τα πήρες όλα, ώρα για ταμείο!
 🥛 Γάλα
 🍞 Ψωμί
 🥚 Αυγά
@@ -650,111 +665,109 @@ color: #fff;
 🧀 Τυρί
 🍅 Ντομάτες
 🥬 Φρούτα & Λαχανικά
-🥛 Γαλακτοκομικά
-🥩 Κρεοπωλείο & Ψάρια
-🥖 Αρτοποιείο
+🥛 Γαλακτοκομικά & Ψυγείο
+🥩 Κρέας & Ψάρι
+🍞 Αρτοποιείο
 🍝 Τρόφιμα & Ζυμαρικά
-☕ Ροφήματα & Σνακ
-🧼 Καθαριστικά & Σπίτι
+☕ Πρωινό & Ροφήματα
+🧼 Καθαριστικά & Προσωπικά
 📦 Άλλα
 
 + Προσθήκη
 
-👁️ Απόκρυψη αγορασμένων
+Απόκρυψη αγορασμένων
+📤 Κοινοποίηση Λίστας (Viber / WhatsApp)
 🧹 Σβήσιμο Αγορασμένων
-🗑️ Καθαρισμός Όλης της Λίστας
-📲 Κοινοποίηση Λίστας (Viber / WhatsApp)
+🗑️ Καθαρισμός Όλων
 ☕ Σου έλυσε τα χέρια; Κέρασέ με έναν καφέ
+
 
 ΣΥΝΟΛΙΚΟ ΚΟΣΤΟΣ
 0,00 €
-Όριο (€)
+
+
+Όριο (€):
 Χωρίς όριο
 
 
 (function () {
+// State & LocalStorage keys
 const STORAGE_KEY = 'supermarket_list_v1';
 const BUDGET_KEY = 'supermarket_budget_v1';
 const THEME_KEY = 'supermarket_theme_v1';
-let items = [];
-let budget = '';
+let items = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+let budgetLimit = parseFloat(localStorage.getItem(BUDGET_KEY)) || 0;
 let hideChecked = false;
 let searchQuery = '';
 let wasOverBudget = false;
 // DOM Elements
-const leavesContainer = document.getElementById('leaves-container');
-const themeToggle = document.getElementById('themeToggle');
-const progressText = document.getElementById('progressText');
-const progressPercent = document.getElementById('progressPercent');
-const progressFill = document.getElementById('progressFill');
-const rewardMsg = document.getElementById('rewardMsg');
-const quickBar = document.getElementById('quickBar');
+const listContainer = document.getElementById('listContainer');
 const addForm = document.getElementById('addForm');
 const itemNameInput = document.getElementById('itemName');
 const itemQtyInput = document.getElementById('itemQty');
 const itemPriceInput = document.getElementById('itemPrice');
 const itemCategorySelect = document.getElementById('itemCategory');
 const searchInput = document.getElementById('searchInput');
-const hideCheckedBtn = document.getElementById('hideCheckedBtn');
-const listContainer = document.getElementById('listContainer');
-const deleteCheckedBtn = document.getElementById('deleteCheckedBtn');
-const clearAllBtn = document.getElementById('clearAllBtn');
-const shareBtn = document.getElementById('shareBtn');
-const bottomBar = document.getElementById('bottomBar');
+const toggleHideBtn = document.getElementById('toggleHideBtn');
+const progressText = document.getElementById('progressText');
+const progressPercent = document.getElementById('progressPercent');
+const progressFill = document.getElementById('progressFill');
+const rewardMsg = document.getElementById('rewardMsg');
 const totalCostEl = document.getElementById('totalCost');
-const budgetInput = document.getElementById('budgetInput');
-const remainingBadge = document.getElementById('remainingBadge');
+const budgetLimitInput = document.getElementById('budgetLimit');
+const remainingTextEl = document.getElementById('remainingText');
+const bottomBar = document.getElementById('bottomBar');
+const themeToggle = document.getElementById('themeToggle');
+// Haptic feedback helper
 function vibrate(ms = 25) {
 if (navigator.vibrate) {
 navigator.vibrate(ms);
 }
 }
+// Format Euro currency
 function formatEuro(num) {
 return num.toFixed(2).replace('.', ',') + ' €';
 }
-// Create subtle falling autumn leaves
-function initLeaves() {
+// Initialize Falling Leaves
+function createLeaves() {
+const container = document.getElementById('leavesContainer');
 const leafIcons = ['🍂', '🍁'];
-const count = 11;
-for (let i = 0; i < count; i++) {
-const span = document.createElement('span');
-span.className = 'leaf';
-span.textContent = leafIcons[i % leafIcons.length];
-span.style.left = Math.random() * 96 + '%';
-span.style.animationDuration = (11 + Math.random() * 10) + 's';
-span.style.animationDelay = (-Math.random() * 15) + 's';
-span.style.fontSize = (0.95 + Math.random() * 0.55) + 'rem';
-leavesContainer.appendChild(span);
+const leafCount = 10;
+for (let i = 0; i < leafCount; i++) {
+const leaf = document.createElement('span');
+leaf.className = 'leaf';
+leaf.textContent = leafIcons[i % leafIcons.length];
+leaf.style.left = Math.random() * 95 + '%';
+leaf.style.animationDuration = (10 + Math.random() * 10) + 's';
+leaf.style.animationDelay = (-Math.random() * 15) + 's';
+leaf.style.fontSize = (0.9 + Math.random() * 0.6) + 'rem';
+container.appendChild(leaf);
 }
 }
-// Load state
-function loadState() {
-try {
-const savedItems = localStorage.getItem(STORAGE_KEY);
-if (savedItems) items = JSON.parse(savedItems);
-const savedBudget = localStorage.getItem(BUDGET_KEY);
-if (savedBudget !== null) {
-budget = savedBudget;
-budgetInput.value = budget;
-}
+// Theme Setup
+function initTheme() {
 const savedTheme = localStorage.getItem(THEME_KEY);
 if (savedTheme === 'dark') {
 document.body.classList.add('dark');
 themeToggle.textContent = '☀️';
 }
-} catch (e) {
-items = [];
 }
-}
-function saveState() {
+themeToggle.addEventListener('click', () => {
+vibrate(20);
+document.body.classList.toggle('dark');
+const isDark = document.body.classList.contains('dark');
+themeToggle.textContent = isDark ? '☀️' : '🌙';
+localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
+});
+// Save to LocalStorage
+function saveData() {
 localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-localStorage.setItem(BUDGET_KEY, budget);
 }
-// Add item helper
+// Add Item Helper
 function addItem(name, qty, price, category) {
 const cleanName = name.trim();
 if (!cleanName) return;
-// If exact same item & category exists unchecked, just increase qty
+// If exact same unchecked item exists in same category, increment qty
 const existing = items.find(
 (i) => !i.checked && i.name.toLowerCase() === cleanName.toLowerCase() && i.category === category
 );
@@ -765,142 +778,31 @@ if (price > 0 && existing.price === 0) existing.price = price;
 items.unshift({
 id: Date.now().toString() + Math.random().toString(36).slice(2, 6),
 name: cleanName,
-qty: Math.max(1, qty),
-price: Math.max(0, price),
+qty: qty > 0 ? qty : 1,
+price: price >= 0 ? price : 0,
 category: category || '📦 Άλλα',
 checked: false
 });
 }
-vibrate(25);
-saveState();
+vibrate(30);
+saveData();
 render();
 }
-// Render UI
-function render() {
-// 1. Progress Calculation
-const totalItems = items.length;
-const checkedItems = items.filter((i) => i.checked).length;
-const pct = totalItems === 0 ? 0 : Math.round((checkedItems / totalItems) * 100);
-progressText.textContent = Αγοράστηκαν ${checkedItems} / ${totalItems};
-progressPercent.textContent = ${pct}%;
-progressFill.style.width = ${pct}%;
-if (totalItems > 0 && checkedItems === totalItems) {
-progressFill.classList.add('complete');
-rewardMsg.classList.add('show');
-} else {
-progressFill.classList.remove('complete');
-rewardMsg.classList.remove('show');
-}
-// 2. Budget & Total Cost
-const totalCost = items.reduce((sum, item) => sum + item.qty * item.price, 0);
-totalCostEl.textContent = formatEuro(totalCost);
-const budgetNum = parseFloat(budget);
-if (!isNaN(budgetNum) && budgetNum > 0) {
-const diff = budgetNum - totalCost;
-if (diff < 0) {
-bottomBar.classList.add('over-budget');
-remainingBadge.textContent = Υπέρβαση ${formatEuro(Math.abs(diff))};
-if (!wasOverBudget) {
-vibrate([40, 40, 40]);
-wasOverBudget = true;
-}
-} else {
-bottomBar.classList.remove('over-budget');
-remainingBadge.textContent = Υπόλοιπο: ${formatEuro(diff)};
-wasOverBudget = false;
-}
-} else {
-bottomBar.classList.remove('over-budget');
-remainingBadge.textContent = 'Χωρίς όριο';
-wasOverBudget = false;
-}
-// 3. Filter items
-const filtered = items.filter((item) => {
-if (hideChecked && item.checked) return false;
-if (searchQuery && !item.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
-return true;
+// Form Submit
+addForm.addEventListener('submit', (e) => {
+e.preventDefault();
+const name = itemNameInput.value;
+const qty = parseInt(itemQtyInput.value, 10) || 1;
+const price = parseFloat(itemPriceInput.value) || 0;
+const category = itemCategorySelect.value;
+addItem(name, qty, price, category);
+itemNameInput.value = '';
+itemQtyInput.value = '1';
+itemPriceInput.value = '';
+itemNameInput.focus();
 });
-listContainer.innerHTML = '';
-if (filtered.length === 0) {
-listContainer.innerHTML = <div class="empty-state"> ${items.length === 0 ? '🍂 Η λίστα σου είναι άδεια. Πρόσθεσε προϊόντα παραπάνω!' : '🔎 Δεν βρέθηκαν προϊόντα με αυτά τα κριτήρια.'} </div>;
-return;
-}
-// 4. Group by Category
-const groups = {};
-filtered.forEach((item) => {
-if (!groups[item.category]) groups[item.category] = [];
-groups[item.category].push(item);
-});
-Object.keys(groups).forEach((cat) => {
-const groupDiv = document.createElement('div');
-groupDiv.className = 'category-group';
-const catSum = groups[cat].reduce((s, i) => s + i.qty * i.price, 0);
-const titleDiv = document.createElement('div');
-titleDiv.className = 'category-title';
-titleDiv.innerHTML = <span>${cat}</span><span>${catSum > 0 ? formatEuro(catSum) : ''}</span>;
-groupDiv.appendChild(titleDiv);
-groups[cat].forEach((item) => {
-const row = document.createElement('div');
-row.className = 'item-card' + (item.checked ? ' checked' : '');
-const subtotal = item.qty * item.price;
-row.innerHTML = <button class="check-btn" aria-label="Επιλογή">${item.checked ? '✓' : ''}</button> <div class="item-info"> <div class="item-name">${escapeHtml(item.name)}</div> <div class="item-sub">${item.qty} τεμ. ${item.price > 0 ?× ${formatEuro(item.price)} = ${formatEuro(subtotal)}: ''}</div> </div> <div class="item-controls"> <div class="qty-box"> <button class="qty-btn minus" aria-label="Μείωση">−</button> <span class="qty-val">${item.qty}</span> <button class="qty-btn plus" aria-label="Αύξηση">+</button> </div> <div class="price-input-wrap" title="Τιμή μονάδας (€)"> <input type="number" class="inline-price" value="${item.price > 0 ? item.price : ''}" placeholder="0.00" min="0" step="0.01" /> <span>€</span> </div> <button class="del-btn" aria-label="Διαγραφή">✕</button> </div>;
-// Check toggle
-row.querySelector('.check-btn').addEventListener('click', () => {
-item.checked = !item.checked;
-vibrate(item.checked ? 30 : 15);
-saveState();
-render();
-});
-// Quantity -
-row.querySelector('.minus').addEventListener('click', () => {
-if (item.qty > 1) {
-item.qty -= 1;
-vibrate(15);
-saveState();
-render();
-}
-});
-// Quantity +
-row.querySelector('.plus').addEventListener('click', () => {
-item.qty += 1;
-vibrate(15);
-saveState();
-render();
-});
-// Inline price edit
-const priceInput = row.querySelector('.inline-price');
-priceInput.addEventListener('change', (e) => {
-const val = parseFloat(e.target.value);
-item.price = isNaN(val) || val < 0 ? 0 : val;
-saveState();
-render();
-});
-// Delete item
-row.querySelector('.del-btn').addEventListener('click', () => {
-items = items.filter((i) => i.id !== item.id);
-vibrate(20);
-saveState();
-render();
-});
-groupDiv.appendChild(row);
-});
-listContainer.appendChild(groupDiv);
-});
-}
-function escapeHtml(str) {
-const div = document.createElement('div');
-div.textContent = str;
-return div.innerHTML;
-}
-// Event Listeners
-themeToggle.addEventListener('click', () => {
-document.body.classList.toggle('dark');
-const isDark = document.body.classList.contains('dark');
-themeToggle.textContent = isDark ? '☀️' : '🌙';
-localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
-vibrate(15);
-});
-quickBar.addEventListener('click', (e) => {
+// Quick Add Chips
+document.getElementById('quickAddBar').addEventListener('click', (e) => {
 const btn = e.target.closest('.quick-chip');
 if (!btn) return;
 addItem(
@@ -910,56 +812,180 @@ parseFloat(btn.dataset.price) || 0,
 btn.dataset.cat
 );
 });
-addForm.addEventListener('submit', (e) => {
-e.preventDefault();
-const name = itemNameInput.value;
-const qty = parseInt(itemQtyInput.value, 10) || 1;
-const price = parseFloat(itemPriceInput.value) || 0;
-const cat = itemCategorySelect.value;
-addItem(name, qty, price, cat);
-itemNameInput.value = '';
-itemQtyInput.value = '1';
-itemPriceInput.value = '';
-itemNameInput.focus();
-});
+// Search & Hide Checked
 searchInput.addEventListener('input', (e) => {
-searchQuery = e.target.value;
+searchQuery = e.target.value.trim().toLowerCase();
 render();
 });
-hideCheckedBtn.addEventListener('click', () => {
+toggleHideBtn.addEventListener('click', () => {
+vibrate(20);
 hideChecked = !hideChecked;
-hideCheckedBtn.classList.toggle('active', hideChecked);
-hideCheckedBtn.textContent = hideChecked ? '👁️ Εμφάνιση όλων' : '👁️ Απόκρυψη αγορασμένων';
-vibrate(15);
+toggleHideBtn.classList.toggle('active', hideChecked);
+toggleHideBtn.textContent = hideChecked ? 'Εμφάνιση όλων' : 'Απόκρυψη αγορασμένων';
 render();
 });
-budgetInput.addEventListener('input', (e) => {
-budget = e.target.value;
-saveState();
-render();
-});
-deleteCheckedBtn.addEventListener('click', () => {
-const hasChecked = items.some((i) => i.checked);
-if (!hasChecked) return;
-items = items.filter((i) => !i.checked);
-vibrate(30);
-saveState();
-render();
-});
-clearAllBtn.addEventListener('click', () => {
-if (items.length === 0) return;
-if (confirm('Θέλεις σίγουρα να καθαρίσεις όλη τη λίστα;')) {
-items = [];
-vibrate([30, 30]);
-saveState();
-render();
+// Budget Limit Input
+if (budgetLimit > 0) {
+budgetLimitInput.value = budgetLimit;
 }
+budgetLimitInput.addEventListener('input', (e) => {
+budgetLimit = parseFloat(e.target.value) || 0;
+localStorage.setItem(BUDGET_KEY, budgetLimit);
+updateSummary();
 });
-shareBtn.addEventListener('click', async () => {
-if (items.length === 0) {
-alert('Η λίστα είναι άδεια!');
+// Update Progress & Budget Bar
+function updateSummary() {
+const totalItems = items.length;
+const checkedItems = items.filter((i) => i.checked).length;
+const percent = totalItems === 0 ? 0 : Math.round((checkedItems / totalItems) * 100);
+progressText.textContent = Αγοράστηκαν ${checkedItems} / ${totalItems};
+progressPercent.textContent = ${percent}%;
+progressFill.style.width = ${percent}%;
+if (totalItems > 0 && checkedItems === totalItems) {
+progressFill.classList.add('completed');
+rewardMsg.classList.add('show');
+} else {
+progressFill.classList.remove('completed');
+rewardMsg.classList.remove('show');
+}
+const totalCost = items.reduce((sum, item) => sum + item.qty * item.price, 0);
+totalCostEl.textContent = formatEuro(totalCost);
+if (budgetLimit > 0) {
+const diff = budgetLimit - totalCost;
+if (diff < 0) {
+bottomBar.classList.add('over-budget');
+remainingTextEl.textContent = Υπέρβαση: +${formatEuro(Math.abs(diff))};
+if (!wasOverBudget) {
+bottomBar.classList.remove('shake');
+void bottomBar.offsetWidth; // trigger reflow
+bottomBar.classList.add('shake');
+vibrate([60, 40, 60]);
+}
+wasOverBudget = true;
+} else {
+bottomBar.classList.remove('over-budget');
+remainingTextEl.textContent = Υπόλοιπο: ${formatEuro(diff)};
+wasOverBudget = false;
+}
+} else {
+bottomBar.classList.remove('over-budget');
+remainingTextEl.textContent = 'Χωρίς όριο';
+wasOverBudget = false;
+}
+}
+// Render Grouped List
+function render() {
+updateSummary();
+const filtered = items.filter((item) => {
+if (hideChecked && item.checked) return false;
+if (searchQuery && !item.name.toLowerCase().includes(searchQuery)) return false;
+return true;
+});
+if (filtered.length === 0) {
+listContainer.innerHTML = <div class="empty-state">🍂 Η λίστα είναι άδεια. Πρόσθεσε προϊόντα από πάνω!</div>;
 return;
 }
+// Group by category
+const groups = {};
+filtered.forEach((item) => {
+if (!groups[item.category]) groups[item.category] = [];
+groups[item.category].push(item);
+});
+listContainer.innerHTML = '';
+Object.keys(groups).forEach((cat) => {
+const groupDiv = document.createElement('div');
+groupDiv.className = 'category-group';
+const titleEl = document.createElement('div');
+titleEl.className = 'category-title';
+titleEl.textContent = cat;
+groupDiv.appendChild(titleEl);
+groups[cat].forEach((item) => {
+const card = document.createElement('div');
+card.className = 'item-card' + (item.checked ? ' checked' : '');
+card.dataset.id = item.id;
+const subtotal = formatEuro(item.qty * item.price);
+card.innerHTML = <div class="item-left"> <input type="checkbox" class="custom-checkbox" ${item.checked ? 'checked' : ''} aria-label="Αγοράστηκε ${item.name}" /> <div class="item-info"> <span class="item-name">${escapeHtml(item.name)}</span> <span class="item-subtotal">Σύνολο: ${subtotal}</span> </div> </div> <div class="item-controls"> <div class="qty-box"> <button type="button" class="qty-btn minus" aria-label="Μείωση ποσότητας">−</button> <span class="qty-val">${item.qty}</span> <button type="button" class="qty-btn plus" aria-label="Αύξηση ποσότητας">+</button> </div> <div class="inline-price-wrap" title="Τιμή μονάδας"> <span>€</span> <input type="number" class="inline-price" value="${item.price > 0 ? item.price.toFixed(2) : ''}" placeholder="0.00" min="0" step="0.01" aria-label="Τιμή μονάδας" /> </div> <button type="button" class="del-btn" title="Διαγραφή" aria-label="Διαγραφή">✕</button> </div>;
+groupDiv.appendChild(card);
+});
+listContainer.appendChild(groupDiv);
+});
+}
+// Escape HTML helper
+function escapeHtml(str) {
+const div = document.createElement('div');
+div.textContent = str;
+return div.innerHTML;
+}
+// Event Delegation for List Items
+listContainer.addEventListener('click', (e) => {
+const card = e.target.closest('.item-card');
+if (!card) return;
+const id = card.dataset.id;
+const item = items.find((i) => i.id === id);
+if (!item) return;
+if (e.target.classList.contains('custom-checkbox')) {
+item.checked = e.target.checked;
+vibrate(25);
+saveData();
+render();
+} else if (e.target.classList.contains('minus')) {
+vibrate(15);
+if (item.qty > 1) {
+item.qty -= 1;
+} else {
+items = items.filter((i) => i.id !== id);
+}
+saveData();
+render();
+} else if (e.target.classList.contains('plus')) {
+vibrate(15);
+item.qty += 1;
+saveData();
+render();
+} else if (e.target.classList.contains('del-btn')) {
+vibrate(30);
+items = items.filter((i) => i.id !== id);
+saveData();
+render();
+}
+});
+// Direct Price Edit on List
+listContainer.addEventListener('change', (e) => {
+if (!e.target.classList.contains('inline-price')) return;
+const card = e.target.closest('.item-card');
+if (!card) return;
+const item = items.find((i) => i.id === card.dataset.id);
+if (!item) return;
+item.price = Math.max(0, parseFloat(e.target.value) || 0);
+saveData();
+render();
+});
+// Clear Checked Items
+document.getElementById('clearCheckedBtn').addEventListener('click', () => {
+const checkedCount = items.filter((i) => i.checked).length;
+if (checkedCount === 0) return;
+vibrate(30);
+items = items.filter((i) => !i.checked);
+saveData();
+render();
+});
+// Clear All Items
+document.getElementById('clearAllBtn').addEventListener('click', () => {
+if (items.length === 0) return;
+if (confirm('Θέλεις σίγουρα να αδειάσεις όλη τη λίστα;')) {
+vibrate(40);
+items = [];
+saveData();
+render();
+}
+});
+// Share List (Native Share API or Clipboard fallback)
+document.getElementById('shareBtn').addEventListener('click', async () => {
+if (items.length === 0) {
+alert('Η λίστα σου είναι άδεια!');
+return;
+}
+vibrate(25);
 let text = '🛒 Λίστα Σούπερ Μάρκετ\n\n';
 const groups = {};
 items.forEach((i) => {
@@ -977,26 +1003,21 @@ text += '\n';
 });
 const total = items.reduce((s, i) => s + i.qty * i.price, 0);
 if (total > 0) {
-text += 💰 *Σύνολο: ${formatEuro(total)}*;
+text += 💰 *Σύνολο:* ${formatEuro(total)};
 }
-vibrate(20);
 if (navigator.share) {
 try {
 await navigator.share({ title: 'Λίστα Σούπερ Μάρκετ', text });
-return;
 } catch (err) {
-// Fallback to clipboard if cancelled/unsupported
+// User cancelled share
 }
-}
-try {
+} else {
 await navigator.clipboard.writeText(text);
-alert('Η λίστα αντιγράφηκε! Επικόλλησέ τη στο Viber ή στο WhatsApp.');
-} catch (err) {
-alert(text);
+alert('Η λίστα αντιγράφηκε! Κάνε επικόλληση στο Viber ή το WhatsApp.');
 }
 });
-// Init
-initLeaves();
-loadState();
+// Boot
+initTheme();
+createLeaves();
 render();
 })();
