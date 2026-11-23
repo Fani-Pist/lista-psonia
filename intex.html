@@ -1,324 +1,404 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="el">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Λίστα Σούπερ Μάρκετ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FAF6F0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Λίστα Αγορών">
+<title>Λίστα Σούπερ Μάρκετ 🛒</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23C85A32'/%3E%3Ctext x='50' y='69' text-anchor='middle' font-size='58'%3E%F0%9F%9B%92%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23C85A32'/%3E%3Ctext x='50' y='69' text-anchor='middle' font-size='58'%3E%F0%9F%9B%92%3C/text%3E%3C/svg%3E">
 <style>
-  :root {
-    --bg: #FAF6F0;
-    --card: #FFFFFF;
-    --text: #2C2621;
-    --muted: #7A7167;
-    --primary: #C85A32;
-    --sage: #6B705C;
-    --border: #E8E0D5;
-    --danger: #D9383A;
-    --shadow: 0 4px 12px rgba(44, 38, 33, 0.06);
-  }
-  body.dark {
-    --bg: #1C1917;
-    --card: #292524;
-    --text: #F5F2EB;
-    --muted: #A8A29E;
-    --primary: #D96B43;
-    --sage: #848A73;
-    --border: #3F3A36;
-    --shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-  body { background: var(--bg); color: var(--text); transition: background 0.3s, color 0.3s; padding-bottom: 135px; overflow-x: hidden; }
-  
-  /* Διακριτικά φύλλα στο φόντο */
-  .leaves { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-  .leaf { position: absolute; top: -10%; font-size: 1.4rem; opacity: 0.22; animation: fall linear infinite; }
-  @keyframes fall {
-    0% { transform: translateY(-10vh) rotate(0deg) translateX(0); }
-    50% { transform: translateY(50vh) rotate(180deg) translateX(20px); }
-    100% { transform: translateY(110vh) rotate(360deg) translateX(-15px); }
-  }
-
-  .app { position: relative; z-index: 1; max-width: 520px; margin: 0 auto; padding: 16px; }
-  
-  /* Header & Progress */
-  header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-  h1 { font-size: 1.45rem; color: var(--primary); display: flex; align-items: center; gap: 8px; }
-  .icon-btn { background: var(--card); border: 1px solid var(--border); color: var(--text); width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; font-size: 1.1rem; box-shadow: var(--shadow); transition: transform 0.15s; }
-  .icon-btn:active { transform: scale(0.92); }
-  
-  .progress-wrap { background: var(--card); padding: 10px 14px; border-radius: 14px; border: 1px solid var(--border); margin-bottom: 14px; box-shadow: var(--shadow); }
-  .progress-info { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
-  .progress-bar { height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; }
-  .progress-fill { height: 100%; background: var(--sage); width: 0%; transition: width 0.35s ease; border-radius: 99px; }
-
-  /* Γρήγορη προσθήκη */
-  .quick-add { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 10px; scrollbar-width: none; }
-  .quick-add::-webkit-scrollbar { display: none; }
-  .chip { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; white-space: nowrap; cursor: pointer; transition: all 0.2s; }
-  .chip:active { background: var(--primary); color: #fff; border-color: var(--primary); }
-
-  /* Φόρμα προσθήκης */
-  .add-card { background: var(--card); padding: 12px; border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); margin-bottom: 14px; display: grid; gap: 8px; }
-  .row { display: flex; gap: 8px; }
-  input, select { background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 10px 12px; border-radius: 10px; font-size: 0.95rem; outline: none; transition: border 0.2s; }
-  input:focus, select:focus { border-color: var(--primary); }
-  input[type="text"] { flex: 1; min-width: 0; }
-  input[type="number"] { width: 76px; }
-  select { flex: 1; }
-  .btn-primary { background: var(--primary); color: #fff; border: none; padding: 10px 16px; border-radius: 10px; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: opacity 0.2s, transform 0.1s; }
-  .btn-primary:active { transform: scale(0.97); }
-
-  /* Φίλτρα */
-  .controls { display: flex; gap: 8px; align-items: center; margin-bottom: 14px; }
-  .toggle-hide { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 9px 12px; border-radius: 10px; font-size: 0.82rem; cursor: pointer; white-space: nowrap; font-weight: 500; }
-  .toggle-hide.active { background: var(--sage); color: #fff; border-color: var(--sage); }
-
-  /* Λίστα προϊόντων */
-  .list { display: flex; flex-direction: column; gap: 10px; }
-  .item { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 12px; display: flex; align-items: center; gap: 10px; box-shadow: var(--shadow); animation: slideIn 0.25s ease; transition: opacity 0.25s; }
-  @keyframes slideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-  .item.done { opacity: 0.58; }
-  .item.done .item-name { text-decoration: line-through; color: var(--muted); }
-  
-  .check { width: 24px; height: 24px; border-radius: 7px; border: 2px solid var(--sage); display: grid; place-items: center; cursor: pointer; flex-shrink: 0; color: transparent; transition: all 0.2s; }
-  .item.done .check { background: var(--sage); color: #fff; }
-  
-  .item-info { flex: 1; min-width: 0; }
-  .item-name { font-weight: 600; font-size: 0.98rem; margin-bottom: 3px; word-break: break-word; }
-  .item-cat { font-size: 0.76rem; color: var(--muted); }
-  
-  .item-actions { display: flex; align-items: center; gap: 6px; }
-  .qty-box { display: flex; align-items: center; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-  .qty-btn { background: none; border: none; color: var(--text); width: 26px; height: 28px; font-weight: bold; cursor: pointer; }
-  .qty-val { font-size: 0.85rem; font-weight: 600; padding: 0 4px; }
-  .price-input { width: 64px; padding: 5px 6px; text-align: right; font-size: 0.85rem; border-radius: 8px; }
-  .del-btn { background: none; border: none; color: var(--muted); font-size: 1.1rem; cursor: pointer; padding: 4px; }
-  .del-btn:hover { color: var(--danger); }
-
-  .empty { text-align: center; color: var(--muted); padding: 30px 10px; font-size: 0.95rem; }
-  .coffee-wrap { text-align: center; margin-top: 24px; }
-  .coffee-link { display: inline-flex; align-items: center; gap: 6px; background: var(--card); border: 1px solid var(--border); color: var(--text); text-decoration: none; padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; box-shadow: var(--shadow); }
-
-  /* Σταθερή κάτω μπάρα */
-  .bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); border-top: 1px solid var(--border); padding: 12px 16px; z-index: 10; box-shadow: 0 -4px 16px rgba(0,0,0,0.06); }
-  .bottom-inner { max-width: 520px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-  .total-box { display: flex; flex-direction: column; }
-  .total-label { font-size: 0.78rem; color: var(--muted); }
-  .total-amount { font-size: 1.25rem; font-weight: 800; color: var(--sage); transition: color 0.3s; }
-  .total-amount.over { color: var(--danger); }
-  .limit-box { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: var(--muted); }
-  .limit-input { width: 72px; padding: 6px 8px; font-weight: 600; }
+:root{color-scheme:light;--bg:#FAF6F0;--card:#FFFFFF;--ink:#2C2520;--muted:#81766d;--line:#E8DFD5;--terra:#C85A32;--sage:#6B705C;--soft:#F2EBE3;--green:#6B705C;--red:#A33D2B;--shadow:0 7px 22px #39261612}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;padding:0 0 calc(164px + env(safe-area-inset-bottom));background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+body.dark{color-scheme:dark;--bg:#211e1b;--card:#302b26;--ink:#f6eee5;--muted:#b7aa9d;--line:#4a4038;--soft:#3b342e;--sage:#a6ad8d;--green:#a6ad8d;--red:#f0786c;--shadow:0 7px 22px #0003}
+button,input,select{font:inherit}
+button{cursor:pointer;transition:transform .14s ease,filter .2s}
+button:active{transform:scale(.96)}
+:focus-visible{outline:3px solid #d99b70;outline-offset:2px}
+.leaves{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.leaf{position:absolute;top:-45px;opacity:.12;font-size:17px;animation:fall 34s linear infinite;filter:grayscale(.25)}
+.leaf:nth-child(1){left:8%;animation-delay:-8s}
+.leaf:nth-child(2){left:29%;font-size:15px;animation-delay:-16s}
+.leaf:nth-child(3){left:59%;animation-delay:-3s}
+.leaf:nth-child(4){left:86%;font-size:21px;animation-delay:-12s}
+@keyframes fall{to{transform:translate(28px,110vh) rotate(330deg)}}
+main,.bottom{position:relative;z-index:1}
+.wrap{width:min(760px,100%);margin:auto;padding:18px 15px 24px}
+.header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 0 17px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.basket{font-size:39px;display:inline-block;transform-origin:50% 85%;filter:drop-shadow(0 4px 4px #7b3b2225);animation:bob 3s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-5px) rotate(3deg)}}
+.basket.celebrate{animation:celebrate .7s ease 2}
+@keyframes celebrate{0%,100%{transform:rotate(0)}25%{transform:rotate(-14deg) translateY(-5px)}55%{transform:rotate(13deg) translateY(-7px)}}
+h1{font-size:clamp(20px,5vw,28px);line-height:1.1;letter-spacing:-.6px;margin:0}
+.subtitle{font-size:12px;color:var(--muted);margin-top:5px}
+.iconbtn{border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);padding:9px 11px;font-size:19px;box-shadow:var(--shadow)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px;margin-bottom:13px;box-shadow:var(--shadow)}
+.section-title{font-size:14px;font-weight:850;margin:0 0 11px}
+.progress-head{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted);margin-bottom:8px}
+.progress-head strong{color:var(--ink)}
+.track{height:11px;background:var(--soft);border-radius:20px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--sage);border-radius:20px;position:relative;transition:width .35s ease,background .3s}
+.fill:after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 25%,#ffffff88 48%,transparent 70%);transform:translateX(-100%);animation:shine 2.8s infinite}
+@keyframes shine{to{transform:translateX(100%)}}
+.fill.complete{background:#6B705C}
+.cheer{display:none;color:var(--green);font-size:12px;font-weight:750;margin:9px 0 0}
+.cheer.show{display:block}
+.quick{display:flex;gap:9px;overflow-x:auto;padding:1px 0 6px;scrollbar-width:thin}
+.quick button{flex:0 0 88px;display:flex;flex-direction:column;align-items:center;gap:5px;border:1px solid var(--line);border-radius:13px;background:var(--soft);color:var(--ink);padding:7px 6px;font-size:11px;font-weight:750}
+.quick img{display:block;width:68px;height:58px;object-fit:cover;border-radius:9px;background:var(--card);border:1px solid var(--line)}
+.fields{display:grid;grid-template-columns:minmax(0,1fr) 82px;gap:8px}
+.field{width:100%;min-width:0;padding:10px 11px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+.wide{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.photo-field{grid-template-columns:1fr}
+.photo-label{display:flex;align-items:center;font-size:12px;color:var(--muted);cursor:pointer}
+.primary{width:100%;margin-top:9px;background:#C85A32;color:#FFFFFF;border:0;border-radius:11px;padding:11px 15px;font-weight:850;box-shadow:0 3px 0 #9E4326}
+.primary:hover{filter:brightness(1.06)}
+.quick button{border-color:#E8DFD5}
+.quick button:active{background:#E8DFD5}
+.actions button{border-color:#6B705C;background:#6B705C;color:#FFFFFF}
+.actions .danger{background:#C85A32;border-color:#C85A32;color:#FFFFFF}
+.softbtn{border-color:#6B705C;background:#6B705C;color:#FFFFFF}
+.grouphead{color:#6B705C!important}
+.product{border-left-color:#6B705C!important}
+.check{accent-color:#6B705C}
+.searchrow{display:flex;gap:8px;margin-bottom:10px}
+.searchrow input{flex:1;min-width:0}
+.softbtn{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:10px;padding:9px 10px;font-size:11px;font-weight:750;white-space:nowrap}
+.group{margin:14px 0 7px}
+.grouphead{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:850;margin:0 2px 7px}
+.grouphead small{margin-left:auto;color:var(--muted);font-weight:600}
+.product{display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--cat,var(--sage));border-radius:13px;padding:10px;margin-bottom:7px;animation:appear .25s ease both}
+.product.bought{opacity:.58}
+.product.bought .pname{text-decoration:line-through}
+@keyframes appear{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.check{width:20px;height:20px;accent-color:var(--sage);margin:0}
+.product-info{display:flex;align-items:center;gap:10px;min-width:0}
+.product-photo{width:48px;height:48px;flex:0 0 48px;object-fit:cover;border-radius:10px;background:var(--soft);border:1px solid var(--line)}
+.product-photo.fallback{object-fit:contain;padding:7px}
+.product-copy{min-width:0}
+.pname{font-size:13px;font-weight:750;overflow-wrap:anywhere}
+.meta{font-size:10px;color:var(--muted);margin-top:4px}
+.controls{display:flex;align-items:center;gap:4px}
+.mini{width:26px;height:27px;border:0;border-radius:8px;background:var(--soft);color:var(--ink);font-weight:850}
+.qty{min-width:15px;text-align:center;font-size:12px;font-weight:800}
+.price{width:62px;padding:5px 3px;border:1px solid var(--line);border-radius:7px;background:var(--bg);color:var(--ink);font-size:11px;text-align:right}
+.delete{border:0;background:transparent;color:var(--muted);font-size:17px;padding:2px}
+.empty{text-align:center;color:var(--muted);padding:25px 8px;font-size:13px}
+.empty b{display:block;font-size:29px;margin-bottom:5px}
+.actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.actions button{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:10px;padding:9px 10px;font-size:11px;font-weight:750}
+.actions .danger{color:var(--red)}
+.coffee{margin:18px 0 8px;padding:16px 12px;text-align:center;color:var(--muted);font-size:12px;background:#FFFFFF;border:1px solid #E8DFD5;border-radius:16px;box-shadow:var(--shadow)}
+.coffee a{display:inline-flex;align-items:center;justify-content:center;gap:7px;margin-top:8px;padding:10px 17px;border-radius:999px;background:#C85A32;color:#FFFFFF;font-size:13px;font-weight:850;text-decoration:none;box-shadow:0 3px 0 #9E4326}
+.coffee a:hover{filter:brightness(1.06)}
+.bottom{position:fixed;left:0;right:0;bottom:0;z-index:5;background:#2C2520;color:#FFFFFF;padding:11px 15px calc(11px + env(safe-area-inset-bottom));box-shadow:0 -7px 24px #0002}
+.bottom.over{background:#91382f;animation:shake .35s ease}
+@keyframes shake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+.bottom-inner{width:min(760px,100%);margin:auto}
+.totalrow{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.label{font-size:10px;opacity:.75;letter-spacing:.5px}
+.total{font-size:24px;font-weight:900}
+.budget{display:flex;align-items:center;gap:6px;font-size:11px}
+.budget input{width:80px;padding:7px;border:1px solid #ffffff55;border-radius:8px;background:#ffffff18;color:#fff;text-align:right}
+.remaining{font-size:11px;opacity:.88;margin-top:3px}
+@media(min-width:600px){.wrap{padding-top:26px}.card{padding:18px}.product{padding:12px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-
-<div class="leaves" id="leaves"></div>
-
-<div class="app">
-  <header>
-    <h1>🍂 Λίστα Αγορών</h1>
-    <div style="display:flex;gap:8px;">
-      <button class="icon-btn" id="shareBtn" title="Κοινοποίηση">📤</button>
-      <button class="icon-btn" id="themeBtn" title="Εναλλαγή θέματος">🌙</button>
-    </div>
-  </header>
-
-  <div class="progress-wrap">
-    <div class="progress-info">
-      <span id="progressText">0 από 0 προϊόντα</span>
-      <span id="progressPct">0%</span>
-    </div>
-    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="leaves" aria-hidden="true"><span class="leaf">🛒</span><span class="leaf">🛒</span><span class="leaf">🛒</span><span class="leaf">🛒</span></div>
+<main class="wrap">
+<header class="header">
+ <div class="brand"><span class="basket" id="basket" aria-hidden="true">🛒</span><div><h1>Λίστα Σούπερ Μάρκετ</h1><div class="subtitle">Οι αγορές σου, οργανωμένες και εύκολες 🍁</div></div></div>
+ <button class="iconbtn" id="themeBtn" type="button" aria-label="Εναλλαγή σκούρου θέματος">🌙</button>
+</header>
+<section class="card" aria-label="Πρόοδος αγορών">
+ <div class="progress-head"><strong>Η πρόοδός σου</strong><span id="progressText">Αγοράστηκαν 0 / 0</span></div>
+ <div class="track"><div class="fill" id="progressFill"></div></div>
+ <p class="cheer" id="cheer">🎉 Μπράβο! Όλα μπήκαν στο καλάθι!</p>
+</section>
+<section class="card">
+ <h2 class="section-title">⚡ Γρήγορη προσθήκη</h2>
+ <div class="quick" id="quickBar">
+  <button type="button" data-name="Γάλα" data-category="Γαλακτοκομικά"><img src="https://images.unsplash.com/photo-1563636619-e9143da7973b?w=160&h=130&fit=crop" alt=""><span>Γάλα</span></button>
+  <button type="button" data-name="Ψωμί" data-category="Αρτοποιείο"><img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=160&h=130&fit=crop" alt=""><span>Ψωμί</span></button>
+  <button type="button" data-name="Αυγά" data-category="Ψυγείο"><img src="https://images.unsplash.com/photo-1518569656558-1f25e69d93d7?w=160&h=130&fit=crop" alt=""><span>Αυγά</span></button>
+  <button type="button" data-name="Καφές" data-category="Ροφήματα"><img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=160&h=130&fit=crop" alt=""><span>Καφές</span></button>
+  <button type="button" data-name="Τυρί" data-category="Γαλακτοκομικά"><img src="https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=160&h=130&fit=crop" alt=""><span>Τυρί</span></button>
+  <button type="button" data-name="Ντομάτες" data-category="Φρούτα & Λαχανικά"><img src="https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=160&h=130&fit=crop" alt=""><span>Ντομάτες</span></button>
+ </div>
+</section>
+<section class="card">
+ <h2 class="section-title">＋ Πρόσθεσε προϊόν</h2>
+ <form id="addForm">
+  <div class="fields">
+   <input class="field" id="productName" maxlength="70" placeholder="Όνομα προϊόντος" required>
+   <input class="field" id="productQty" type="number" min="1" max="999" step="1" value="1" required aria-label="Ποσότητα">
+   <div class="wide">
+    <input class="field" id="productPrice" type="number" min="0" max="999999" step="0.01" placeholder="Τιμή μονάδας (€)" inputmode="decimal" aria-label="Τιμή μονάδας">
+    <select class="field" id="productCategory" aria-label="Κατηγορία">
+     <option value="Γενικά">🧺 Γενικά</option><option value="Φρούτα & Λαχανικά">🥬 Φρούτα & Λαχανικά</option><option value="Γαλακτοκομικά">🥛 Γαλακτοκομικά</option><option value="Αρτοποιείο">🍞 Αρτοποιείο</option><option value="Κρέας & Ψάρι">🥩 Κρέας & Ψάρι</option><option value="Ψυγείο">🥚 Ψυγείο</option><option value="Ροφήματα">☕ Ροφήματα</option><option value="Τρόφιμα">🍝 Τρόφιμα</option><option value="Καθαριστικά">🧽 Καθαριστικά</option><option value="Προσωπική φροντίδα">🧴 Προσωπική φροντίδα</option><option value="Άλλα">📦 Άλλα</option>
+    </select>
+   </div>
+   <div class="wide photo-field"><label class="field photo-label" for="productPhoto">📷 Φωτογραφία προϊόντος (προαιρετικά)</label><input class="field" id="productPhoto" type="file" accept="image/*" aria-label="Επιλογή φωτογραφίας προϊόντος"></div>
   </div>
-
-  <div class="quick-add" id="quickAdd">
-    <button class="chip" data-name="Γάλα" data-cat="🥛 Γαλακτοκομικά">+ Γάλα</button>
-    <button class="chip" data-name="Ψωμί" data-cat="🥖 Αρτοποιείο">+ Ψωμί</button>
-    <button class="chip" data-name="Αυγά" data-cat="🥛 Γαλακτοκομικά">+ Αυγά</button>
-    <button class="chip" data-name="Καφές" data-cat="🥫 Τρόφιμα">+ Καφές</button>
-    <button class="chip" data-name="Τυρί" data-cat="🥛 Γαλακτοκομικά">+ Τυρί</button>
-    <button class="chip" data-name="Ντομάτες" data-cat="🍎 Φρούτα & Λαχανικά">+ Ντομάτες</button>
+  <button class="primary" type="submit">＋ Προσθήκη στη λίστα</button>
+ </form>
+</section>
+<section class="card">
+ <div class="searchrow"><input class="field" id="searchInput" placeholder="🔎 Αναζήτηση προϊόντος..." aria-label="Αναζήτηση"><button class="softbtn" id="hideBoughtBtn" type="button">Απόκρυψη αγορασμένων</button></div>
+ <div id="listContainer" aria-live="polite"></div>
+ <div class="actions">
+  <button type="button" id="clearBoughtBtn">✓ Σβήσιμο Αγορασμένων</button>
+  <button type="button" id="shareBtn">↗ Κοινοποίηση Λίστας</button>
+  <button type="button" class="danger" id="clearAllBtn">⌫ Καθαρισμός Όλης της Λίστας</button>
+ </div>
+</section>
+<footer class="coffee"><div>🍂 Φτιαγμένο με αγάπη για τις καθημερινές σου αγορές</div><a href="https://www.buymeacoffee.com/" target="_blank" rel="noopener noreferrer">☕ Κέρασέ με έναν καφέ</a></footer>
+</main>
+<footer class="bottom" id="bottomBar">
+ <div class="bottom-inner">
+  <div class="totalrow"><div><div class="label">ΣΥΝΟΛΙΚΟ ΚΟΣΤΟΣ</div><div class="total" id="totalValue">0,00 €</div></div>
+   <label class="budget" for="limitInput">Όριο (€)<input id="limitInput" type="number" min="0" step="0.01" placeholder="π.χ. 80"></label>
   </div>
-
-  <form class="add-card" id="addForm">
-    <div class="row">
-      <input type="text" id="itemName" placeholder="Προσθήκη προϊόντος..." required>
-      <input type="number" id="itemQty" value="1" min="1" step="1" title="Ποσότητα">
-      <input type="number" id="itemPrice" placeholder="€ Τιμή" min="0" step="0.01">
-    </div>
-    <div class="row">
-      <select id="itemCat">
-        <option value="🍎 Φρούτα & Λαχανικά">🍎 Φρούτα & Λαχανικά</option>
-        <option value="🥛 Γαλακτοκομικά">🥛 Γαλακτοκομικά</option>
-        <option value="🥩 Κρεοπωλείο">🥩 Κρεοπωλείο</option>
-        <option value="🥖 Αρτοποιείο">🥖 Αρτοποιείο</option>
-        <option value="🥫 Τρόφιμα">🥫 Τρόφιμα</option>
-        <option value="🧴 Καθαριστικά & Είδη Σπιτιού">🧴 Καθαριστικά</option>
-        <option value="📦 Άλλα">📦 Άλλα</option>
-      </select>
-      <button type="submit" class="btn-primary">Προσθήκη</button>
-    </div>
-  </form>
-
-  <div class="controls">
-    <input type="text" id="searchInput" placeholder="🔍 Αναζήτηση στη λίστα...">
-    <button type="button" class="toggle-hide" id="hideDoneBtn">Απόκρυψη αγορασμένων</button>
-  </div>
-
-  <div class="list" id="itemList"></div>
-
-  <div class="coffee-wrap">
-    <a href="https://buymeacoffee.com" target="_blank" rel="noopener" class="coffee-link">☕ Κέρασέ με έναν καφέ</a>
-  </div>
-</div>
-
-<div class="bottom-bar">
-  <div class="bottom-inner">
-    <div class="total-box">
-      <span class="total-label">Εκτιμώμενο Σύνολο</span>
-0.00 €
-
-Όριο (€):
-const STORAGE_KEY = 'autumn_grocery_v1';
-let state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {
-items: [],
-budget: 50,
-dark: false,
-hideDone: false
-};
+  <div class="remaining" id="remainingText">Όρισε προαιρετικά το budget σου.</div>
+ </div>
+</footer>
+<script>
+(() => {
+'use strict';
 const $ = id => document.getElementById(id);
-// Δημιουργία φθινοπωρινών φύλλων
-const leavesContainer = $('leaves');
-const leafIcons = ['🍂', '🍁', '🍃'];
-for (let i = 0; i < 10; i++) {
-const span = document.createElement('span');
-span.className = 'leaf';
-span.textContent = leafIcons[i % leafIcons.length];
-span.style.left = Math.random() * 95 + '%';
-span.style.animationDuration = (12 + Math.random() * 14) + 's';
-span.style.animationDelay = (-Math.random() * 15) + 's';
-leavesContainer.appendChild(span);
-}
+const STORAGE_KEY = 'shopping-list-autumn-v2';
+const productImages = {
+ 'γάλα':'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=240&h=200&fit=crop',
+ 'ψωμί':'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=240&h=200&fit=crop',
+ 'αυγά':'https://images.unsplash.com/photo-1518569656558-1f25e69d93d7?w=240&h=200&fit=crop',
+ 'καφές':'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=240&h=200&fit=crop',
+ 'τυρί':'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=240&h=200&fit=crop',
+ 'ντομάτες':'https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=240&h=200&fit=crop',
+ 'μήλα':'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=240&h=200&fit=crop',
+ 'μπανάνες':'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=240&h=200&fit=crop',
+ 'πατάτες':'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=240&h=200&fit=crop',
+ 'πορτοκάλια':'https://images.unsplash.com/photo-1547514701-42782101795e?w=240&h=200&fit=crop',
+ 'αγγούρι':'https://images.unsplash.com/photo-1604977042946-1eecc30f269e?w=240&h=200&fit=crop',
+ 'μαρούλι':'https://images.unsplash.com/photo-1556801712-76c8eb07bbc9?w=240&h=200&fit=crop',
+ 'κοτόπουλο':'https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=240&h=200&fit=crop',
+ 'καθαριστικό':'https://images.unsplash.com/photo-1585421514284-efb74c2b69ba?w=240&h=200&fit=crop',
+ 'σαμπουάν':'https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=240&h=200&fit=crop',
+ 'γιαούρτι':'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=240&h=200&fit=crop',
+ 'βούτυρο':'https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=240&h=200&fit=crop',
+ 'χυμός':'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=240&h=200&fit=crop',
+ 'ρύζι':'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=240&h=200&fit=crop',
+ 'μακαρόνια':'https://images.unsplash.com/photo-1551462147-ff29053bfc14?w=240&h=200&fit=crop',
+ 'σοκολάτα':'https://images.unsplash.com/photo-1511381939415-e440154a37c8?w=240&h=200&fit=crop'
+};
+const categoryImages = {
+ 'Γενικά':productImages['γάλα'], 'Φρούτα & Λαχανικά':productImages['ντομάτες'],
+ 'Γαλακτοκομικά':productImages['τυρί'], 'Αρτοποιείο':productImages['ψωμί'],
+ 'Κρέας & Ψάρι':productImages['κοτόπουλο'], 'Ψυγείο':productImages['αυγά'],
+ 'Ροφήματα':productImages['καφές'], 'Τρόφιμα':productImages['ρύζι'],
+ 'Καθαριστικά':productImages['καθαριστικό'], 'Προσωπική φροντίδα':productImages['σαμπουάν'], 'Άλλα':productImages['γάλα']
+};
+const photoFor = (name, category) => productImages[String(name || '').trim().toLocaleLowerCase('el')] || categoryImages[category] || categoryImages['Γενικά'];
+const categories = {
+ 'Γενικά':{emoji:'🧺',color:'#9b8c7a'},'Φρούτα & Λαχανικά':{emoji:'🥬',color:'#789b52'},
+ 'Γαλακτοκομικά':{emoji:'🥛',color:'#6e9db5'},'Αρτοποιείο':{emoji:'🍞',color:'#c88b43'},
+ 'Κρέας & Ψάρι':{emoji:'🥩',color:'#bd6b68'},'Ψυγείο':{emoji:'🥚',color:'#9b85b8'},
+ 'Ροφήματα':{emoji:'☕',color:'#a87950'},'Τρόφιμα':{emoji:'🍝',color:'#d49b42'},
+ 'Καθαριστικά':{emoji:'🧽',color:'#5d9c9a'},'Προσωπική φροντίδα':{emoji:'🧴',color:'#cf83a1'},
+ 'Άλλα':{emoji:'📦',color:'#8b8b8b'}
+};
+let items = [], hideBought = false, darkMode = false, budget = '';
+const euro = value => Number(value || 0).toLocaleString('el-GR',{minimumFractionDigits:2,maximumFractionDigits:2}) + ' €';
+const vibrate = pattern => { try { if (navigator.vibrate) navigator.vibrate(pattern); } catch (_) {} };
+
 function save() {
-localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+ try { localStorage.setItem(STORAGE_KEY, JSON.stringify({items,hideBought,darkMode,budget})); }
+ catch (error) { console.warn('Η αποθήκευση δεν είναι διαθέσιμη.', error); }
 }
-function applyTheme() {
-document.body.classList.toggle('dark', state.dark);
-$('themeBtn').textContent = state.dark ? '☀️' : '🌙';
+function load() {
+ try {
+  const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  if (Array.isArray(data.items)) {
+   items = data.items.filter(item => item && typeof item.name === 'string').map(item => ({
+    id:String(item.id || (Date.now() + Math.random())),
+    name:item.name.slice(0,70),
+    image:typeof item.image === 'string' ? item.image : '',
+    qty:Math.max(1,Math.min(999,Math.floor(Number(item.qty) || 1))),
+    price:Math.max(0,Math.min(999999,Number(item.price) || 0)),
+    category:categories[item.category] ? item.category : 'Γενικά',
+    done:Boolean(item.done)
+   }));
+  }
+  hideBought = Boolean(data.hideBought);
+  darkMode = Boolean(data.darkMode);
+  budget = data.budget ?? '';
+ } catch (_) { items = []; }
+ document.body.classList.toggle('dark',darkMode);
+ $('themeBtn').textContent = darkMode ? '☀️' : '🌙';
+ $('limitInput').value = budget;
+ $('hideBoughtBtn').textContent = hideBought ? 'Εμφάνιση αγορασμένων' : 'Απόκρυψη αγορασμένων';
 }
 function render() {
-const query = $('searchInput').value.trim().toLowerCase();
-const listEl = $('itemList');
-listEl.innerHTML = '';
-let totalCost = 0;
-let doneCount = 0;
-state.items.forEach(item => {
-totalCost += (Number(item.price) || 0) * (Number(item.qty) || 1);
-if (item.done) doneCount++;
-});
-const filtered = state.items.filter(item => {
-if (state.hideDone && item.done) return false;
-if (query && !item.name.toLowerCase().includes(query) && !item.cat.toLowerCase().includes(query)) return false;
-return true;
-});
-if (filtered.length === 0) {
-listEl.innerHTML = <div class="empty">Η λίστα είναι άδεια ή δεν βρέθηκαν προϊόντα 🧺</div>;
-} else {
-filtered.forEach(item => {
-const div = document.createElement('div');
-div.className = 'item' + (item.done ? ' done' : '');
-div.innerHTML = <div class="check" onclick="toggleDone('${item.id}')">✓</div> <div class="item-info"> <div class="item-name">${escapeHtml(item.name)}</div> <div class="item-cat">${item.cat}</div> </div> <div class="item-actions"> <div class="qty-box"> <button class="qty-btn" onclick="changeQty('${item.id}', -1)">-</button> <span class="qty-val">${item.qty}</span> <button class="qty-btn" onclick="changeQty('${item.id}', 1)">+</button> </div> <input type="number" class="price-input" value="${item.price || ''}" placeholder="0.00" step="0.01" min="0" onchange="changePrice('${item.id}', this.value)"> <button class="del-btn" onclick="deleteItem('${item.id}')" title="Διαγραφή">✕</button> </div>;
-listEl.appendChild(div);
-});
+ const container = $('listContainer');
+ container.replaceChildren();
+ const query = $('searchInput').value.trim().toLocaleLowerCase('el');
+ const visible = items.filter(item => (!hideBought || !item.done) && item.name.toLocaleLowerCase('el').includes(query));
+ const groupNames = [...new Set(visible.map(item => item.category))].sort((a,b) => a.localeCompare(b,'el'));
+ if (!visible.length) {
+  const empty = document.createElement('div'); empty.className = 'empty';
+  const icon = document.createElement('b'); icon.textContent = items.length ? '🔎' : '🧺';
+  empty.append(icon,document.createTextNode(items.length ? 'Δεν βρέθηκαν προϊόντα.' : 'Η λίστα σου είναι άδεια. Πρόσθεσε το πρώτο προϊόν!'));
+  container.append(empty);
+ }
+ groupNames.forEach(category => {
+  const section = document.createElement('section'); section.className = 'group';
+  const heading = document.createElement('h3'); heading.className = 'grouphead';
+  heading.style.color = '#6B705C';
+  heading.textContent = categories[category].emoji + ' ' + category;
+  const groupItems = visible.filter(item => item.category === category);
+  const count = document.createElement('small');
+  count.textContent = groupItems.filter(item => item.done).length + '/' + groupItems.length;
+  heading.append(count); section.append(heading);
+  groupItems.forEach(item => {
+   const row = document.createElement('div'); row.className = 'product' + (item.done ? ' bought' : '');
+   row.style.setProperty('--cat','#6B705C');
+   const checkbox = document.createElement('input'); checkbox.type = 'checkbox'; checkbox.className = 'check';
+   checkbox.checked = item.done; checkbox.setAttribute('aria-label','Αγοράστηκε: ' + item.name);
+   checkbox.addEventListener('change',() => { item.done = checkbox.checked; vibrate(18); render(); });
+   const info = document.createElement('div'); info.className = 'product-info';
+   const photo = document.createElement('img'); photo.className = 'product-photo';
+   photo.alt = ''; photo.loading = 'lazy';
+   const chosenImage = item.image || photoFor(item.name, category);
+   photo.src = chosenImage;
+   photo.onerror = () => {
+    if (photo.dataset.triedCategory !== 'yes') { photo.dataset.triedCategory = 'yes'; photo.src = categoryImages[category] || categoryImages['Γενικά']; return; }
+    photo.classList.add('fallback'); photo.src = 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80"><rect width="80" height="80" rx="12" fill="#F2EBE3"/><text x="40" y="54" text-anchor="middle" font-size="38">${categories[category].emoji}</text></svg>`);
+   };
+   const copy = document.createElement('div'); copy.className = 'product-copy';
+   const name = document.createElement('div'); name.className = 'pname'; name.textContent = item.name;
+   const meta = document.createElement('div'); meta.className = 'meta'; meta.textContent = 'Σύνολο: ' + euro(item.qty * item.price);
+   copy.append(name,meta); info.append(photo,copy);
+   const controls = document.createElement('div'); controls.className = 'controls';
+   const makeButton = (label,aria,action) => {
+    const button = document.createElement('button'); button.type = 'button'; button.className = 'mini';
+    button.textContent = label; button.setAttribute('aria-label',aria); button.addEventListener('click',action); return button;
+   };
+   const minus = makeButton('−','Μείωση ποσότητας',() => { item.qty = Math.max(1,item.qty-1); render(); });
+   const quantity = document.createElement('span'); quantity.className = 'qty'; quantity.textContent = item.qty;
+   const plus = makeButton('+','Αύξηση ποσότητας',() => { item.qty = Math.min(999,item.qty+1); render(); });
+   const price = document.createElement('input'); price.className = 'price'; price.type = 'number'; price.min = '0';
+   price.max = '999999'; price.step = '0.01'; price.value = item.price.toFixed(2);
+   price.setAttribute('aria-label','Τιμή μονάδας για ' + item.name); price.title = 'Τιμή μονάδας (€)';
+   price.addEventListener('change',() => { item.price = Math.max(0,Math.min(999999,Number(price.value)||0)); render(); });
+   const remove = document.createElement('button'); remove.type = 'button'; remove.className = 'delete';
+   remove.textContent = '×'; remove.title = 'Διαγραφή'; remove.setAttribute('aria-label','Διαγραφή ' + item.name);
+   remove.addEventListener('click',() => { items = items.filter(entry => entry.id !== item.id); render(); });
+   controls.append(minus,quantity,plus,price,remove);
+   row.append(checkbox,info,controls); section.append(row);
+  });
+  container.append(section);
+ });
+ const boughtCount = items.filter(item => item.done).length;
+ const totalCount = items.length;
+ $('progressText').textContent = `Αγοράστηκαν ${boughtCount} / ${totalCount}`;
+ $('progressFill').style.width = (totalCount ? boughtCount / totalCount * 100 : 0) + '%';
+ const complete = totalCount > 0 && boughtCount === totalCount;
+ $('progressFill').classList.toggle('complete',complete);
+ $('cheer').classList.toggle('show',complete);
+ $('basket').classList.toggle('celebrate',complete);
+ const total = items.reduce((sum,item) => sum + item.qty * item.price,0);
+ const hasBudget = budget !== '' && Number.isFinite(Number(budget)) && Number(budget) > 0;
+ const overBudget = hasBudget && total > Number(budget);
+ $('totalValue').textContent = euro(total);
+ $('bottomBar').classList.toggle('over',overBudget);
+ $('remainingText').textContent = hasBudget
+  ? (overBudget ? '⚠ Υπέρβαση ορίου κατά ' + euro(total-Number(budget)) : 'Σου απομένουν ' + euro(Number(budget)-total))
+  : 'Όρισε προαιρετικά το budget σου.';
+ save();
 }
-// Πρόοδος
-const totalItems = state.items.length;
-const pct = totalItems ? Math.round((doneCount / totalItems) * 100) : 0;
-$('progressText').textContent = ${doneCount} από ${totalItems} προϊόντα;
-$('progressPct').textContent = ${pct}%;
-$('progressFill').style.width = ${pct}%;
-// Σύνολο & Όριο
-const totalEl = $('totalAmount');
-totalEl.textContent = ${totalCost.toFixed(2)} €;
-const budget = Number(state.budget) || 0;
-totalEl.classList.toggle('over', budget > 0 && totalCost > budget);
-$('hideDoneBtn').classList.toggle('active', state.hideDone);
-$('budgetInput').value = state.budget || '';
+function addItem(name,category,quantity=1,price=0,image="") {
+ const cleanName = String(name || '').trim();
+ if (!cleanName) return;
+ const existing = items.find(item => item.name.toLocaleLowerCase('el') === cleanName.toLocaleLowerCase('el') && item.category === category && !item.done);
+ if (existing) { existing.qty = Math.min(999,existing.qty+quantity); if (price > 0) existing.price = price; }
+ else {
+  const id = window.crypto && typeof window.crypto.randomUUID === 'function' ? window.crypto.randomUUID() : String(Date.now()+Math.random());
+  const safeCategory = categories[category] ? category : 'Γενικά';
+  items.push({id,name:cleanName.slice(0,70),image:image || photoFor(cleanName,safeCategory),category:safeCategory,qty:quantity,price,done:false});
+ }
+ vibrate(18); render();
 }
-function escapeHtml(str) {
-return str.replace(/[&<>"']/g, m => ({ '&':'&','<':'<','>':'>','"':'"',"'":''' }[m]));
-}
-function addItem(name, qty = 1, price = '', cat = '📦 Άλλα') {
-state.items.unshift({
-id: Date.now().toString(36) + Math.random().toString(36).slice(2, 5),
-name: name.trim(),
-qty: Math.max(1, Number(qty) || 1),
-price: price !== '' ? parseFloat(price) : '',
-cat,
-done: false
+$('addForm').addEventListener('submit',event => {
+ event.preventDefault();
+ const name = $('productName').value.trim();
+ const quantity = Math.max(1,Math.min(999,Math.floor(Number($('productQty').value)||1)));
+ const price = Math.max(0,Math.min(999999,Number($('productPrice').value)||0));
+ if (!name) { $('productName').focus(); return; }
+ const file = $('productPhoto').files && $('productPhoto').files[0];
+ const finishAdd = imageData => {
+  addItem(name,$('productCategory').value,quantity,price,imageData || '');
+  $('productName').value = ''; $('productQty').value = '1'; $('productPrice').value = ''; $('productPhoto').value = ''; $('productName').focus();
+ };
+ if (file) {
+  if (!file.type.startsWith('image/')) { alert('Επίλεξε αρχείο εικόνας.'); return; }
+  if (file.size > 4 * 1024 * 1024) { alert('Η φωτογραφία πρέπει να είναι έως 4 MB.'); return; }
+  const reader = new FileReader(); reader.onload = () => finishAdd(String(reader.result || '')); reader.onerror = () => { alert('Δεν ήταν δυνατή η ανάγνωση της φωτογραφίας.'); }; reader.readAsDataURL(file);
+ } else finishAdd('');
 });
-save();
+$('quickBar').querySelectorAll('img').forEach(img => { img.addEventListener('error',() => { img.style.visibility = 'hidden'; img.style.background = 'var(--soft)'; },{once:true}); });
+$('quickBar').addEventListener('click',event => {
+ const button = event.target.closest('button[data-name]');
+ if (button) addItem(button.dataset.name,button.dataset.category,1,0);
+});
+$('searchInput').addEventListener('input',render);
+$('hideBoughtBtn').addEventListener('click',() => {
+ hideBought = !hideBought;
+ $('hideBoughtBtn').textContent = hideBought ? 'Εμφάνιση αγορασμένων' : 'Απόκρυψη αγορασμένων';
+ render();
+});
+$('limitInput').addEventListener('input',() => { budget = $('limitInput').value; render(); });
+$('themeBtn').addEventListener('click',() => {
+ darkMode = !darkMode; document.body.classList.toggle('dark',darkMode);
+ $('themeBtn').textContent = darkMode ? '☀️' : '🌙'; save();
+});
+$('clearBoughtBtn').addEventListener('click',() => {
+ if (!items.some(item => item.done)) { alert('Δεν υπάρχουν αγορασμένα προϊόντα.'); return; }
+ if (confirm('Να διαγραφούν τα αγορασμένα προϊόντα;')) {
+  items = items.filter(item => !item.done); vibrate([25,35,25]); render();
+ }
+});
+$('clearAllBtn').addEventListener('click',() => {
+ if (!items.length) { alert('Η λίστα είναι ήδη άδεια.'); return; }
+ if (confirm('Να διαγραφούν όλα τα προϊόντα από τη λίστα;')) { items = []; vibrate([30,40,30]); render(); }
+});
+$('shareBtn').addEventListener('click',async() => {
+ if (!items.length) { alert('Η λίστα είναι άδεια.'); return; }
+ const message = ['🛒 Λίστα Σούπερ Μάρκετ','',...items.map(item =>
+  `${item.done?'☑':'☐'} ${item.name} — ${item.qty} × ${euro(item.price)} (${item.category})`),
+  '', 'Σύνολο: ' + euro(items.reduce((sum,item) => sum + item.qty*item.price,0))].join('\n');
+ try {
+  if (navigator.share) await navigator.share({title:'Λίστα Σούπερ Μάρκετ',text:message});
+  else if (navigator.clipboard && window.isSecureContext) {
+   await navigator.clipboard.writeText(message); alert('Η λίστα αντιγράφηκε! Επικόλλησέ τη σε Viber ή WhatsApp.');
+  } else {
+   const textarea = document.createElement('textarea'); textarea.value = message;
+   textarea.style.position = 'fixed'; textarea.style.opacity = '0'; document.body.append(textarea);
+   textarea.select(); const copied = document.execCommand('copy'); textarea.remove();
+   alert(copied ? 'Η λίστα αντιγράφηκε! Επικόλλησέ τη σε Viber ή WhatsApp.' : 'Δεν ήταν δυνατή η αντιγραφή.');
+  }
+  vibrate(18);
+ } catch(error) { if (error.name !== 'AbortError') alert('Η κοινοποίηση δεν ολοκληρώθηκε. Δοκίμασε ξανά.'); }
+});
+load();
 render();
-}
-window.toggleDone = id => {
-const item = state.items.find(i => i.id === id);
-if (item) { item.done = !item.done; save(); render(); }
-};
-window.changeQty = (id, delta) => {
-const item = state.items.find(i => i.id === id);
-if (item) {
-item.qty = Math.max(1, (Number(item.qty) || 1) + delta);
-save(); render();
-}
-};
-window.changePrice = (id, val) => {
-const item = state.items.find(i => i.id === id);
-if (item) {
-item.price = val === '' ? '' : Math.max(0, parseFloat(val) || 0);
-save(); render();
-}
-};
-window.deleteItem = id => {
-state.items = state.items.filter(i => i.id !== id);
-save(); render();
-};
-$('addForm').addEventListener('submit', e => {
-e.preventDefault();
-const name = $('itemName').value;
-if (!name.trim()) return;
-addItem(name, $('itemQty').value, $('itemPrice').value, $('itemCat').value);
-$('itemName').value = '';
-$('itemQty').value = '1';
-$('itemPrice').value = '';
-});
-$('quickAdd').addEventListener('click', e => {
-const btn = e.target.closest('.chip');
-if (btn) addItem(btn.dataset.name, 1, '', btn.dataset.cat);
-});
-$('searchInput').addEventListener('input', render);
-$('hideDoneBtn').addEventListener('click', () => {
-state.hideDone = !state.hideDone;
-save(); render();
-});
-$('budgetInput').addEventListener('input', e => {
-state.budget = parseFloat(e.target.value) || 0;
-save(); render();
-});
-$('themeBtn').addEventListener('click', () => {
-state.dark = !state.dark;
-applyTheme(); save();
-});
-$('shareBtn').addEventListener('click', async () => {
-if (!state.items.length) return alert('Η λίστα είναι άδεια!');
-const lines = state.items.map(i => ${i.done ? '✅' : '⬜'} ${i.name} (x${i.qty})${i.price ?  - ${(i.price * i.qty).toFixed(2)}€ : ''});
-const text = 🛒 Λίστα Σούπερ Μάρκετ:\n\n${lines.join('\n')}\n\nΣύνολο: ${$('totalAmount').textContent};
-if (navigator.share) {
-try { await navigator.share({ title: 'Λίστα Σούπερ Μάρκετ', text }); } catch {}
-} else {
-await navigator.clipboard.writeText(text);
-alert('Η λίστα αντιγράφηκε στο πρόχειρο!');
-}
-});
-applyTheme();
-render();
-
+})();
+</script>
+</body>
+</html>
