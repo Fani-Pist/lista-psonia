@@ -1,4 +1,5 @@
-﻿<!doctype html>
+﻿
+<!doctype html>
 <html lang="el">
 <head>
 <meta charset="utf-8">
@@ -7,7 +8,7 @@
 <meta name="description" content="Οργάνωσε εύκολα τις αγορές σου με τη Λίστα Σούπερ Μάρκετ.">
 <title>Λίστα Σούπερ Μάρκετ</title>
 <link rel="manifest" href="manifest.json">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23FAF6F0'/%3E%3Cpath d='M18 39h64L73 82H27z' fill='%23C85A32' stroke='%232C2520' stroke-width='4'/%3E%3Cpath d='M34 40 50 15l16 25' fill='none' stroke='%236B705C' stroke-width='7'/%3E%3Cpath d='M39 48v25M50 48v25M61 48v25' stroke='%23FAF6F0' stroke-width='4'/%3E%3C/svg%3E">
+<link rel="icon" href="icon.svg">
 <style>
 :root {
  --bg:#FAF6F0;--card:#fff;--ink:#2C2520;--muted:#81766c;
@@ -22,7 +23,7 @@ button{cursor:pointer;border:0;transition:transform .15s,filter .15s}
 button:active{transform:scale(.96)}
 header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 18px}
 .brand{display:flex;align-items:center;gap:12px}
-.logo{width:52px;height:52px;display:grid;place-items:center;animation:float 3s ease-in-out infinite;filter:drop-shadow(0 5px 5px #8e4d2630);flex:0 0 52px}
+.logo{width:52px;height:52px;display:grid;place-items:center;flex:0 0 52px}
 .logo svg{width:100%;height:100%;display:block}
 h1{font-size:clamp(22px,6vw,30px);line-height:1.1;margin:0}
 .subtitle{font-size:13px;color:var(--muted);margin-top:5px}
@@ -36,8 +37,7 @@ h1{font-size:clamp(22px,6vw,30px);line-height:1.1;margin:0}
 body.dark .quick button{background:#45372e;color:#f5e6d7;border-color:#5d493a}
 .progress-head{display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:9px}
 .track{height:12px;background:var(--sage2);border-radius:20px;overflow:hidden}
-.bar{height:100%;width:0;background:var(--sage);border-radius:20px;transition:width .35s;position:relative}
-.bar:after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent,#ffffff80,transparent);animation:shine 2.4s infinite}
+.bar{height:100%;width:0;background:var(--sage);border-radius:20px;transition:width .35s}
 .done-msg{color:var(--sage);font-weight:800;font-size:13px;margin-top:9px;display:none}
 form.add{display:grid;grid-template-columns:1fr 100px;gap:9px}
 input,select{min-width:0;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--bg);color:var(--ink);outline-color:var(--terra)}
@@ -48,8 +48,8 @@ input,select{min-width:0;border:1px solid var(--line);border-radius:12px;padding
 .tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .tools input{flex:1;min-width:150px}
 .hidebtn{white-space:nowrap}
-.category{margin:17px 0 8px;color:var(--sage);font-weight:900;font-size:14px;display:flex;align-items:center;gap:7px}
-.item{display:grid;grid-template-columns:46px minmax(0,1fr) auto;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);animation:appear .25s ease}
+.category{margin:17px 0 8px;color:var(--sage);font-weight:900;font-size:14px}
+.item{display:grid;grid-template-columns:46px minmax(0,1fr) auto;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
 .item:last-child{border-bottom:0}
 .thumb{width:44px;height:44px;border-radius:13px;background:#f3e8dc;display:grid;place-items:center;font-size:25px;overflow:hidden}
 .thumb img{width:100%;height:100%;object-fit:cover}
@@ -66,8 +66,6 @@ input,select{min-width:0;border:1px solid var(--line);border-radius:12px;padding
 .row-actions{display:flex;gap:5px;margin-top:5px;justify-content:flex-end;flex-wrap:wrap}
 .tiny{font-size:11px;padding:5px 7px;border-radius:8px;background:var(--bg);color:var(--muted);border:1px solid var(--line)}
 .empty{text-align:center;color:var(--muted);padding:25px 5px;font-size:14px}
-.fall{position:fixed;top:-40px;z-index:-1;pointer-events:none;user-select:none;animation:fall linear infinite;opacity:.27;width:25px;height:25px}
-.fall svg{display:block;width:100%;height:100%}
 footer{text-align:center;color:var(--muted);font-size:12px;margin:24px 0 10px}
 footer a{color:var(--terra);font-weight:700;text-decoration:none}
 .bottom{position:fixed;z-index:5;bottom:0;left:0;right:0;background:#2C2520;color:#fff;padding:13px max(15px,calc((100vw - 730px)/2)) calc(13px + env(safe-area-inset-bottom));box-shadow:0 -8px 28px #24160f25}
@@ -78,7 +76,7 @@ footer a{color:var(--terra);font-weight:700;text-decoration:none}
 .budget{display:flex;align-items:center;gap:7px;font-size:12px}
 .budget input{width:85px;padding:8px;border:1px solid #78685c;background:#40372f;color:white;border-radius:9px}
 .remaining{font-size:12px;margin-top:5px;color:#e8d8c8}
-.over{background:#8f3028!important;animation:shake .35s}
+.over{background:#8f3028!important}
 .bottom-actions{display:flex;gap:7px;margin-top:10px}
 .bottom-actions button{flex:1;font-size:11px;padding:9px 5px;border-radius:10px;font-weight:750}
 .danger{background:#59433a;color:#fff}
@@ -97,21 +95,22 @@ footer a{color:var(--terra);font-weight:700;text-decoration:none}
 .modal-actions button{flex:1}
 .notice{font-size:12px;color:var(--muted);line-height:1.5;margin-top:8px}
 .offer{border:1px dashed var(--line);border-radius:14px;padding:13px;color:var(--muted);font-size:13px;line-height:1.5}
-.install{display:none}
-@keyframes float{50%{transform:translateY(-5px)}}
-@keyframes shine{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
-@keyframes appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-@keyframes fall{to{transform:translateY(110vh) rotate(240deg)}}
-@keyframes shake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+
+/* ΚΕΝΤΡΙΚΟ ΜΕΝΟΥ ΕΝΟΤΗΤΩΝ */
+.app-menu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.menu-link{display:flex;align-items:center;gap:11px;text-decoration:none;background:var(--bg);border:1px solid var(--line);border-radius:15px;padding:13px 11px;color:var(--ink);min-width:0;transition:transform .15s,border-color .15s}
+.menu-link:active{transform:scale(.97)}
+.menu-icon{width:43px;height:43px;flex:0 0 43px;display:grid;place-items:center;border-radius:13px;background:#f0e4d7;font-size:25px}
+body.dark .menu-icon{background:#45372e}
+.menu-text{min-width:0}
+.menu-text strong{display:block;font-size:13px;line-height:1.25}
+.menu-text small{display:block;color:var(--muted);font-size:11px;margin-top:3px}
+.menu-arrow{margin-left:auto;color:var(--terra);font-size:18px}
 @media(min-width:600px){body{padding-top:28px}.panel{padding:20px}.quick button{flex-basis:88px}}
+@media(max-width:380px){.app-menu{grid-template-columns:1fr}.menu-link{padding:11px}.bottom-actions button{font-size:10px}}
 </style>
 </head>
 <body>
-
-<div class="fall" style="left:8%;animation-duration:18s">🍂</div>
-<div class="fall" style="left:27%;animation-duration:23s;animation-delay:-8s">🍁</div>
-<div class="fall" style="left:72%;animation-duration:20s;animation-delay:-4s">🍂</div>
-<div class="fall" style="left:91%;animation-duration:25s;animation-delay:-13s">🍁</div>
 
 <header>
  <div class="brand">
@@ -126,6 +125,38 @@ footer a{color:var(--terra);font-weight:700;text-decoration:none}
  </div>
  <button class="iconbtn" id="themeBtn" aria-label="Εναλλαγή θέματος">🌙</button>
 </header>
+
+<!-- ΝΕΟ ΜΕΝΟΥ -->
+<section class="panel">
+ <h2 class="section-title">🏡 Οι ενότητες της εφαρμογής</h2>
+ <div class="app-menu">
+  <a class="menu-link" href="recipes.html">
+   <span class="menu-icon">🍲</span>
+   <span class="menu-text"><strong>Συνταγές</strong><small>Ιδέες και αγαπημένα φαγητά</small></span>
+   <span class="menu-arrow">›</span>
+  </a>
+  <a class="menu-link" href="meal-planner.html">
+   <span class="menu-icon">📅</span>
+   <span class="menu-text"><strong>Εβδομαδιαίο μενού</strong><small>Οργάνωσε τα γεύματα</small></span>
+   <span class="menu-arrow">›</span>
+  </a>
+  <a class="menu-link" href="pantry.html">
+   <span class="menu-icon">🥫</span>
+   <span class="menu-text"><strong>Το ντουλάπι μου</strong><small>Απόθεμα και ημερομηνίες</small></span>
+   <span class="menu-arrow">›</span>
+  </a>
+  <a class="menu-link" href="coffee.html">
+   <span class="menu-icon">☕</span>
+   <span class="menu-text"><strong>Κέρασέ με έναν καφέ</strong><small>Στήριξε την εφαρμογή</small></span>
+   <span class="menu-arrow">›</span>
+  </a>
+  <a class="menu-link" href="about.html">
+   <span class="menu-icon">ℹ️</span>
+   <span class="menu-text"><strong>Σχετικά με την εφαρμογή</strong><small>Πληροφορίες και βοήθεια</small></span>
+   <span class="menu-arrow">›</span>
+  </a>
+ </div>
+</section>
 
 <section class="panel">
  <div class="progress-head"><span>Πρόοδος αγορών</span><span id="progressText">Αγοράστηκαν 0 / 0</span></div>
@@ -689,15 +720,15 @@ $('share').addEventListener('click',async()=>{
   list.items.map(x=>(x.bought?'✓ ':'□ ')+x.name+' × '+x.qty+' — '+money(x.qty*x.price)).join('\n'):
   '(Άδεια λίστα)';
  const total=list.items.reduce((s,x)=>s+x.qty*x.price,0);
- const text='🛒 '+list.name+'\n'+lines+'\n\nΣύνολο: '+money(total);
+ const shareText='🛒 '+list.name+'\n'+lines+'\n\nΣύνολο: '+money(total);
  try{
   if(navigator.share){
-   await navigator.share({title:list.name,text});
+   await navigator.share({title:list.name,text:shareText});
   }else if(navigator.clipboard&&window.isSecureContext){
-   await navigator.clipboard.writeText(text);
+   await navigator.clipboard.writeText(shareText);
    alert('Η λίστα αντιγράφηκε! Μπορείς να την επικολλήσεις στο Viber ή στο WhatsApp.');
   }else{
-   prompt('Αντέγραψε τη λίστα:',text);
+   prompt('Αντέγραψε τη λίστα:',shareText);
   }
  }catch(e){
   if(e.name!=='AbortError')alert('Δεν ήταν δυνατή η κοινοποίηση αυτή τη στιγμή.');
@@ -712,7 +743,6 @@ $('modalBackdrop').addEventListener('click',e=>{
  if(e.target===$('modalBackdrop'))closeModal();
 });
 
-/* Pull-to-refresh: ενεργοποιείται μόνο όταν η σελίδα βρίσκεται στην κορυφή. */
 let touchStartY=0;
 let pullTriggered=false;
 document.addEventListener('touchstart',e=>{
@@ -734,7 +764,6 @@ document.addEventListener('touchend',e=>{
  touchStartY=0;
 },{passive:true});
 
-/* Εγκατάσταση PWA - απαιτεί HTTPS και τα αρχεία manifest/service worker. */
 if('serviceWorker' in navigator && location.protocol!=='file:'){
  window.addEventListener('load',()=>{
   navigator.serviceWorker.register('./service-worker.js').catch(err=>{
