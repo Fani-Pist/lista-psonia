@@ -1,20 +1,15 @@
 ﻿{
-  "name": "Λίστα Σούπερ Μάρκετ",
+  "name": "Έξυπνη Λίστα Σούπερ Μάρκετ",
   "short_name": "Λίστα Αγορών",
-  "description": "Οργάνωσε τις αγορές σου εύκολα.",
-  "lang": "el",
-  "start_url": "./",
-  "scope": "./",
+  "start_url": "index.html",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#FAF6F0",
-  "theme_color": "#FAF6F0",
+  "background_color": "#f4f7f6",
+  "theme_color": "#2e7d32",
   "icons": [
     {
-      "src": "icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "src": "https://flaticon.com",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ]
 }
