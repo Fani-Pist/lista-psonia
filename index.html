@@ -1,1023 +1,545 @@
-<!DOCTYPE html>
-<html lang="el">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#C85A32" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="apple-mobile-web-app-title" content="Λίστα Σούπερ Μάρκετ" />
-  <title>Λίστα Σούπερ Μάρκετ 🛒</title>
+<!DOCTYPE html> <html lang="el"> <head> <meta charset="UTF-8" /> <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /> <title>Λίστα Σούπερ Μάρκετ</title> <meta name="theme-color" content="#C85A32" /> <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://w3.org' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23C85A32'/%3E%3Cpath d='M25 45h50l-6 30H31l-6-30zm12-15l-8 15m34-15l8 15M42 54v12m16-12v12' stroke='%23FAF6F0' stroke-width='6' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E" /> <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://w3.org' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23C85A32'/%3E%3Cpath d='M25 45h50l-6 30H31l-6-30zm12-15l-8 15m34-15l8 15M42 54v12m16-12v12' stroke='%23FAF6F0' stroke-width='6' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E" /> <style> :root { --bg: #FAF6F0; --card: rgba(255, 255, 255, 0.95); --text: #2C2520; --muted: #7A6E65; --primary: #C85A32; --primary-hover: #B04A25; --sage: #6B705C; --border: #E8DFD5; --input-bg: #FDFBF7; --summary-bg: #2C2520; --summary-text: #FAF6F0; --danger: #D62828; --success: #4A7C59; --shadow: 0 8px 24px rgba(44, 37, 32, 0.08); } body.dark { --bg: #1C1714; --card: rgba(39, 32, 28, 0.95); --text: #F5EFE6; --muted: #A89B91; --primary: #D96B43; --primary-hover: #E07A54; --sage: #8A9178; --border: #3A302A; --input-bg: #1F1A17; --summary-bg: #120F0D; --summary-text: #FAF6F0; --shadow: 0 8px 24px rgba(0, 0, 0, 0.35); } * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; } body { background-color: var(--bg); color: var(--text); padding: 16px 16px 145px 16px; transition: background-color 0.3s ease, color 0.3s ease; max-width: 540px; margin: 0 auto; position: relative; overflow-x: hidden; } .leaves-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; } .leaf { position: absolute; top: -40px; font-size: 1.25rem; opacity: 0.22; animation: fall linear infinite; } .leaf:nth-child(1) { left: 8%; animation-duration: 14s; animation-delay: 0s; } .leaf:nth-child(2) { left: 28%; animation-duration: 18s; animation-delay: 4s; font-size: 1rem; } .leaf:nth-child(3) { left: 52%; animation-duration: 15s; animation-delay: 2s; } .leaf:nth-child(4) { left: 74%; animation-duration: 20s; animation-delay: 6s; font-size: 1.1rem; } .leaf:nth-child(5) { left: 90%; animation-duration: 16s; animation-delay: 1s; } @keyframes fall { 0% { transform: translateY(-40px) rotate(0deg) translateX(0px); } 50% { transform: translateY(50vh) rotate(180deg) translateX(18px); } 100% { transform: translateY(105vh) rotate(360deg) translateX(-12px); } } .app-content { position: relative; z-index: 1; } header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; animation: slideDown 0.4s ease; } @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } } .brand { display: flex; align-items: center; gap: 12px; } .logo { width: 46px; height: 46px; background: linear-gradient(135deg, var(--primary), #A8431F); border-radius: 14px; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 14px rgba(200, 90, 50, 0.35); flex-shrink: 0; animation: floatLogo 3.5s ease-in-out infinite; } @keyframes floatLogo { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-4px); } } h1 { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.3px; } .subtitle { font-size: 0.8rem; color: var(--muted); } .theme-btn { background: var(--card); border: 1px solid var(--border); color: var(--text); width: 42px; height: 42px; border-radius: 12px; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow); transition: transform 0.2s ease; } .theme-btn:active { transform: rotate(25deg) scale(0.92); } .progress-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 12px 16px; margin-bottom: 16px; box-shadow: var(--shadow); } .progress-header { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; color: var(--muted); } .progress-track { height: 9px; background: var(--border); border-radius: 99px; overflow: hidden; } .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--primary), #E07A54, var(--primary)); background-size: 200% 100%; border-radius: 99px; transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s ease; animation: shimmer 2.5s infinite linear; } .progress-fill.done { background: var(--success); animation: none; } @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } } .done-banner { display: none; margin-top: 8px; text-align: center; font-size: 0.85rem; font-weight: 700; color: var(--success); animation: popIn 0.35s ease; } .quick-section { margin-bottom: 16px; } .quick-label { font-size: 0.78rem; font-weight: 700; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; } .quick-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; } .quick-row::-webkit-scrollbar { display: none; } .quick-pill { background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 8px 14px; border-radius: 99px; font-size: 0.88rem; font-weight: 600; white-space: nowrap; cursor: pointer; transition: transform 0.15s ease, border-color 0.2s ease; } .quick-pill:hover { border-color: var(--primary); transform: translateY(-1px); } .quick-pill:active { transform: scale(0.93); } .form-card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 16px; margin-bottom: 16px; box-shadow: var(--shadow); } .input-group { margin-bottom: 10px; } input, select { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 12px; background: var(--input-bg); color: var(--text); font-size: 0.95rem; outline: none; transition: border-color 0.2s, box-shadow 0.2s; } input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(200, 90, 50, 0.15); } .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; } .add-btn { width: 100%; padding: 13px; background: linear-gradient(135deg, var(--primary), #B54924); color: #FFFFFF; border: none; border-radius: 12px; font-size: 1rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(200, 90, 50, 0.28); transition: transform 0.12s ease; } .add-btn:active { transform: scale(0.97); } .filter-bar { display: flex; gap: 8px; margin-bottom: 14px; } .filter-bar input { flex: 1; } .hide-btn { padding: 0 12px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--card); color: var(--text); font-size: 0.82rem; font-weight: 600; cursor: pointer; white-space: nowrap; } .hide-btn.active { background: var(--sage); color: #fff; border-color: var(--sage); } .category-block { margin-bottom: 18px; } .category-title { font-size: 0.92rem; font-weight: 700; color: var(--sage); margin-bottom: 8px; padding-left: 4px; } .item-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; gap: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: opacity 0.25s ease, transform 0.2s ease; animation: popIn 0.28s cubic-bezier(0.22, 1, 0.36, 1); } @keyframes popIn { 0% { opacity: 0; transform: scale(0.94) translateY(6px); } 100% { opacity: 1; transform: scale(1) translateY(0); } } .item-card.checked { opacity: 0.56; transform: scale(0.99); } .item-left { display: flex; align-items: center; gap: 10px; flex: 1; 
 
-  <!-- Favicon & Apple Touch Icon (SVG Data URI) -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://w3.org' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23C85A32'/%3E%3Ctext x='50' y='68' font-size='56' text-anchor='middle'%3E%F0%9F%9B%92%3C/text%3E%3C/svg%3E" />
-  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://w3.org' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23C85A32'/%3E%3Ctext x='50' y='68' font-size='56' text-anchor='middle'%3E%F0%9F%9B%92%3C/text%3E%3C/svg%3E" />
+Χρησιμοποιήστε τον κώδικα με προσοχή.
 
-  <style>
-    :root {
-      --bg-color: #FAF6F0;
-      --surface-color: #FFFFFF;
-      --surface-alt: #F3ECE1;
-      --text-main: #2D2A26;
-      --text-muted: #7A736B;
-      --accent: #C85A32;
-      --accent-hover: #B04A25;
-      --sage: #6B705C;
-      --sage-light: #E8EBE2;
-      --success: #3E8E41;
-      --danger: #D9381E;
-      --border-color: #E6DDD0;
-      --shadow: 0 4px 12px rgba(45, 42, 38, 0.06);
-      --radius: 14px;
-    }
-
-    body.dark {
-      --bg-color: #1C1917;
-      --surface-color: #262320;
-      --surface-alt: #322E2A;
-      --text-main: #F5EFE6;
-      --text-muted: #A89F94;
-      --accent: #D96B43;
-      --accent-hover: #E57A53;
-      --sage: #8A9178;
-      --sage-light: #2F3329;
-      --success: #4CAF50;
-      --danger: #EF5350;
-      --border-color: #3D3833;
-      --shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      line-height: 1.4;
-      padding-bottom: 145px;
-      transition: background-color 0.3s ease, color 0.3s ease;
-      overflow-x: hidden;
-    }
-
-    /* Falling Autumn Leaves */
-    .leaves-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-    }
-
-    .leaf {
-      position: absolute;
-      top: -40px;
-      font-size: 1.2rem;
-      opacity: 0.35;
-      animation: fall linear infinite;
-    }
-
-    @keyframes fall {
-      0% {
-        transform: translateY(-40px) rotate(0deg) translateX(0px);
-      }
-      50% {
-        transform: translateY(50vh) rotate(180deg) translateX(20px);
-      }
-      100% {
-        transform: translateY(105vh) rotate(360deg) translateX(-15px);
-      }
-    }
-
-    /* Main Container */
-    .app-container {
-      position: relative;
-      z-index: 1;
-      max-width: 540px;
-      margin: 0 auto;
-      padding: 16px;
-    }
-
-    /* Header */
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo-cart {
-      font-size: 2rem;
-      display: inline-block;
-      animation: floatCart 3s ease-in-out infinite;
-    }
-
-    @keyframes floatCart {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-5px) rotate(-4deg); }
-    }
-
-    h1 {
-      font-size: 1.35rem;
-      font-weight: 800;
-      color: var(--accent);
-      letter-spacing: -0.3px;
-    }
-
-    .theme-btn {
-      background: var(--surface-color);
-      border: 1px solid var(--border-color);
-      border-radius: 50%;
-      width: 42px;
-      height: 42px;
-      font-size: 1.2rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: var(--shadow);
-      transition: transform 0.15s ease;
-    }
-
-    /* Press effect on all buttons */
-    button:active {
-      transform: scale(0.94);
-    }
-
-    /* Progress Bar Card */
-    .card {
-      background: var(--surface-color);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius);
-      padding: 14px;
-      margin-bottom: 14px;
-      box-shadow: var(--shadow);
-    }
-
-    .progress-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .progress-track {
-      width: 100%;
-      height: 12px;
-      background: var(--surface-alt);
-      border-radius: 999px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--accent), #E07A5F);
-      border-radius: 999px;
-      transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .progress-fill.completed {
-      background: linear-gradient(90deg, var(--success), #66BB6A);
-    }
-
-    /* Shimmer effect */
-    .progress-fill::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 60%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0.45) 50%,
-        rgba(255, 255, 255, 0) 100%
-      );
-      animation: shimmer 2.2s infinite;
-    }
-
-    @keyframes shimmer {
-      100% { left: 160%; }
-    }
-
-    .reward-msg {
-      display: none;
-      margin-top: 8px;
-      font-size: 0.88rem;
-      font-weight: 700;
-      color: var(--success);
-      text-align: center;
-      animation: popIn 0.3s ease;
-    }
-
-    .reward-msg.show {
-      display: block;
-    }
-
-    /* Quick Add Horizontal Bar */
-    .quick-add-scroll {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 6px;
-      margin-bottom: 12px;
-      scrollbar-width: none;
-    }
-
-    .quick-add-scroll::-webkit-scrollbar {
-      display: none;
-    }
-
-    .quick-chip {
-      flex: 0 0 auto;
-      background: var(--surface-color);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 0.88rem;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-      transition: background 0.2s, border-color 0.2s;
-    }
-
-    .quick-chip:hover {
-      border-color: var(--accent);
-    }
-
-    /* Add Item Form */
-    .add-form {
-      display: grid;
-      grid-template-columns: 1fr 76px 84px;
-      gap: 8px;
-    }
-
-    .add-form input,
-    .add-form select {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid var(--border-color);
-      background: var(--surface-alt);
-      color: var(--text-main);
-      font-size: 0.95rem;
-      outline: none;
-    }
-
-    .add-form input:focus,
-    .add-form select:focus {
-      border-color: var(--accent);
-    }
-
-    .form-bottom-row {
-      grid-column: 1 / -1;
-      display: flex;
-      gap: 8px;
-      margin-top: 2px;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 10px 18px;
-      font-size: 0.95rem;
-      font-weight: 700;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background 0.2s;
-    }
-
-    .btn-primary:hover {
-      background: var(--accent-hover);
-    }
-
-    /* Filter & Search Row */
-    .filter-bar {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 14px;
-      align-items: center;
-    }
-
-    .search-input {
-      flex: 1;
-      padding: 9px 12px;
-      border-radius: 10px;
-      border: 1px solid var(--border-color);
-      background: var(--surface-color);
-      color: var(--text-main);
-      font-size: 0.9rem;
-      outline: none;
-    }
-
-    .toggle-hide-btn {
-      padding: 9px 12px;
-      border-radius: 10px;
-      border: 1px solid var(--sage);
-      background: var(--surface-color);
-      color: var(--sage);
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .toggle-hide-btn.active {
-      background: var(--sage);
-      color: #fff;
-    }
-
-    /* Category Groups & Items */
-    .category-group {
-      margin-bottom: 16px;
-    }
-
-    .category-title {
-      font-size: 0.85rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--sage);
-      margin-bottom: 6px;
-      padding-left: 4px;
-    }
-
-    .item-card {
-      background: var(--surface-color);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 10px 12px;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-      animation: slideIn 0.28s cubic-bezier(0.22, 1, 0.36, 1);
-      transition: opacity 0.25s ease, background 0.25s ease;
-    }
-
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(-10px) scale(0.98);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    @keyframes popIn {
-      0% { transform: scale(0.9); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    .item-card.checked {
-      opacity: 0.62;
-      background: var(--surface-alt);
-    }
-
-    .item-card.checked .item-name {
-      text-decoration: line-through;
-      color: var(--text-muted);
-    }
-
-    .item-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex: 1;
-      min-width: 0;
-    }
-.custom-checkbox {
-width: 24px;
-height: 24px;
-accent-color: var(--sage);
 cursor: pointer;
-flex-shrink: 0;
-}
-.item-info {
-display: flex;
-flex-direction: column;
 min-width: 0;
 }
+
+.checkbox {
+width: 24px;
+height: 24px;
+border-radius: 8px;
+border: 2px solid var(--primary);
+display: flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+color: #fff;
+font-weight: bold;
+font-size: 0.9rem;
+transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.item-card.checked .checkbox {
+background: var(--primary);
+transform: scale(1.06);
+}
+
+.item-info {
+min-width: 0;
+}
+
 .item-name {
 font-weight: 600;
 font-size: 0.98rem;
-word-break: break-word;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
 }
-.item-subtotal {
+
+.item-card.checked .item-name {
+text-decoration: line-through;
+}
+
+.item-meta {
 font-size: 0.78rem;
-color: var(--text-muted);
+color: var(--muted);
 }
-.item-controls {
+
+.item-right {
 display: flex;
 align-items: center;
 gap: 6px;
 flex-shrink: 0;
 }
-.qty-box {
+
+.qty-controls {
 display: flex;
 align-items: center;
-background: var(--surface-alt);
+background: var(--input-bg);
+border: 1px solid var(--border);
 border-radius: 8px;
-border: 1px solid var(--border-color);
 overflow: hidden;
 }
+
 .qty-btn {
 background: transparent;
 border: none;
-color: var(--text-main);
-width: 28px;
-height: 28px;
-font-size: 1rem;
-font-weight: 700;
+color: var(--text);
+font-weight: 800;
+font-size: 0.95rem;
+width: 24px;
+height: 26px;
 cursor: pointer;
 }
+
 .qty-val {
-min-width: 22px;
-text-align: center;
-font-size: 0.88rem;
+font-size: 0.82rem;
 font-weight: 700;
+padding: 0 4px;
 }
-.inline-price-wrap {
-display: flex;
-align-items: center;
-background: var(--surface-alt);
-border: 1px solid var(--border-color);
+
+.item-price-btn {
+background: var(--input-bg);
+border: 1px dashed var(--border);
 border-radius: 8px;
-padding: 0 5px;
-height: 30px;
+padding: 4px 8px;
+font-weight: 700;
+font-size: 0.85rem;
+color: var(--primary);
+cursor: pointer;
 }
-.inline-price-wrap span {
-font-size: 0.8rem;
-color: var(--text-muted);
-margin-right: 2px;
-}
-.inline-price {
-width: 48px;
-border: none;
-background: transparent;
-color: var(--text-main);
-font-size: 0.88rem;
-font-weight: 600;
-text-align: right;
-outline: none;
-}
+
 .del-btn {
 background: transparent;
 border: none;
-color: var(--text-muted);
+color: var(--muted);
 font-size: 1.05rem;
 cursor: pointer;
 padding: 4px;
 }
+
 .del-btn:hover {
 color: var(--danger);
 }
-/* Empty State */
-.empty-state {
-text-align: center;
-padding: 32px 16px;
-color: var(--text-muted);
-font-size: 0.95rem;
-}
-/* Bottom Action Buttons */
-.actions-grid {
+
+.actions-row {
 display: grid;
 grid-template-columns: 1fr 1fr;
-gap: 8px;
-margin-top: 16px;
-}
-.action-btn {
-padding: 10px;
-border-radius: 10px;
-border: 1px solid var(--border-color);
-background: var(--surface-color);
-color: var(--text-main);
-font-size: 0.86rem;
-font-weight: 600;
-cursor: pointer;
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 6px;
-box-shadow: var(--shadow);
-}
-.action-btn.share {
-grid-column: 1 / -1;
-background: var(--sage);
-color: #fff;
-border-color: var(--sage);
-}
-.action-btn.danger {
-color: var(--danger);
-}
-/* Coffee Footer Link */
-.coffee-footer {
-text-align: center;
-margin-top: 22px;
-margin-bottom: 10px;
-}
-.coffee-link {
-font-size: 0.82rem;
-color: var(--text-muted);
-text-decoration: none;
-border-bottom: 1px dashed var(--text-muted);
-padding-bottom: 2px;
-transition: color 0.2s;
-}
-.coffee-link:hover {
-color: var(--accent);
-border-color: var(--accent);
-}
-/* Fixed Bottom Budget Bar */
-.bottom-bar {
-position: fixed;
-bottom: 0;
-left: 0;
-right: 0;
-background: var(--surface-color);
-border-top: 2px solid var(--border-color);
-padding: 10px 16px;
-z-index: 10;
-box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
-transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-.bottom-bar-inner {
-max-width: 540px;
-margin: 0 auto;
-display: flex;
-justify-content: space-between;
-align-items: center;
 gap: 10px;
+margin-top: 12px;
 }
-.bottom-bar.over-budget {
-background: #FDECEA;
-border-top-color: var(--danger);
-}
-body.dark .bottom-bar.over-budget {
-background: #3B1816;
-border-top-color: var(--danger);
-}
-@keyframes shakeBar {
-0%, 100% { transform: translateX(0); }
-20% { transform: translateX(-6px); }
-40% { transform: translateX(6px); }
-60% { transform: translateX(-4px); }
-80% { transform: translateX(4px); }
-}
-.shake {
-animation: shakeBar 0.4s ease;
-}
-.total-block {
-display: flex;
-flex-direction: column;
-}
-.total-label {
-font-size: 0.75rem;
-color: var(--text-muted);
+
+.sec-btn {
+padding: 11px;
+border-radius: 12px;
+border: 1.5px solid var(--border);
+background: var(--card);
+color: var(--text);
 font-weight: 600;
+font-size: 0.85rem;
+cursor: pointer;
+transition: transform 0.12s ease;
 }
-.total-amount {
-font-size: 1.3rem;
-font-weight: 800;
-color: var(--accent);
+
+.sec-btn:active {
+transform: scale(0.97);
 }
-.bottom-bar.over-budget .total-amount,
-.bottom-bar.over-budget .remaining-text {
+
+.sec-btn.full {
+grid-column: span 2;
 color: var(--danger);
 }
-.budget-controls {
+
+.footer-note {
+text-align: center;
+margin-top: 24px;
+font-size: 0.8rem;
+color: var(--muted);
+}
+
+.coffee-link {
+display: inline-block;
+margin-top: 6px;
+padding: 6px 14px;
+border-radius: 99px;
+background: var(--card);
+border: 1px solid var(--border);
+color: var(--primary);
+text-decoration: none;
+font-weight: 600;
+font-size: 0.8rem;
+}
+
+.summary-bar {
+position: fixed;
+bottom: 14px;
+left: 50%;
+transform: translateX(-50%);
+width: calc(100% - 32px);
+max-width: 508px;
+background: var(--summary-bg);
+color: var(--summary-text);
+border-radius: 18px;
+padding: 14px 18px;
+box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 12px;
+z-index: 100;
+transition: background-color 0.3s ease;
+}
+
+.summary-bar.over-budget {
+background: var(--danger);
+animation: shake 0.35s ease;
+}
+
+@keyframes shake {
+0%, 100% { transform: translateX(-50%); }
+25% { transform: translateX(calc(-50% - 5px)); }
+75% { transform: translateX(calc(-50% + 5px)); }
+}
+
+.total-label {
+font-size: 0.78rem;
+opacity: 0.8;
+}
+
+.total-amount {
+font-size: 1.45rem;
+font-weight: 800;
+}
+
+.budget-box {
 display: flex;
 flex-direction: column;
 align-items: flex-end;
 }
-.budget-input-row {
+
+.budget-input-wrap {
 display: flex;
 align-items: center;
 gap: 6px;
+background: rgba(255, 255, 255, 0.12);
+padding: 5px 10px;
+border-radius: 10px;
 }
-.budget-input-row label {
-font-size: 0.82rem;
-font-weight: 600;
-color: var(--text-muted);
+
+.budget-input-wrap span {
+font-size: 0.8rem;
+opacity: 0.9;
 }
+
 .budget-input {
-width: 78px;
-padding: 6px 8px;
-border-radius: 8px;
-border: 1px solid var(--border-color);
-background: var(--surface-alt);
-color: var(--text-main);
-font-size: 0.92rem;
+width: 65px;
+padding: 4px 6px;
+border: none;
+background: rgba(255, 255, 255, 0.15);
+color: #fff;
 font-weight: 700;
+border-radius: 6px;
 text-align: right;
-outline: none;
+font-size: 0.9rem;
 }
-.remaining-text {
-font-size: 0.78rem;
-font-weight: 700;
-color: var(--sage);
-margin-top: 3px;
+
+.budget-status {
+font-size: 0.75rem;
+margin-top: 4px;
+opacity: 0.9;
+}
+
+.empty-state {
+text-align: center;
+padding: 30px 16px;
+color: var(--muted);
+font-size: 0.95rem;
+line-height: 1.5;
 }
 
 
-🛒
+🍂
+🍁
+🍂
+🍁
+🍂
+
 Λίστα Σούπερ Μάρκετ
+Οργανωμένες αγορές με έλεγχο κόστους
+
 
 🌙
+
+Πρόοδος αγορών
 Αγοράστηκαν 0 / 0
-0%
 
 
 
 
-🎉 Μπράβο! Τα πήρες όλα, ώρα για ταμείο!
+🎉 Όλα τα ψώνια ολοκληρώθηκαν!
+
+Γρήγορη Προσθήκη (1 πάτημα)
+
 🥛 Γάλα
 🍞 Ψωμί
 🥚 Αυγά
 ☕ Καφές
 🧀 Τυρί
 🍅 Ντομάτες
-🥬 Φρούτα & Λαχανικά
-🥛 Γαλακτοκομικά & Ψυγείο
-🥩 Κρέας & Ψάρι
-🍞 Αρτοποιείο
-🍝 Τρόφιμα & Ζυμαρικά
-☕ Πρωινό & Ροφήματα
-🧼 Καθαριστικά & Προσωπικά
-📦 Άλλα
 
-+ Προσθήκη
+🍎 Φρούτα & Λαχανικά
+🥛 Γαλακτοκομικά
+🥩 Κρεοπωλείο
+🍝 Τρόφιμα
+🧼 Καθαριστικά
+🛒 Άλλα
 
-Απόκρυψη αγορασμένων
-📤 Κοινοποίηση Λίστας (Viber / WhatsApp)
-🧹 Σβήσιμο Αγορασμένων
-🗑️ Καθαρισμός Όλων
+
++ Προσθήκη στη Λίστα
+
+Απόκρυψη ✓
+
+🗑️ Σβήσιμο Αγορασμένων
+📤 Κοινοποίηση Λίστας
+🧹 Καθαρισμός Όλης της Λίστας
+
+Φτιαγμένο με ❤️ για έξυπνες αγορές
 ☕ Σου έλυσε τα χέρια; Κέρασέ με έναν καφέ
 
+Σύνολο Λίστας
+0.00 €
 
-ΣΥΝΟΛΙΚΟ ΚΟΣΤΟΣ
-0,00 €
 
 
 Όριο (€):
+
+
 Χωρίς όριο
 
-
-(function () {
-// State & LocalStorage keys
-const STORAGE_KEY = 'supermarket_list_v1';
-const BUDGET_KEY = 'supermarket_budget_v1';
-const THEME_KEY = 'supermarket_theme_v1';
-let items = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-let budgetLimit = parseFloat(localStorage.getItem(BUDGET_KEY)) || 0;
+let items = JSON.parse(localStorage.getItem('peonia_items') || '[]');
+let budget = localStorage.getItem('peonia_budget') || '';
+let darkMode = localStorage.getItem('peonia_dark') === 'true';
 let hideChecked = false;
-let searchQuery = '';
-let wasOverBudget = false;
-// DOM Elements
-const listContainer = document.getElementById('listContainer');
-const addForm = document.getElementById('addForm');
-const itemNameInput = document.getElementById('itemName');
-const itemQtyInput = document.getElementById('itemQty');
-const itemPriceInput = document.getElementById('itemPrice');
-const itemCategorySelect = document.getElementById('itemCategory');
-const searchInput = document.getElementById('searchInput');
-const toggleHideBtn = document.getElementById('toggleHideBtn');
-const progressText = document.getElementById('progressText');
-const progressPercent = document.getElementById('progressPercent');
-const progressFill = document.getElementById('progressFill');
-const rewardMsg = document.getElementById('rewardMsg');
-const totalCostEl = document.getElementById('totalCost');
-const budgetLimitInput = document.getElementById('budgetLimit');
-const remainingTextEl = document.getElementById('remainingText');
-const bottomBar = document.getElementById('bottomBar');
+
 const themeToggle = document.getElementById('themeToggle');
-// Haptic feedback helper
-function vibrate(ms = 25) {
-if (navigator.vibrate) {
-navigator.vibrate(ms);
-}
-}
-// Format Euro currency
-function formatEuro(num) {
-return num.toFixed(2).replace('.', ',') + ' €';
-}
-// Initialize Falling Leaves
-function createLeaves() {
-const container = document.getElementById('leavesContainer');
-const leafIcons = ['🍂', '🍁'];
-const leafCount = 10;
-for (let i = 0; i < leafCount; i++) {
-const leaf = document.createElement('span');
-leaf.className = 'leaf';
-leaf.textContent = leafIcons[i % leafIcons.length];
-leaf.style.left = Math.random() * 95 + '%';
-leaf.style.animationDuration = (10 + Math.random() * 10) + 's';
-leaf.style.animationDelay = (-Math.random() * 15) + 's';
-leaf.style.fontSize = (0.9 + Math.random() * 0.6) + 'rem';
-container.appendChild(leaf);
-}
-}
-// Theme Setup
-function initTheme() {
-const savedTheme = localStorage.getItem(THEME_KEY);
-if (savedTheme === 'dark') {
+const budgetInput = document.getElementById('budgetInput');
+
+if (darkMode) {
 document.body.classList.add('dark');
 themeToggle.textContent = '☀️';
 }
-}
+budgetInput.value = budget;
+
 themeToggle.addEventListener('click', () => {
-vibrate(20);
-document.body.classList.toggle('dark');
-const isDark = document.body.classList.contains('dark');
-themeToggle.textContent = isDark ? '☀️' : '🌙';
-localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
+darkMode = !darkMode;
+document.body.classList.toggle('dark', darkMode);
+themeToggle.textContent = darkMode ? '☀️' : '🌙';
+localStorage.setItem('peonia_dark', darkMode);
+vibrate();
 });
-// Save to LocalStorage
-function saveData() {
-localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+
+budgetInput.addEventListener('input', (e) => {
+budget = e.target.value;
+localStorage.setItem('peonia_budget', budget);
+updateTotals();
+});
+
+function vibrate() {
+if (navigator.vibrate) navigator.vibrate(25);
 }
-// Add Item Helper
-function addItem(name, qty, price, category) {
-const cleanName = name.trim();
-if (!cleanName) return;
-// If exact same unchecked item exists in same category, increment qty
-const existing = items.find(
-(i) => !i.checked && i.name.toLowerCase() === cleanName.toLowerCase() && i.category === category
-);
-if (existing) {
-existing.qty += qty;
-if (price > 0 && existing.price === 0) existing.price = price;
-} else {
-items.unshift({
-id: Date.now().toString() + Math.random().toString(36).slice(2, 6),
-name: cleanName,
-qty: qty > 0 ? qty : 1,
-price: price >= 0 ? price : 0,
-category: category || '📦 Άλλα',
+
+function save() {
+localStorage.setItem('peonia_items', JSON.stringify(items));
+render();
+}
+
+function addItem() {
+const nameEl = document.getElementById('itemName');
+const qtyEl = document.getElementById('itemQty');
+const priceEl = document.getElementById('itemPrice');
+const catEl = document.getElementById('itemCategory');
+
+const name = nameEl.value.trim();
+if (!name) return;
+
+const qty = Math.max(1, parseInt(qtyEl.value) || 1);
+const price = Math.max(0, parseFloat(priceEl.value) || 0);
+
+items.push({
+id: Date.now(),
+name,
+qty,
+price,
+category: catEl.value,
 checked: false
 });
+
+nameEl.value = '';
+qtyEl.value = '1';
+priceEl.value = '';
+vibrate();
+save();
 }
-vibrate(30);
-saveData();
-render();
+
+function quickAdd(name, category) {
+items.push({
+id: Date.now() + Math.random(),
+name,
+qty: 1,
+price: 0,
+category,
+checked: false
+});
+vibrate();
+save();
 }
-// Form Submit
-addForm.addEventListener('submit', (e) => {
-e.preventDefault();
-const name = itemNameInput.value;
-const qty = parseInt(itemQtyInput.value, 10) || 1;
-const price = parseFloat(itemPriceInput.value) || 0;
-const category = itemCategorySelect.value;
-addItem(name, qty, price, category);
-itemNameInput.value = '';
-itemQtyInput.value = '1';
-itemPriceInput.value = '';
-itemNameInput.focus();
+
+function changeQty(id, delta) {
+items = items.map(item => {
+if (item.id === id) {
+const next = Math.max(1, item.qty + delta);
+return { ...item, qty: next };
+}
+return item;
 });
-// Quick Add Chips
-document.getElementById('quickAddBar').addEventListener('click', (e) => {
-const btn = e.target.closest('.quick-chip');
-if (!btn) return;
-addItem(
-btn.dataset.name,
-1,
-parseFloat(btn.dataset.price) || 0,
-btn.dataset.cat
-);
-});
-// Search & Hide Checked
-searchInput.addEventListener('input', (e) => {
-searchQuery = e.target.value.trim().toLowerCase();
-render();
-});
-toggleHideBtn.addEventListener('click', () => {
-vibrate(20);
+vibrate();
+save();
+}
+
+function editPrice(id) {
+const item = items.find(i => i.id === id);
+if (!item) return;
+const newPrice = prompt(Τιμή μονάδας (€) για "${item.name}":, item.price || '');
+if (newPrice !== null) {
+const parsed = parseFloat(newPrice.replace(',', '.'));
+if (!isNaN(parsed) && parsed >= 0) {
+item.price = parsed;
+vibrate();
+save();
+}
+}
+}
+
+function toggleItem(id) {
+items = items.map(item => item.id === id ? { ...item, checked: !item.checked } : item);
+vibrate();
+save();
+}
+
+function toggleHideChecked() {
 hideChecked = !hideChecked;
-toggleHideBtn.classList.toggle('active', hideChecked);
-toggleHideBtn.textContent = hideChecked ? 'Εμφάνιση όλων' : 'Απόκρυψη αγορασμένων';
-render();
-});
-// Budget Limit Input
-if (budgetLimit > 0) {
-budgetLimitInput.value = budgetLimit;
-}
-budgetLimitInput.addEventListener('input', (e) => {
-budgetLimit = parseFloat(e.target.value) || 0;
-localStorage.setItem(BUDGET_KEY, budgetLimit);
-updateSummary();
-});
-// Update Progress & Budget Bar
-function updateSummary() {
-const totalItems = items.length;
-const checkedItems = items.filter((i) => i.checked).length;
-const percent = totalItems === 0 ? 0 : Math.round((checkedItems / totalItems) * 100);
-progressText.textContent = Αγοράστηκαν ${checkedItems} / ${totalItems};
-progressPercent.textContent = ${percent}%;
-progressFill.style.width = ${percent}%;
-if (totalItems > 0 && checkedItems === totalItems) {
-progressFill.classList.add('completed');
-rewardMsg.classList.add('show');
-} else {
-progressFill.classList.remove('completed');
-rewardMsg.classList.remove('show');
-}
-const totalCost = items.reduce((sum, item) => sum + item.qty * item.price, 0);
-totalCostEl.textContent = formatEuro(totalCost);
-if (budgetLimit > 0) {
-const diff = budgetLimit - totalCost;
-if (diff < 0) {
-bottomBar.classList.add('over-budget');
-remainingTextEl.textContent = Υπέρβαση: +${formatEuro(Math.abs(diff))};
-if (!wasOverBudget) {
-bottomBar.classList.remove('shake');
-void bottomBar.offsetWidth; // trigger reflow
-bottomBar.classList.add('shake');
-vibrate([60, 40, 60]);
-}
-wasOverBudget = true;
-} else {
-bottomBar.classList.remove('over-budget');
-remainingTextEl.textContent = Υπόλοιπο: ${formatEuro(diff)};
-wasOverBudget = false;
-}
-} else {
-bottomBar.classList.remove('over-budget');
-remainingTextEl.textContent = 'Χωρίς όριο';
-wasOverBudget = false;
-}
-}
-// Render Grouped List
-function render() {
-updateSummary();
-const filtered = items.filter((item) => {
-if (hideChecked && item.checked) return false;
-if (searchQuery && !item.name.toLowerCase().includes(searchQuery)) return false;
-return true;
-});
-if (filtered.length === 0) {
-listContainer.innerHTML = <div class="empty-state">🍂 Η λίστα είναι άδεια. Πρόσθεσε προϊόντα από πάνω!</div>;
-return;
-}
-// Group by category
-const groups = {};
-filtered.forEach((item) => {
-if (!groups[item.category]) groups[item.category] = [];
-groups[item.category].push(item);
-});
-listContainer.innerHTML = '';
-Object.keys(groups).forEach((cat) => {
-const groupDiv = document.createElement('div');
-groupDiv.className = 'category-group';
-const titleEl = document.createElement('div');
-titleEl.className = 'category-title';
-titleEl.textContent = cat;
-groupDiv.appendChild(titleEl);
-groups[cat].forEach((item) => {
-const card = document.createElement('div');
-card.className = 'item-card' + (item.checked ? ' checked' : '');
-card.dataset.id = item.id;
-const subtotal = formatEuro(item.qty * item.price);
-card.innerHTML = <div class="item-left"> <input type="checkbox" class="custom-checkbox" ${item.checked ? 'checked' : ''} aria-label="Αγοράστηκε ${item.name}" /> <div class="item-info"> <span class="item-name">${escapeHtml(item.name)}</span> <span class="item-subtotal">Σύνολο: ${subtotal}</span> </div> </div> <div class="item-controls"> <div class="qty-box"> <button type="button" class="qty-btn minus" aria-label="Μείωση ποσότητας">−</button> <span class="qty-val">${item.qty}</span> <button type="button" class="qty-btn plus" aria-label="Αύξηση ποσότητας">+</button> </div> <div class="inline-price-wrap" title="Τιμή μονάδας"> <span>€</span> <input type="number" class="inline-price" value="${item.price > 0 ? item.price.toFixed(2) : ''}" placeholder="0.00" min="0" step="0.01" aria-label="Τιμή μονάδας" /> </div> <button type="button" class="del-btn" title="Διαγραφή" aria-label="Διαγραφή">✕</button> </div>;
-groupDiv.appendChild(card);
-});
-listContainer.appendChild(groupDiv);
-});
-}
-// Escape HTML helper
-function escapeHtml(str) {
-const div = document.createElement('div');
-div.textContent = str;
-return div.innerHTML;
-}
-// Event Delegation for List Items
-listContainer.addEventListener('click', (e) => {
-const card = e.target.closest('.item-card');
-if (!card) return;
-const id = card.dataset.id;
-const item = items.find((i) => i.id === id);
-if (!item) return;
-if (e.target.classList.contains('custom-checkbox')) {
-item.checked = e.target.checked;
-vibrate(25);
-saveData();
-render();
-} else if (e.target.classList.contains('minus')) {
-vibrate(15);
-if (item.qty > 1) {
-item.qty -= 1;
-} else {
-items = items.filter((i) => i.id !== id);
-}
-saveData();
-render();
-} else if (e.target.classList.contains('plus')) {
-vibrate(15);
-item.qty += 1;
-saveData();
-render();
-} else if (e.target.classList.contains('del-btn')) {
-vibrate(30);
-items = items.filter((i) => i.id !== id);
-saveData();
+document.getElementById('hideCheckedBtn').classList.toggle('active', hideChecked);
+vibrate();
 render();
 }
-});
-// Direct Price Edit on List
-listContainer.addEventListener('change', (e) => {
-if (!e.target.classList.contains('inline-price')) return;
-const card = e.target.closest('.item-card');
-if (!card) return;
-const item = items.find((i) => i.id === card.dataset.id);
-if (!item) return;
-item.price = Math.max(0, parseFloat(e.target.value) || 0);
-saveData();
-render();
-});
-// Clear Checked Items
-document.getElementById('clearCheckedBtn').addEventListener('click', () => {
-const checkedCount = items.filter((i) => i.checked).length;
-if (checkedCount === 0) return;
-vibrate(30);
-items = items.filter((i) => !i.checked);
-saveData();
-render();
-});
-// Clear All Items
-document.getElementById('clearAllBtn').addEventListener('click', () => {
-if (items.length === 0) return;
-if (confirm('Θέλεις σίγουρα να αδειάσεις όλη τη λίστα;')) {
-vibrate(40);
+
+function deleteItem(id) {
+items = items.filter(item => item.id !== id);
+vibrate();
+save();
+}
+
+function clearChecked() {
+items = items.filter(item => !item.checked);
+vibrate();
+save();
+}
+
+function clearAll() {
+if (confirm('Θέλεις σίγουρα να σβήσεις όλα τα προϊόντα από τη λίστα;')) {
 items = [];
-saveData();
-render();
+vibrate();
+save();
 }
-});
-// Share List (Native Share API or Clipboard fallback)
-document.getElementById('shareBtn').addEventListener('click', async () => {
-if (items.length === 0) {
-alert('Η λίστα σου είναι άδεια!');
-return;
 }
-vibrate(25);
-let text = '🛒 Λίστα Σούπερ Μάρκετ\n\n';
-const groups = {};
-items.forEach((i) => {
-if (!groups[i.category]) groups[i.category] = [];
-groups[i.category].push(i);
-});
-Object.keys(groups).forEach((cat) => {
-text += ${cat}\n;
-groups[cat].forEach((i) => {
-const mark = i.checked ? '✅' : '⬜';
-const priceStr = i.price > 0 ?  (${formatEuro(i.qty * i.price)}) : '';
+
+function supportApp(e) {
+e.preventDefault();
+alert('Ευχαριστούμε πολύ για την υποστήριξη! Εδώ μπορείς να συνδέσεις τον δικό σου σύνδεσμο Buy Me a Coffee, Revolut ή PayPal.');
+}
+
+function shareList() {
+if (items.length === 0) return;
+let text = "🛒 Λίστα Σούπερ Μάρκετ:\n\n";
+items.forEach(i => {
+const mark = i.checked ? "✅" : "⬜";
+const priceStr = i.price > 0 ? (${(i.qty * i.price).toFixed(2)}€) : "";
 text += ${mark} ${i.name} x${i.qty}${priceStr}\n;
 });
-text += '\n';
-});
-const total = items.reduce((s, i) => s + i.qty * i.price, 0);
-if (total > 0) {
-text += 💰 *Σύνολο:* ${formatEuro(total)};
-}
+const total = items.reduce((sum, i) => sum + i.qty * i.price, 0);
+text += \n💰 Σύνολο: ${total.toFixed(2)} €;
+
 if (navigator.share) {
-try {
-await navigator.share({ title: 'Λίστα Σούπερ Μάρκετ', text });
-} catch (err) {
-// User cancelled share
+navigator.share({ title: 'Λίστα Σούπερ Μάρκετ', text });
+} else {
+navigator.clipboard.writeText(text);
+alert('Η λίστα αντιγράφηκε! Μπορείς να την κάνεις επικόλληση στο Viber/WhatsApp.');
+}
+}
+
+function updateTotals() {
+const total = items.reduce((sum, i) => sum + (i.qty * i.price), 0);
+document.getElementById('totalAmount').textContent = ${total.toFixed(2)} €;
+
+const summaryBar = document.getElementById('summaryBar');
+const budgetStatus = document.getElementById('budgetStatus');
+const bVal = parseFloat(budget);
+
+if (bVal > 0) {
+const diff = bVal - total;
+if (diff < 0) {
+summaryBar.classList.add('over-budget');
+budgetStatus.textContent = Υπέρβαση κατά ${Math.abs(diff).toFixed(2)} €!;
+} else {
+summaryBar.classList.remove('over-budget');
+budgetStatus.textContent = Υπόλοιπο: ${diff.toFixed(2)} €;
 }
 } else {
-await navigator.clipboard.writeText(text);
-alert('Η λίστα αντιγράφηκε! Κάνε επικόλληση στο Viber ή το WhatsApp.');
+summaryBar.classList.remove('over-budget');
+budgetStatus.textContent = 'Χωρίς όριο';
 }
+}
+
+function render() {
+const container = document.getElementById('listContainer');
+const actionsRow = document.getElementById('actionsRow');
+const filterBar = document.getElementById('filterBar');
+const progressFill = document.getElementById('progressFill');
+const doneBanner = document.getElementById('doneBanner');
+const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+
+const checkedCount = items.filter(i => i.checked).length;
+document.getElementById('progressText').textContent = Αγοράστηκαν ${checkedCount} / ${items.length};
+const pct = items.length ? (checkedCount / items.length) * 100 : 0;
+progressFill.style.width = ${pct}%;
+
+if (items.length > 0 && checkedCount === items.length) {
+progressFill.classList.add('done');
+doneBanner.style.display = 'block';
+} else {
+progressFill.classList.remove('done');
+doneBanner.style.display = 'none';
+}
+
+updateTotals();
+
+if (items.length === 0) {
+container.innerHTML = <div class="empty-state">Η λίστα σου είναι άδεια.<br>Πρόσθεσε προϊόντα από πάνω ή επίλεξε από τη Γρήγορη Προσθήκη!</div>;
+actionsRow.style.display = 'none';
+filterBar.style.display = 'none';
+return;
+}
+
+actionsRow.style.display = 'grid';
+filterBar.style.display = 'flex';
+
+let filtered = items;
+if (hideChecked) filtered = filtered.filter(i => !i.checked);
+if (query) filtered = filtered.filter(i => i.name.toLowerCase().includes(query));
+
+const grouped = {};
+filtered.forEach(item => {
+if (!grouped[item.category]) grouped[item.category] = [];
+grouped[item.category].push(item);
 });
-// Boot
-initTheme();
-createLeaves();
-render();
-})();
+
+let html = '';
+for (const [cat, catItems] of Object.entries(grouped)) {
+html += <div class="category-block"><div class="category-title">${cat}</div>;
+catItems.forEach(item => {
+const subtotal = (item.qty * item.price).toFixed(2);
+const priceLabel = item.price > 0 ? ${subtotal} € : + Τιμή;
+html += <div class="item-card ${item.checked ? 'checked' : ''}"> <div class="item-left" onclick="toggleItem(${item.id})"> <div class="checkbox">${item.checked ? '✓' : ''}</div> <div class="item-info"> <div class="item-name">${item.name}</div> ${item.price > 0 ?${item.price.toFixed(2)}€ / τεμ.: ''} </div> </div> <div class="item-right"> <div class="qty-controls"> <button class="qty-btn" onclick="changeQty(${item.id}, -1)">-</button> <span class="qty-val">${item.qty}</span> <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button> </div> <button class="item-price-btn" onclick="editPrice(${item.id})" title="Αλλαγή τιμής">${priceLabel}</button> <button class="del-btn" onclick="deleteItem(${item.id})" title="Διαγραφή">✕</button> </div> </div>;
+});
+html += </div>;
+}
+container.innerHTML = html || <div class="empty-state">Δεν βρέθηκαν προϊόντα με αυτό το φίλτρο.</div>;
+}
+
+document.getElementById('itemName').addEventListener('keypress', (e) => {
+if (e.key === 'Enter') addItem();
+});
+
+render();</script> </body> </html>
